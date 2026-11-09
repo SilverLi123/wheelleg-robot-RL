@@ -1,6 +1,13 @@
 # 学习与开发任务
 
-当前阶段：已在本地搭建自己的平地任务骨架，待用户 review。参考 SCUTRobotLab 的任务分工；Observation 和 Action 由用户设计。
+当前小目标：按[平地复现说明](docs/v14-6-flat-baseline.md)运行队友的 `model_2000.pt`，对照新评测与历史结果。通过后，再做轻坡上行、下行和平地的冻结策略对照。
+
+- [ ] 复现平地并 Review 新评测。
+- [ ] 复用队友地形代码，测冻结策略在轻坡和平地的表现。
+
+## 暂停的独立任务路线
+
+当时阶段：已在本地搭建自己的平地任务骨架，待用户 review。参考 SCUTRobotLab 的任务分工；Observation 和 Action 由用户设计。
 
 - [ ] Review 自有平地任务的 `env_cfg.py` 与 `env.py`。
 - [ ] 由用户确定观测字段、动作映射及对应执行器，再接入具体环境。
@@ -16,6 +23,6 @@
 - [ ] 设计最小平地站立任务，再逐步加入前进和转弯。
 - [ ] 接入标准 RSL-RL PPO，学习保存、恢复与仿真评估。
 
-建议阅读顺序：`source/wheelleg_lab/__init__.py` → `assets.py` → `scripts/open_robot.py` → `tasks/__init__.py`。具体代码流程、验证命令与限制见 README.md。
+建议阅读顺序：`source/wheelleg_lab/__init__.py` → `assets.py` → `scripts/open_robot.py` → `tasks/__init__.py`。具体代码流程、验证命令与限制见[旧骨架说明](docs/archive/standalone-flat-scaffold.md)。
 
 完整历史记录保留在 `/Users/silver/RL/TASKS.md`。基线存在不代表上述学习项已完成。
