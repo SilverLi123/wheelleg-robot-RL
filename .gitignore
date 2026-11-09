@@ -6,5 +6,6 @@ logs/
 cache/
 runs/
 
-# 队友的参考快照、模型权重和续训材料只保存在本地。
-/training/flat_baseline/
+# 训练权重和导出产物单独保存。
+*.pt
+*.onnx

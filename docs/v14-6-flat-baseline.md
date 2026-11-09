@@ -10,10 +10,10 @@
 
 源工作区是 pi 上的 `/data/wheelbipe-v14-6-training-20261108`。对应原评测在其 `evaluation/flat_seed42/iteration_2000/own_domain`。历史评测轨迹已用原 `tools/assess.py` 重新计分，结果与存档一致：8 个环境各 6 秒，均无终止、超时或异常；稳态前向速度、偏航角速度平均绝对误差分别为 **0.01105 m/s**、**0.01180 rad/s**，闭链残差峰值 **0.107 mm**。这是对存档的重算。
 
-在 **Mac** 运行：
+在 **Mac 的仓库根目录**运行：
 
 ```bash
-bash /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/scripts/reproduce_v14_6_flat.sh 4
+bash scripts/reproduce_v14_6_flat.sh 4
 ```
 
 参数是 GPU 编号。加 `--check` 可只做只读预检。正式回放前也会检查所选卡；空闲检查是一次采样，不能预留 GPU。脚本在 pi 上只读队友的源项目、权重和配套配置，调用原 `evaluate_grid.py` 和 `assess.py`。本次评测的独立输出目录会打印到终端，放在 `/data/wheeled-legged/logs/v14_6_flat_2000_*`。
