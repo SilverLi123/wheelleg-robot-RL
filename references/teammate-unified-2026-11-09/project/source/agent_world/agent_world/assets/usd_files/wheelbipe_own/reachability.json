@@ -1,0 +1,124 @@
+{
+  "left": {
+    "count": 1000,
+    "rejected": 44,
+    "max_closure_m": 1.95242745640064e-05,
+    "spring_range_m": [
+      6.071595636279334e-11,
+      0.029651304310689425
+    ],
+    "leg_length_range_m": [
+      0.14486420257378152,
+      0.2655902717726493
+    ],
+    "leg_angle_range_rad": [
+      -0.20796604792265624,
+      0.35970260103044926
+    ],
+    "level_base_ground_height_range_m": [
+      0.20623187581029748,
+      0.32732317665993227
+    ],
+    "nominal_wheel_in_base_m": [
+      -0.015130469534164775,
+      0.2502000033855438,
+      -0.19215205049145578
+    ],
+    "nominal": {
+      "gimbal_yaw_joint": 5.09550499744237e-05,
+      "left_buttom_guide1_joint": -0.00011646671187746467,
+      "left_buttom_guide2_joint": -0.00011646677689604598,
+      "left_front1_joint": -0.17821121671802315,
+      "left_front2_joint": 0.2769056764990297,
+      "left_front3_joint": -0.145522494157544,
+      "left_front4_joint": 0.27708190829872215,
+      "left_front_guide1_joint": -0.00011685481591657159,
+      "left_front_guide2_joint": -0.00011639358222814664,
+      "left_front_guide3_joint": -0.00011639386668443983,
+      "left_rear1_joint": 0.23010798720904507,
+      "left_rear2_joint": -0.2769128417241216,
+      "left_rear2_guide_joint": 0.04668520142552143,
+      "left_wheel_joint": 0.04680253447748544,
+      "left_spring1_joint": 0.054668029990969466,
+      "left_spring2_joint": 0.009570443765211835,
+      "left_rear_guide1_joint": -0.00011685577494064577,
+      "right_buttom_guide1_joint": -0.00011758477140151259,
+      "right_buttom_guide2_joint": 0.0,
+      "right_front1_joint": -0.18535714371297826,
+      "right_front2_joint": 0.27877557500980504,
+      "right_front3_joint": -0.1521410501092899,
+      "right_front4_joint": 0.2787775224463522,
+      "right_front_guide1_joint": -0.00011719704934657081,
+      "right_front_guide2_joint": -0.00011765764910382808,
+      "right_front_guide3_joint": -0.00011765735652021223,
+      "right_rear1_joint": 0.22004534954347835,
+      "right_rear2_joint": -0.2786732264001619,
+      "right_rear2_guide_joint": 0.05850988633682545,
+      "right_wheel_joint": 0.05862782692241313,
+      "right_spring1_joint": 0.05302046634584563,
+      "right_spring2_joint": 0.009820914827287197,
+      "right_rear_guide1_joint": -0.00011719673238098697
+    }
+  },
+  "right": {
+    "count": 1000,
+    "rejected": 53,
+    "max_closure_m": 1.9698611498161938e-05,
+    "spring_range_m": [
+      7.504503964248871e-11,
+      0.02917293857826413
+    ],
+    "leg_length_range_m": [
+      0.1485147385531581,
+      0.2660370141786405
+    ],
+    "leg_angle_range_rad": [
+      -0.23616028129952746,
+      0.3292659663419582
+    ],
+    "level_base_ground_height_range_m": [
+      0.20965934954704912,
+      0.32820491488013237
+    ],
+    "nominal_wheel_in_base_m": [
+      -0.010607992286640278,
+      -0.24370000325143337,
+      -0.19616648621509286
+    ],
+    "nominal": {
+      "gimbal_yaw_joint": 5.09550499744237e-05,
+      "left_buttom_guide1_joint": -0.00011646671187746467,
+      "left_buttom_guide2_joint": -0.00011646677689604598,
+      "left_front1_joint": -0.17821121671802315,
+      "left_front2_joint": 0.2769054367133241,
+      "left_front3_joint": -0.14552196295697972,
+      "left_front4_joint": 0.27708158817467604,
+      "left_front_guide1_joint": -0.00011685481591657159,
+      "left_front_guide2_joint": -0.00011639358222814664,
+      "left_front_guide3_joint": -0.00011639386668443983,
+      "left_rear1_joint": 0.23010798720904507,
+      "left_rear2_joint": -0.2769104634298817,
+      "left_rear2_guide_joint": 0.04668520142552143,
+      "left_wheel_joint": 0.04680253447748544,
+      "left_spring1_joint": 0.05466743174297789,
+      "left_spring2_joint": 0.009570186026394367,
+      "left_rear_guide1_joint": -0.00011685577494064577,
+      "right_buttom_guide1_joint": -0.00011758477140151259,
+      "right_buttom_guide2_joint": 0.0,
+      "right_front1_joint": -0.18535714371297826,
+      "right_front2_joint": 0.2787753229778991,
+      "right_front3_joint": -0.15214085726368676,
+      "right_front4_joint": 0.27877796938594995,
+      "right_front_guide1_joint": -0.00011719704934657081,
+      "right_front_guide2_joint": -0.00011765764910382808,
+      "right_front_guide3_joint": -0.00011765735652021223,
+      "right_rear1_joint": 0.22004534954347835,
+      "right_rear2_joint": -0.27867450876174443,
+      "right_rear2_guide_joint": 0.05850988633682545,
+      "right_wheel_joint": 0.05862782692241313,
+      "right_spring1_joint": 0.05302069277657019,
+      "right_spring2_joint": 0.009821078390108448,
+      "right_rear_guide1_joint": -0.00011719673238098697
+    }
+  }
+}

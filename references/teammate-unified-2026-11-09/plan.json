@@ -1,0 +1,94 @@
+{
+  "experiment": "wheelbipe_unified_parallel_20261108",
+  "root": "/data/wheelbipe-unified-parallel-20261108",
+  "profile": "unified_locomotion",
+  "num_envs": 4096,
+  "seed": 20261108,
+  "gpu": 3,
+  "cpus": "28-39",
+  "physics_dt_s": 0.0025,
+  "policy_dt_s": 0.02,
+  "pilot_updates": 6,
+  "total_updates": 1725,
+  "checkpoint_interval": 10,
+  "evaluate_interval": 100,
+  "validation_gpu": 1,
+  "initialization": {
+    "checkpoint": "/data/wheelbipe-unified-parallel-20261108/logs/rsl_rl/wheelbipe_unified_parallel_20261108/2026-11-08_14-03-25_bench_4096/model_5.pt",
+    "source": {
+      "checkpoint": "/data/wheelbipe-unified-locomotion-20261108/logs/rsl_rl/wheelbipe_unified_locomotion_20261108/2026-11-08_12-03-09_unified_long_16/model_400.pt",
+      "copy": "/data/wheelbipe-unified-parallel-20261108/initialization/model_400.pt"
+    },
+    "transfer": "actor and critic from old model_400 with fresh Adam for changed environment count/terrain; 6 real PPO pilot updates; exact model/Adam/curriculum resume from new model_5"
+  },
+  "one_policy_for_all_terrains": true,
+  "stairs": false,
+  "terrain_proportions": {
+    "flat": 0.3,
+    "wave": 0.2,
+    "rough": 0.2,
+    "slope_up": 0.15,
+    "slope_down": 0.15
+  },
+  "command_vx_m_s": [
+    -2.7,
+    2.7
+  ],
+  "execution_state": "training",
+  "require_preflight_on_resume": true,
+  "checkpoint_run_suffixes": [
+    "_unified_recovery_20261109_*",
+    "_unified_continuation_20261109_*"
+  ],
+  "terrain_version": "aperiodic_v2",
+  "created_utc": "2026-11-08T14:22:02.648552+00:00",
+  "experience_budget": {
+    "old_target_transitions": 73728000,
+    "old_source_completed_updates": 401,
+    "old_source_transitions": 2463744,
+    "new_rollout_transitions": 98304,
+    "new_total_updates": 725,
+    "new_total_transitions": 71270400,
+    "combined_target_transitions": 73734144,
+    "reason": "approximately preserve original experience budget after increasing batch 16-fold; update indices across stages are not comparable; actual convergence is evaluated independently"
+  },
+  "automatic_recovery": true,
+  "learning_rate_cap": 0.0003,
+  "run_tag": "continuation_20261109_",
+  "recovery_start_checkpoint": "/data/wheelbipe-unified-parallel-20261108/logs/rsl_rl/wheelbipe_unified_parallel_20261108/2026-11-08_19-32-59_unified_recovery_20261109_long_101/model_724.pt",
+  "ignored_checkpoint_runs": [],
+  "preflight_report": "reports/recovery_preflight/summary.json",
+  "closure_recovery": {
+    "per_environment_threshold_m": 0.005,
+    "isolated_fault": "terminal failure and reset affected environment; finite terminal reward -1; exclude corrupt states from velocity coverage",
+    "widespread_threshold_fraction": 0.1,
+    "widespread_min_environments": 4,
+    "widespread_consecutive_control_steps": 3,
+    "widespread_action": "save last complete PPO update; discard partial rollout; automatic simulator restart",
+    "evaluation_failure": "record warning, do not select candidate, continue training",
+    "repeated_restart": "every fifth recovery or interrupted optimizer update rolls back verified source; failed lineage excluded"
+  },
+  "restart_record": {
+    "beijing_time": "2026-11-09T03:32:47.793948+08:00",
+    "previous_stopped_iteration": 210,
+    "previous_latest_checkpoint": 200,
+    "resume_checkpoint_iteration": 100,
+    "next_iteration": 101,
+    "reason": "user requested training resume and nonfatal closed-loop handling; checkpoint100 passed matrix, checkpoint200 deteriorated",
+    "algorithm_intervention": "restore model/Adam exactly, then cap adaptive LR at 3e-4 before every optimizer step",
+    "experience_note": "abandoned updates remain archived; actual total collected experience includes abandoned branch"
+  },
+  "continuation_record": {
+    "time_beijing": "2026-11-09T12:23:11.501821+08:00",
+    "source_checkpoint": "/data/wheelbipe-unified-parallel-20261108/logs/rsl_rl/wheelbipe_unified_parallel_20261108/2026-11-08_19-32-59_unified_recovery_20261109_long_101/model_724.pt",
+    "previous_total_updates": 725,
+    "additional_updates": 1000,
+    "new_total_updates": 1725,
+    "additional_transitions": 98304000,
+    "initialization": "restore actor, critic, Adam and curriculum; continue at iteration725",
+    "algorithm": "same PPO and same unified_locomotion reward/physics profile",
+    "reason": "User requested local export of current policy and continued server training",
+    "local_export_checkpoint": "model_724.pt",
+    "reward_ablation_promoted": false
+  }
+}

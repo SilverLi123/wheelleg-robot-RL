@@ -1,0 +1,566 @@
+{
+  "success": true,
+  "asset_sha256": "574787147ceb6ba130782fd2e36fb26704ecb9cd94ec6ef26dd45ea2880c9478",
+  "mass_kg": 20.661891940049827,
+  "bodies": 34,
+  "ordinary_joints": 33,
+  "spherical_loops": 6,
+  "native_drives_zero": true,
+  "source_v14_6": "/data/wheelbipe-v14-6-20261107/isaacsim/wheelbipev14--6_robot.usdc",
+  "source_sha256": "6d9650a1fb41b503dbcaf83565be3310fe1b9fa86db212ce80c9f1ebc3f70b2b",
+  "max_CAD_zero_frame_matrix_error": 7.190937593139213e-06,
+  "mesh_geometry": {
+    "base_link": [
+      {
+        "group": "visuals",
+        "points": 395130,
+        "faces": 758086,
+        "source": "/Robot/Geometry/base_link/base_link/base_link",
+        "points_sha256": "5b38635e7fe160ad4dad90559ddf406be62859c3819ce62d12d65097f2eb1d8b"
+      },
+      {
+        "group": "collisions",
+        "points": 395130,
+        "faces": 758086,
+        "source": "/Robot/Geometry/base_link/base_link_1/base_link",
+        "points_sha256": "5b38635e7fe160ad4dad90559ddf406be62859c3819ce62d12d65097f2eb1d8b"
+      }
+    ],
+    "gimbal_yaw_link": [
+      {
+        "group": "visuals",
+        "points": 258435,
+        "faces": 511335,
+        "source": "/Robot/Geometry/base_link/gimbal_yaw_link/gimbal_yaw_link/gimbal_yaw_link",
+        "points_sha256": "132b63d0bfbd45a83404d8a4f457639809f3d9ccfaa9427e4f2ccf571daaefc5"
+      },
+      {
+        "group": "collisions",
+        "points": 258435,
+        "faces": 511335,
+        "source": "/Robot/Geometry/base_link/gimbal_yaw_link/gimbal_yaw_link_1/gimbal_yaw_link",
+        "points_sha256": "132b63d0bfbd45a83404d8a4f457639809f3d9ccfaa9427e4f2ccf571daaefc5"
+      }
+    ],
+    "left_buttom_guide1_link": [
+      {
+        "group": "visuals",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/left_buttom_guide1_link/left_buttom_guide1_link/left_buttom_guide1_link",
+        "points_sha256": "cbf1a5ce67163ffe4fb305da36c39a01784c8e65260a4d4cbee52aea2017d2b6"
+      },
+      {
+        "group": "collisions",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/left_buttom_guide1_link/left_buttom_guide1_link_1/left_buttom_guide1_link",
+        "points_sha256": "cbf1a5ce67163ffe4fb305da36c39a01784c8e65260a4d4cbee52aea2017d2b6"
+      }
+    ],
+    "left_buttom_guide2_link": [
+      {
+        "group": "visuals",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/left_buttom_guide2_link/left_buttom_guide2_link/left_buttom_guide2_link",
+        "points_sha256": "23b70df8bc7983d072e10f1024a690746b2463d5772d246f83ffc4abcc070e4d"
+      },
+      {
+        "group": "collisions",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/left_buttom_guide2_link/left_buttom_guide2_link_1/left_buttom_guide2_link",
+        "points_sha256": "23b70df8bc7983d072e10f1024a690746b2463d5772d246f83ffc4abcc070e4d"
+      }
+    ],
+    "left_front1_link": [
+      {
+        "group": "visuals",
+        "points": 786,
+        "faces": 1604,
+        "source": "/Robot/Geometry/base_link/left_front1_link/left_front1_link/left_front1_link",
+        "points_sha256": "219aca0247fe029285666a30088e2ec0073988d59831a306af361016c68387eb"
+      },
+      {
+        "group": "collisions",
+        "points": 786,
+        "faces": 1604,
+        "source": "/Robot/Geometry/base_link/left_front1_link/left_front1_link_1/left_front1_link",
+        "points_sha256": "219aca0247fe029285666a30088e2ec0073988d59831a306af361016c68387eb"
+      }
+    ],
+    "left_front2_link": [
+      {
+        "group": "visuals",
+        "points": 216,
+        "faces": 444,
+        "source": "/Robot/Geometry/base_link/left_front1_link/left_front2_link/left_front2_link/left_front2_link",
+        "points_sha256": "29e715574c603415f3daf89507a3ec4c608fac7368386f6d199072a0dfcb2f1c"
+      },
+      {
+        "group": "collisions",
+        "points": 216,
+        "faces": 444,
+        "source": "/Robot/Geometry/base_link/left_front1_link/left_front2_link/left_front2_link_1/left_front2_link",
+        "points_sha256": "29e715574c603415f3daf89507a3ec4c608fac7368386f6d199072a0dfcb2f1c"
+      }
+    ],
+    "left_front3_link": [
+      {
+        "group": "visuals",
+        "points": 336,
+        "faces": 688,
+        "source": "/Robot/Geometry/base_link/left_front1_link/left_front2_link/left_front3_link/left_front3_link/left_front3_link",
+        "points_sha256": "3d2be15aae530c2ea7522cfb1b7ddb94577715b7f03842cc82ff04c8c33fe1e8"
+      },
+      {
+        "group": "collisions",
+        "points": 336,
+        "faces": 688,
+        "source": "/Robot/Geometry/base_link/left_front1_link/left_front2_link/left_front3_link/left_front3_link_1/left_front3_link",
+        "points_sha256": "3d2be15aae530c2ea7522cfb1b7ddb94577715b7f03842cc82ff04c8c33fe1e8"
+      }
+    ],
+    "left_front4_link": [
+      {
+        "group": "visuals",
+        "points": 236,
+        "faces": 484,
+        "source": "/Robot/Geometry/base_link/left_front1_link/left_front2_link/left_front3_link/left_front4_link/left_front4_link/left_front4_link",
+        "points_sha256": "46ab016f5f0cddcd631ded184a6540fe609a7e8fd72dd472171062565a8917e8"
+      },
+      {
+        "group": "collisions",
+        "points": 236,
+        "faces": 484,
+        "source": "/Robot/Geometry/base_link/left_front1_link/left_front2_link/left_front3_link/left_front4_link/left_front4_link_1/left_front4_link",
+        "points_sha256": "46ab016f5f0cddcd631ded184a6540fe609a7e8fd72dd472171062565a8917e8"
+      }
+    ],
+    "left_front_guide1_link": [
+      {
+        "group": "visuals",
+        "points": 156,
+        "faces": 308,
+        "source": "/Robot/Geometry/base_link/left_front_guide1_link/left_front_guide1_link/left_front_guide1_link",
+        "points_sha256": "c4bcf44bfdbb98a7df6207860aeeaa1d2d403226ab8b63dddfa05c4514481f4c"
+      },
+      {
+        "group": "collisions",
+        "points": 156,
+        "faces": 308,
+        "source": "/Robot/Geometry/base_link/left_front_guide1_link/left_front_guide1_link_1/left_front_guide1_link",
+        "points_sha256": "c4bcf44bfdbb98a7df6207860aeeaa1d2d403226ab8b63dddfa05c4514481f4c"
+      }
+    ],
+    "left_front_guide2_link": [
+      {
+        "group": "visuals",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/left_front_guide2_link/left_front_guide2_link/left_front_guide2_link",
+        "points_sha256": "1dd13ff1f8c56ab001b77d0b104ed6061fb89cd37ed61cb6f2ee05360558c533"
+      },
+      {
+        "group": "collisions",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/left_front_guide2_link/left_front_guide2_link_1/left_front_guide2_link",
+        "points_sha256": "1dd13ff1f8c56ab001b77d0b104ed6061fb89cd37ed61cb6f2ee05360558c533"
+      }
+    ],
+    "left_front_guide3_link": [
+      {
+        "group": "visuals",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/left_front_guide3_link/left_front_guide3_link/left_front_guide3_link",
+        "points_sha256": "a5a45718902a0864ec35eb0eff7960aa825bf5d832d16f6c7be2baa3b15ef765"
+      },
+      {
+        "group": "collisions",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/left_front_guide3_link/left_front_guide3_link_1/left_front_guide3_link",
+        "points_sha256": "a5a45718902a0864ec35eb0eff7960aa825bf5d832d16f6c7be2baa3b15ef765"
+      }
+    ],
+    "left_rear1_link": [
+      {
+        "group": "visuals",
+        "points": 1403,
+        "faces": 2894,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_rear1_link/left_rear1_link",
+        "points_sha256": "7182dca010e40f1f161135ffbdfd9e4c81c64f81b4ad9e23104b7a2136577d2d"
+      },
+      {
+        "group": "collisions",
+        "points": 1403,
+        "faces": 2894,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_rear1_link_1/left_rear1_link",
+        "points_sha256": "7182dca010e40f1f161135ffbdfd9e4c81c64f81b4ad9e23104b7a2136577d2d"
+      }
+    ],
+    "left_rear2_link": [
+      {
+        "group": "visuals",
+        "points": 1030,
+        "faces": 2136,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_rear2_link/left_rear2_link/left_rear2_link",
+        "points_sha256": "1c56437102c3d45e44412f565c812ee1b23124d1493bea05ed6c022c11dcd513"
+      },
+      {
+        "group": "collisions",
+        "points": 1030,
+        "faces": 2136,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_rear2_link/left_rear2_link_1/left_rear2_link",
+        "points_sha256": "1c56437102c3d45e44412f565c812ee1b23124d1493bea05ed6c022c11dcd513"
+      }
+    ],
+    "left_rear2_guide_link": [
+      {
+        "group": "visuals",
+        "points": 116,
+        "faces": 232,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_rear2_link/left_rear2_guide_link/left_rear2_guide_link/left_rear2_guide_link",
+        "points_sha256": "902319ad1828697fb5451b0e2217329a37e2a4c890c61606b9a9d8fe4953e5fc"
+      },
+      {
+        "group": "collisions",
+        "points": 116,
+        "faces": 232,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_rear2_link/left_rear2_guide_link/left_rear2_guide_link_1/left_rear2_guide_link",
+        "points_sha256": "902319ad1828697fb5451b0e2217329a37e2a4c890c61606b9a9d8fe4953e5fc"
+      }
+    ],
+    "left_wheel_link": [
+      {
+        "group": "visuals",
+        "points": 10982,
+        "faces": 22140,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_rear2_link/left_wheel_link/left_wheel_link/left_wheel_link",
+        "points_sha256": "4a9e3961351fe071dd716b344a2fbfae832ffcc210f75f3d6d753297b1f45abd"
+      },
+      {
+        "group": "collisions",
+        "points": 10982,
+        "faces": 22140,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_rear2_link/left_wheel_link/left_wheel_link_1/left_wheel_link",
+        "points_sha256": "4a9e3961351fe071dd716b344a2fbfae832ffcc210f75f3d6d753297b1f45abd"
+      }
+    ],
+    "left_spring1_link": [
+      {
+        "group": "visuals",
+        "points": 321,
+        "faces": 638,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_spring1_link/left_spring1_link/left_spring1_link",
+        "points_sha256": "ed4bb2fb10b4c274b144c386462cc76442c0fa14f19d7dd57d2bcb91fd59b5b7"
+      },
+      {
+        "group": "collisions",
+        "points": 321,
+        "faces": 638,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_spring1_link/left_spring1_link_1/left_spring1_link",
+        "points_sha256": "ed4bb2fb10b4c274b144c386462cc76442c0fa14f19d7dd57d2bcb91fd59b5b7"
+      }
+    ],
+    "left_spring2_link": [
+      {
+        "group": "visuals",
+        "points": 712,
+        "faces": 1424,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_spring1_link/left_spring2_link/left_spring2_link/left_spring2_link",
+        "points_sha256": "15541755d7b7d18975bea924e164a06df253fe7448b59cc9f7e70644bd05c1cf"
+      },
+      {
+        "group": "collisions",
+        "points": 712,
+        "faces": 1424,
+        "source": "/Robot/Geometry/base_link/left_rear1_link/left_spring1_link/left_spring2_link/left_spring2_link_1/left_spring2_link",
+        "points_sha256": "15541755d7b7d18975bea924e164a06df253fe7448b59cc9f7e70644bd05c1cf"
+      }
+    ],
+    "left_rear_guide1_link": [
+      {
+        "group": "visuals",
+        "points": 156,
+        "faces": 308,
+        "source": "/Robot/Geometry/base_link/left_rear_guide1_link/left_rear_guide1_link/left_rear_guide1_link",
+        "points_sha256": "f5aae3e8f95d3642735194683d0ffa18010b73e0a6b98c9a87737f14a47eec55"
+      },
+      {
+        "group": "collisions",
+        "points": 156,
+        "faces": 308,
+        "source": "/Robot/Geometry/base_link/left_rear_guide1_link/left_rear_guide1_link_1/left_rear_guide1_link",
+        "points_sha256": "f5aae3e8f95d3642735194683d0ffa18010b73e0a6b98c9a87737f14a47eec55"
+      }
+    ],
+    "right_buttom_guide1_link": [
+      {
+        "group": "visuals",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/right_buttom_guide1_link/right_buttom_guide1_link/right_buttom_guide1_link",
+        "points_sha256": "56cc6e6a7e53cca10b4f440b9905c81d98cd737d6fc708bfcaf1a434e3e13533"
+      },
+      {
+        "group": "collisions",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/right_buttom_guide1_link/right_buttom_guide1_link_1/right_buttom_guide1_link",
+        "points_sha256": "56cc6e6a7e53cca10b4f440b9905c81d98cd737d6fc708bfcaf1a434e3e13533"
+      }
+    ],
+    "right_buttom_guide2_link": [
+      {
+        "group": "visuals",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/right_buttom_guide2_link/right_buttom_guide2_link/right_buttom_guide2_link",
+        "points_sha256": "a20d79d2203d3a05db3b83755ae6c173f0d2c82253f1f725ea01899fd06c20bb"
+      },
+      {
+        "group": "collisions",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/right_buttom_guide2_link/right_buttom_guide2_link_1/right_buttom_guide2_link",
+        "points_sha256": "a20d79d2203d3a05db3b83755ae6c173f0d2c82253f1f725ea01899fd06c20bb"
+      }
+    ],
+    "right_front1_link": [
+      {
+        "group": "visuals",
+        "points": 786,
+        "faces": 1604,
+        "source": "/Robot/Geometry/base_link/right_front1_link/right_front1_link/right_front1_link",
+        "points_sha256": "4535ce9bed61d00e8ec87f959e05d6588d762d09827bc093b33c5080bc829456"
+      },
+      {
+        "group": "collisions",
+        "points": 786,
+        "faces": 1604,
+        "source": "/Robot/Geometry/base_link/right_front1_link/right_front1_link_1/right_front1_link",
+        "points_sha256": "4535ce9bed61d00e8ec87f959e05d6588d762d09827bc093b33c5080bc829456"
+      }
+    ],
+    "right_front2_link": [
+      {
+        "group": "visuals",
+        "points": 216,
+        "faces": 444,
+        "source": "/Robot/Geometry/base_link/right_front1_link/right_front2_link/right_front2_link/right_front2_link",
+        "points_sha256": "adbba5205efe006a7006fd8f9cbaa4c9aea00fd787b6afe0b96a1dfaa56dd2ab"
+      },
+      {
+        "group": "collisions",
+        "points": 216,
+        "faces": 444,
+        "source": "/Robot/Geometry/base_link/right_front1_link/right_front2_link/right_front2_link_1/right_front2_link",
+        "points_sha256": "adbba5205efe006a7006fd8f9cbaa4c9aea00fd787b6afe0b96a1dfaa56dd2ab"
+      }
+    ],
+    "right_front3_link": [
+      {
+        "group": "visuals",
+        "points": 336,
+        "faces": 688,
+        "source": "/Robot/Geometry/base_link/right_front1_link/right_front2_link/right_front3_link/right_front3_link/right_front3_link",
+        "points_sha256": "68c8c4be791c45fa4251e403974bc602ae52d41721295c9e28d7108ecbcdb12c"
+      },
+      {
+        "group": "collisions",
+        "points": 336,
+        "faces": 688,
+        "source": "/Robot/Geometry/base_link/right_front1_link/right_front2_link/right_front3_link/right_front3_link_1/right_front3_link",
+        "points_sha256": "68c8c4be791c45fa4251e403974bc602ae52d41721295c9e28d7108ecbcdb12c"
+      }
+    ],
+    "right_front4_link": [
+      {
+        "group": "visuals",
+        "points": 236,
+        "faces": 484,
+        "source": "/Robot/Geometry/base_link/right_front1_link/right_front2_link/right_front3_link/right_front4_link/right_front4_link/right_front4_link",
+        "points_sha256": "b5d2d551c6a08344299f83f9e92f5b605f0ad9aa6281f1cfa8a66379caa18455"
+      },
+      {
+        "group": "collisions",
+        "points": 236,
+        "faces": 484,
+        "source": "/Robot/Geometry/base_link/right_front1_link/right_front2_link/right_front3_link/right_front4_link/right_front4_link_1/right_front4_link",
+        "points_sha256": "b5d2d551c6a08344299f83f9e92f5b605f0ad9aa6281f1cfa8a66379caa18455"
+      }
+    ],
+    "right_front_guide1_link": [
+      {
+        "group": "visuals",
+        "points": 156,
+        "faces": 308,
+        "source": "/Robot/Geometry/base_link/right_front_guide1_link/right_front_guide1_link/right_front_guide1_link",
+        "points_sha256": "f34b130f0cae100bedff5d13d158d8159b870fddc5e3a666d84651bf6707f7be"
+      },
+      {
+        "group": "collisions",
+        "points": 156,
+        "faces": 308,
+        "source": "/Robot/Geometry/base_link/right_front_guide1_link/right_front_guide1_link_1/right_front_guide1_link",
+        "points_sha256": "f34b130f0cae100bedff5d13d158d8159b870fddc5e3a666d84651bf6707f7be"
+      }
+    ],
+    "right_front_guide2_link": [
+      {
+        "group": "visuals",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/right_front_guide2_link/right_front_guide2_link/right_front_guide2_link",
+        "points_sha256": "bc026ed9bcbd1bdfb1a61f89eab7b3c57440cfde51e08ff10618f4d51ddf7412"
+      },
+      {
+        "group": "collisions",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/right_front_guide2_link/right_front_guide2_link_1/right_front_guide2_link",
+        "points_sha256": "bc026ed9bcbd1bdfb1a61f89eab7b3c57440cfde51e08ff10618f4d51ddf7412"
+      }
+    ],
+    "right_front_guide3_link": [
+      {
+        "group": "visuals",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/right_front_guide3_link/right_front_guide3_link/right_front_guide3_link",
+        "points_sha256": "3b0731441d60e0ce18b3af546516f0f6632e10a77f62834fa461b6d54816c9a7"
+      },
+      {
+        "group": "collisions",
+        "points": 224,
+        "faces": 448,
+        "source": "/Robot/Geometry/base_link/right_front_guide3_link/right_front_guide3_link_1/right_front_guide3_link",
+        "points_sha256": "3b0731441d60e0ce18b3af546516f0f6632e10a77f62834fa461b6d54816c9a7"
+      }
+    ],
+    "right_rear1_link": [
+      {
+        "group": "visuals",
+        "points": 1413,
+        "faces": 2914,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_rear1_link/right_rear1_link",
+        "points_sha256": "340a9d998e99d2256a9d215b686f449b6b9a496bb046a3c8d9f820c20bc3dd81"
+      },
+      {
+        "group": "collisions",
+        "points": 1413,
+        "faces": 2914,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_rear1_link_1/right_rear1_link",
+        "points_sha256": "340a9d998e99d2256a9d215b686f449b6b9a496bb046a3c8d9f820c20bc3dd81"
+      }
+    ],
+    "right_rear2_link": [
+      {
+        "group": "visuals",
+        "points": 1040,
+        "faces": 2156,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_rear2_link/right_rear2_link/right_rear2_link",
+        "points_sha256": "91172e8614ada54e0d907dee9f953762d932303a9706d1b0427fca44f88c0571"
+      },
+      {
+        "group": "collisions",
+        "points": 1040,
+        "faces": 2156,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_rear2_link/right_rear2_link_1/right_rear2_link",
+        "points_sha256": "91172e8614ada54e0d907dee9f953762d932303a9706d1b0427fca44f88c0571"
+      }
+    ],
+    "right_rear2_guide_link": [
+      {
+        "group": "visuals",
+        "points": 116,
+        "faces": 232,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_rear2_link/right_rear2_guide_link/right_rear2_guide_link/right_rear2_guide_link",
+        "points_sha256": "bba015557f3227776752f4ba53ebe96bbdb453f34f52f8961613174495714719"
+      },
+      {
+        "group": "collisions",
+        "points": 116,
+        "faces": 232,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_rear2_link/right_rear2_guide_link/right_rear2_guide_link_1/right_rear2_guide_link",
+        "points_sha256": "bba015557f3227776752f4ba53ebe96bbdb453f34f52f8961613174495714719"
+      }
+    ],
+    "right_wheel_link": [
+      {
+        "group": "visuals",
+        "points": 10983,
+        "faces": 22140,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_rear2_link/right_wheel_link/right_wheel_link/right_wheel_link",
+        "points_sha256": "9e087b41e78b0663e66f2443002afc398c476fce2ec08b7e117e572d160c1812"
+      },
+      {
+        "group": "collisions",
+        "points": 10983,
+        "faces": 22140,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_rear2_link/right_wheel_link/right_wheel_link_1/right_wheel_link",
+        "points_sha256": "9e087b41e78b0663e66f2443002afc398c476fce2ec08b7e117e572d160c1812"
+      }
+    ],
+    "right_spring1_link": [
+      {
+        "group": "visuals",
+        "points": 321,
+        "faces": 638,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_spring1_link/right_spring1_link/right_spring1_link",
+        "points_sha256": "9ad45085a8797e9dc961474c0b4b8d494fa4625c47326ceb5feb4eb704774441"
+      },
+      {
+        "group": "collisions",
+        "points": 321,
+        "faces": 638,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_spring1_link/right_spring1_link_1/right_spring1_link",
+        "points_sha256": "9ad45085a8797e9dc961474c0b4b8d494fa4625c47326ceb5feb4eb704774441"
+      }
+    ],
+    "right_spring2_link": [
+      {
+        "group": "visuals",
+        "points": 715,
+        "faces": 1424,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_spring1_link/right_spring2_link/right_spring2_link/right_spring2_link",
+        "points_sha256": "3684cf98ae121620a149e655bea52a4dc40944f65025c7cf6678fe2aa87f99c7"
+      },
+      {
+        "group": "collisions",
+        "points": 715,
+        "faces": 1424,
+        "source": "/Robot/Geometry/base_link/right_rear1_link/right_spring1_link/right_spring2_link/right_spring2_link_1/right_spring2_link",
+        "points_sha256": "3684cf98ae121620a149e655bea52a4dc40944f65025c7cf6678fe2aa87f99c7"
+      }
+    ],
+    "right_rear_guide1_link": [
+      {
+        "group": "visuals",
+        "points": 156,
+        "faces": 308,
+        "source": "/Robot/Geometry/base_link/right_rear_guide1_link/right_rear_guide1_link/right_rear_guide1_link",
+        "points_sha256": "2bc6b8e0367c208529f13f794032eb08ddb22fcb0d27adfbc5200fc6fbaf74be"
+      },
+      {
+        "group": "collisions",
+        "points": 156,
+        "faces": 308,
+        "source": "/Robot/Geometry/base_link/right_rear_guide1_link/right_rear_guide1_link_1/right_rear_guide1_link",
+        "points_sha256": "2bc6b8e0367c208529f13f794032eb08ddb22fcb0d27adfbc5200fc6fbaf74be"
+      }
+    ]
+  },
+  "training_coordinates": "Audited native joint frames; compatible reset bank after all34 zero-frame comparison",
+  "gas_force_N": [
+    400.0,
+    580.0
+  ],
+  "damping_N_s_m": 50.0,
+  "damping_calibrated": false,
+  "dynamic_validation": "PASS Isaac Sim6.2/Lab GPU16env8 PPO updates; mass20.6618919kg, local loop targets, max loop1.4301mm"
+}
