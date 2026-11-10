@@ -9,3 +9,8 @@ runs/
 # 训练权重和导出产物单独保存。
 *.pt
 *.onnx
+
+# 个人仿真资产与运行产物。
+/project/source/agent_world/agent_world/assets/usd_files/wheelbipe_own/robot.usdc
+/project/source/agent_world/agent_world/assets/usd_files/wheelbipe_own/reset_bank.json
+/diagnostics/

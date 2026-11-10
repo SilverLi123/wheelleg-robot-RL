@@ -1,20 +1,18 @@
 # Wheelbipe V14-6：复杂地形微调
 
-当前分支以队友已验证的平地策略 **`flat_seed42 / model_2000.pt`** 为起点。当前小目标是复现平地运动，之后再用同一份冻结权重测轻坡上行、下行和平地，为 PPO 微调建立对照。**已重算历史评测，新的平地仿真待运行。**
+本分支直接以队友的统一地形项目作为开发基线。当前先用已验证的平地策略 `flat_seed42 / model_2000.pt` 复现原表现，再做轻坡上行、下行和平地对照。新的平地仿真仍待运行。
 
-| 想看什么 | 从这里打开 |
+| 入口 | 职责 |
 | --- | --- |
-| 平地基线为什么选 2000、如何复现 | [平地复现说明](docs/v14-6-flat-baseline.md) → [启动脚本](scripts/reproduce_v14_6_flat.sh) |
-| 队友的 Observation、Action 和训练流程 | [队友源码阅读指南](references/teammate-unified-2026-11-09/README.md) → [35 维观测与 6 维动作的导出样例](references/teammate-unified-2026-11-09/examples/export_724/input_contract.json) |
-| 地形、复位和课程如何接入 | [统一地形环境](references/teammate-unified-2026-11-09/project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/unified_environment.py) |
+| [project/source/](project/source/) | 主源码：`agent_tasks` 定义任务，`agent_world` 定义机器人和执行器，`agent_rl` 提供 RL 接口和算法扩展。 |
+| [project/scripts/rsl_rl/train.py](project/scripts/rsl_rl/train.py) | RSL-RL 训练入口。 |
+| [profiles.json](profiles.json) | 队友统一地形的实验预设，按原路径供任务读取。 |
+| [tools/](tools/) | 启动、评测、监控和恢复工具。[平地复现脚本](tools/reproduce_v14_6_flat.sh)从 Mac 调用 pi 上的原评测。 |
+| [docs/v14-6-flat-baseline.md](docs/v14-6-flat-baseline.md) | 平地基线来源、复现命令和验收标准。 |
+| [docs/upstream/](docs/upstream/) | 队友历次实验的配置、评估与来源记录。里面的 `plan.json` 是队友的旧运行计划。 |
 
-```text
-wheelleg_lab/
-├── docs/                                  # 平地基线和复现说明
-├── scripts/                               # 平地复现入口
-└── references/teammate-unified-2026-11-09/  # 队友统一地形的源码阅读快照
-```
+做坡面适配时，先看 [unified_terrain.py](project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/unified_terrain.py) 如何生成地形，再看 [unified_environment.py](project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/unified_environment.py) 如何接入复位、终止和课程。观测与动作可对照[导出契约](docs/upstream/examples/export_724/input_contract.json)；它对应 724 号权重，不是平地 2000 号权重的验证记录。
 
-平地复现使用 pi 上的原训练项目、训练资产和权重，输出到服务器个人日志目录。仓库中的队友快照用于读代码；从零搭建的独立项目保存在 [main 分支](https://github.com/SilverLi123/wheelleg-robot-RL/tree/main)。
+训练用 USD、重置姿态库和 checkpoint 没有纳入 Git。运行统一地形代码前，需要在自己的服务器检出目录配齐同版本资产和权重，再建立自己的运行计划。当前平地复现继续读取 pi 上的原始训练项目和权重，结果写入个人日志目录。
 
-下一步见[任务清单](TASKS.md)，协作约定见 [AGENT.md](AGENT.md)。
+当前步骤见[任务清单](TASKS.md)。旧独立项目保存在 [main 分支](https://github.com/SilverLi123/wheelleg-robot-RL/tree/main)。

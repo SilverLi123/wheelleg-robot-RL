@@ -13,7 +13,7 @@
 在 **Mac 的仓库根目录**运行：
 
 ```bash
-bash scripts/reproduce_v14_6_flat.sh 4
+bash tools/reproduce_v14_6_flat.sh 4
 ```
 
 参数是 GPU 编号。加 `--check` 可只做只读预检。正式回放前也会检查所选卡；空闲检查是一次采样，不能预留 GPU。脚本在 pi 上只读队友的源项目、权重和配套配置，调用原 `evaluate_grid.py` 和 `assess.py`。本次评测的独立输出目录会打印到终端，放在 `/data/wheeled-legged/logs/v14_6_flat_2000_*`。
