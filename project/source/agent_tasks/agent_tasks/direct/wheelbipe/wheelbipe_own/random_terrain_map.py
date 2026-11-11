@@ -266,6 +266,19 @@ def configure(cfg) -> None:
     cfg.scene.terrain = cfg.terrain.copy()
 
 
+def configure_preview(cfg) -> None:
+    """Render one map copy while leaving training and physics settings intact."""
+    if not cfg.experiment_profile_settings.get("random_terrain_map"):
+        return
+    configure(cfg)
+    generator = cfg.terrain.terrain_generator.copy()
+    generator.num_rows = 1
+    generator.num_cols = 1
+    generator.curriculum = False
+    cfg.terrain.terrain_generator = generator
+    cfg.scene.terrain = cfg.terrain.copy()
+
+
 def initialize(env) -> None:
     """Create reset diagnostics for one constructed training environment."""
     if not env.cfg.experiment_profile_settings.get("random_terrain_map"):

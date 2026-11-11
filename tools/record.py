@@ -32,6 +32,11 @@ parser.add_argument(
     action='store_true',
     help='Allow a terrain-only profile override for a frozen checkpoint.',
 )
+parser.add_argument(
+    '--random-terrain-overview',
+    action='store_true',
+    help='Render one complete connected random-terrain map from an overhead camera.',
+)
 from isaaclab.app import AppLauncher
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
@@ -49,6 +54,8 @@ if args.mixed_eval_terrain and args.terrain_column is None:
     parser.error('--mixed-eval-terrain requires --terrain-column')
 if args.mixed_eval_terrain and args.profile != 'mixed_slopes_20261111':
     parser.error('--mixed-eval-terrain requires --profile mixed_slopes_20261111')
+if args.random_terrain_overview and args.profile != 'random_terrain_20261112':
+    parser.error('--random-terrain-overview requires --profile random_terrain_20261112')
 if args.record:
     args.enable_cameras = True
     args.video = True
@@ -115,15 +122,25 @@ try:
         cfg.default_height_cmd = args.height
         cfg.scene.light.spawn.intensity = 800.0
         from isaaclab_visualizers.kit import KitVisualizerCfg
-        cfg.sim.visualizer_cfgs = [KitVisualizerCfg(headless=True, origin_type='asset',
-            origin_track_path='robot', eye=(-.9, -1.15, .55), lookat=(0., 0., 0.),
-            window_width=1280, window_height=720, enable_live_plots=False)]
+        if args.random_terrain_overview:
+            cfg.sim.visualizer_cfgs = [KitVisualizerCfg(headless=True, origin_type='world',
+                eye=(0., -48., 42.), lookat=(0., 0., 0.),
+                window_width=1280, window_height=720, enable_live_plots=False)]
+        else:
+            cfg.sim.visualizer_cfgs = [KitVisualizerCfg(headless=True, origin_type='asset',
+                origin_track_path='robot', eye=(-.9, -1.15, .55), lookat=(0., 0., 0.),
+                window_width=1280, window_height=720, enable_live_plots=False)]
     if args.mixed_eval_terrain:
         from agent_tasks.direct.wheelbipe.wheelbipe_own import mixed_slopes
         # This is the same exact full-difficulty terrain used by the repeated
         # frozen-policy evaluation. It changes only terrain geometry; policy,
         # observation, action, physics and domain-randomization stay frozen.
         mixed_slopes.configure_evaluation(cfg)
+    if args.random_terrain_overview:
+        from agent_tasks.direct.wheelbipe.wheelbipe_own import random_terrain_map
+
+        # One map copy lets the whole connected 3x3 terrain fit in one frame.
+        random_terrain_map.configure_preview(cfg)
     from scripts.rsl_rl.checkpoint_utils import prepare_checkpoint
     prepare_checkpoint(cfg, None, str(args.checkpoint))
     summary['saved_observation_action_fields_match'] = True
