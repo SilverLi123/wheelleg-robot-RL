@@ -123,8 +123,23 @@ try:
         cfg.scene.light.spawn.intensity = 800.0
         from isaaclab_visualizers.kit import KitVisualizerCfg
         if args.random_terrain_overview:
+            from agent_tasks.direct.wheelbipe.wheelbipe_own import random_terrain_map
+            # A one-cell TerrainGenerator places its map centre at the
+            # lower-left corner of the generator's local coordinate frame.
+            # The explicit visualizer camera is the one used by --record; the
+            # env.sim camera below cannot replace this initial viewport camera.
+            map_center = (
+                -random_terrain_map.MAP_SIZE_M[0] / 2.0,
+                -random_terrain_map.MAP_SIZE_M[1] / 2.0,
+                0.0,
+            )
             cfg.sim.visualizer_cfgs = [KitVisualizerCfg(headless=True, origin_type='world',
-                eye=(0., -48., 42.), lookat=(0., 0., 0.),
+                eye=(
+                    map_center[0] - 42.0,
+                    map_center[1] - 56.0,
+                    55.0,
+                ),
+                lookat=map_center,
                 window_width=1280, window_height=720, enable_live_plots=False)]
         else:
             cfg.sim.visualizer_cfgs = [KitVisualizerCfg(headless=True, origin_type='asset',
@@ -269,16 +284,19 @@ try:
     obs, _ = env.reset()
     fixed()
     if args.random_terrain_overview:
-        origin = tensor(env.terrain.env_origins)[0].cpu().numpy()
+        # For a 1x1 preview generator, env_origins already contains the centre
+        # of the complete map. Keep the runtime camera aligned with the
+        # visualizer camera configured above for telemetry and consistency.
+        map_center = tensor(env.terrain.env_origins)[0].cpu().numpy()
+        origin = map_center
+        camera_eye = map_center + (-42.0, -56.0, 55.0)
         summary['overview'] = {
             'environment_origin_m': origin.tolist(),
-            'camera_eye_m': (origin + (-34.0, -42.0, 38.0)).tolist(),
-            'camera_target_m': (origin + (0.0, 0.0, 0.0)).tolist(),
+            'map_center_m': map_center.tolist(),
+            'camera_eye_m': camera_eye.tolist(),
+            'camera_target_m': map_center.tolist(),
         }
-        env.sim.set_camera_view(
-            origin + (-34.0, -42.0, 38.0),
-            origin,
-        )
+        env.sim.set_camera_view(camera_eye, map_center)
     if args.light_slope_case:
         light_slope.validate_reset_state(env, summary['light_slope'])
     if args.sequence:
