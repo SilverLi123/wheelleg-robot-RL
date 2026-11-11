@@ -4,6 +4,51 @@
 
 2026-11-11 已在平地以及 6%/10%/14%/18% 上下坡组成的混合地形上完成一次 60 次 PPO 微调。256 个环境共训练 368,640 timesteps，使用 GPU 3，耗时 15 分 44 秒。三种子评估显示新模型能稳定通过全部 12 秒地形探测，但速度跟踪和横向偏移没有稳定超过原 baseline，因此最终推荐仍使用原 `model_50.pt`。完整数据见[混合坡度实验报告](reports/mixed_slopes_20261111/README.md)。
 
+## 日常命令
+
+从仓库根目录使用 [tools/wheelleg.sh](tools/wheelleg.sh)。把 `--dry-run` 放在子命令之前可先查看实际转发的命令；它不连接服务器、不检查资产，也不启动仿真。
+
+| 入口 | 在哪里执行 | 调用什么 |
+| --- | --- | --- |
+| `baseline` | Mac | [平地复现脚本](tools/reproduce_v14_6_flat.sh)，固定原权重、配置与指令。加 `--check` 只做只读预检。 |
+| `train` | pi 的个人检出目录 | [train.py](project/scripts/rsl_rl/train.py)，从指定 checkpoint 初始化 PPO 微调。迭代数、任务和实验配置显式指定。 |
+| `eval` | pi 的个人检出目录 | [validate.py](tools/validate.py)，输出地形和速度评估的 `summary.json`。 |
+| `view video` | pi 的个人检出目录 | [record.py](tools/record.py)，输出 `policy.mp4` 与回放结果。 |
+| `view interactive` | 当前暂不可用 | 旧 Own 回放入口要求 Sim 5.1，本分支使用 6.2。该命令只提示，不启动仿真。 |
+
+在 **Mac** 上先检查计划使用的 GPU，例如 4：
+
+```bash
+bash tools/wheelleg.sh baseline 4 --check
+bash tools/wheelleg.sh baseline 4
+```
+
+其余命令需先把本分支放到 **pi 的个人目录**，配齐训练 USD、复位姿态库，以及 checkpoint 和同级 `params/`。下面是命令模板：先替换两个权重路径、确认 GPU 空闲，并按该次实验确认 stage 和积分子步。示例不代表已验证平地权重可以直接迁移到统一地形。
+
+```bash
+FLAT=/absolute/path/to/model_2000.pt
+UNIFIED=/absolute/path/to/matching_unified_checkpoint.pt
+export WHEELBIPE_GPU=4 WHEELBIPE_STAGE=3 WHEELBIPE_INTEGRATION_SUBSTEPS=2
+
+WHEELBIPE_EXPERIMENT=unified_locomotion bash tools/wheelleg.sh train \
+  --task Robotics-Wheelbipe-Own-Explore-v0 --checkpoint "$FLAT" --checkpoint_architecture \
+  --num_envs 8 --max_iterations 1 --seed 42 --device cuda:0 --viz none --run_name slope_smoke
+
+bash tools/wheelleg.sh eval --root "$PWD" --profile unified_locomotion \
+  --checkpoint "$UNIFIED" --output "$PWD/runs/unified_eval" \
+  --level 0 --seed 71903 --seconds 8 --device cuda:0 --viz none
+
+bash tools/wheelleg.sh view video --profile unified_locomotion \
+  --checkpoint "$UNIFIED" --output "$PWD/runs/unified_video" \
+  --terrain-column 0 --terrain-level 0 --steps 300 --seed 71903 --device cuda:0
+
+bash tools/wheelleg.sh view interactive
+```
+
+统一入口沿用原启动器和底层兼容性校验。启动前还会检查 checkpoint 的配套文件和资产哈希；评估与录制要求配套的统一地形 profile 和非归一化 ELU 策略。平地原权重的原条件评估请用 `baseline`。微调允许选择新的 profile，能否加载仍由训练入口检查；只有恢复同一实验才显式使用 `--resume_training`。统一入口不会代选权重、种子、地形或训练资源。
+
+## 源码索引
+
 | 入口 | 职责 |
 | --- | --- |
 | [project/source/](project/source/) | 主源码：`agent_tasks` 定义任务，`agent_world` 定义机器人和执行器，`agent_rl` 提供 RL 接口和算法扩展。 |
