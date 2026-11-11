@@ -268,6 +268,17 @@ try:
     cg.compute, cg._resample_command = compute, resample
     obs, _ = env.reset()
     fixed()
+    if args.random_terrain_overview:
+        origin = tensor(env.terrain.env_origins)[0].cpu().numpy()
+        summary['overview'] = {
+            'environment_origin_m': origin.tolist(),
+            'camera_eye_m': (origin + (-34.0, -42.0, 38.0)).tolist(),
+            'camera_target_m': (origin + (0.0, 0.0, 0.0)).tolist(),
+        }
+        env.sim.set_camera_view(
+            origin + (-34.0, -42.0, 38.0),
+            origin,
+        )
     if args.light_slope_case:
         light_slope.validate_reset_state(env, summary['light_slope'])
     if args.sequence:
