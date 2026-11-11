@@ -21,9 +21,21 @@ parser.add_argument('--profile', required=True)
 parser.add_argument('--sequence', action='store_true', help='5s straight, 5s turn, 5s reverse; deterministic actor with DR.')
 parser.add_argument('--terrain-column', type=int)
 parser.add_argument('--terrain-level', type=int, default=0)
+parser.add_argument('--light-slope-case', choices=('flat', 'up', 'down'), help=argparse.SUPPRESS)
+parser.add_argument(
+    '--allow-profile-override',
+    action='store_true',
+    help='Allow a terrain-only profile override for a frozen checkpoint.',
+)
 from isaaclab.app import AppLauncher
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
+if args.light_slope_case:
+    import light_slope
+    if (args.profile != 'flat_seed42' or args.terrain_column is not None
+            or args.fixed_command != [.5, 0.] or args.mode != 'policy'
+            or args.sequence or args.steps != 300):
+        parser.error('Use light_slope.py for the fixed flat_seed42 diagnostic')
 import os
 os.environ['WHEELBIPE_EXPERIMENT'] = args.profile
 if args.standstill and args.fixed_command:
@@ -100,12 +112,21 @@ try:
     from scripts.rsl_rl.checkpoint_utils import prepare_checkpoint
     prepare_checkpoint(cfg, None, str(args.checkpoint))
     summary['saved_observation_action_fields_match'] = True
+    if args.light_slope_case:
+        light_slope.configure(cfg, args.light_slope_case)
     dump_yaml(str(args.output / 'env.yaml'), cfg)
     summary['experiment_profile'] = args.profile
     summary['experiment_profile_settings'] = cfg.experiment_profile_settings
     from scripts.rsl_rl.checkpoint_utils import _plain
     saved_cfg = _plain(yaml.load((args.checkpoint.parent / 'params/env.yaml').read_text(), Loader=yaml.BaseLoader))
-    if 'experiment_profile_settings' in saved_cfg and (saved_cfg['experiment_profile_name'] != args.profile or saved_cfg['experiment_profile_settings'] != cfg.experiment_profile_settings):
+    if (
+        'experiment_profile_settings' in saved_cfg
+        and not args.allow_profile_override
+        and (
+            saved_cfg['experiment_profile_name'] != args.profile
+            or saved_cfg['experiment_profile_settings'] != cfg.experiment_profile_settings
+        )
+    ):
         raise RuntimeError('Evaluation profile differs from the saved training profile')
     saved_agent = yaml.safe_load((args.checkpoint.parent / 'params/agent.yaml').read_text())
     if saved_agent.get('empirical_normalization') or saved_agent['policy']['activation'] != 'elu':
@@ -139,7 +160,11 @@ try:
     env._u_reset_mode_override = torch.zeros(env.num_envs, device=cfg.sim.device, dtype=torch.long)
     summary['initial_condition'] = 'stationary reset from the original constraint-preserving bank'
     if args.terrain_column is not None:
-        assert cfg.experiment_profile_settings.get('terrain_mix'), 'Terrain selection requires a generated terrain profile'
+        generated_profile = (
+            cfg.experiment_profile_settings.get('terrain_mix')
+            or cfg.experiment_profile_settings.get('mixed_slopes')
+        )
+        assert generated_profile, 'Terrain selection requires a generated terrain profile'
         origins = env.terrain.terrain_origins
         assert 0 <= args.terrain_level < origins.shape[0]
         assert 0 <= args.terrain_column < origins.shape[1]
@@ -154,13 +179,18 @@ try:
         proportions = [v.proportion for v in cfg.terrain.terrain_generator.sub_terrains.values()]
         index = int(__import__('numpy').searchsorted(__import__('numpy').cumsum(proportions) / sum(proportions), (args.terrain_column + .5) / origins.shape[1]))
         terrain_name = list(cfg.terrain.terrain_generator.sub_terrains)[index]
-        env._u_family[:] = index
+        # The personal mixed-slope build does not include the separate unified
+        # locomotion mixin, where this diagnostics-only family marker is defined.
+        if hasattr(env, '_u_family'):
+            env._u_family[:] = index
         summary['terrain_selection'] = dict(column=args.terrain_column, level=args.terrain_level,
             max_level=int(origins.shape[0])-1, family=terrain_name, fixed_for_video=True,
             origin=origins[args.terrain_level, args.terrain_column].tolist(),
             note='Declared test tile selection, not training progress or full-terrain validation.')
     else:
-        summary['terrain_selection'] = dict(family='flat', level=None)
+        summary['terrain_selection'] = dict(family=args.light_slope_case or 'flat', level=None)
+    if args.light_slope_case:
+        summary['light_slope'] = light_slope.prepare_start(env, args.light_slope_case)
     summary.update(sim_version=sim_version, python=__import__('sys').version,
                    physics_dt=cfg.sim.dt, policy_dt=env.step_dt,
                    bodies=len(native.body_names), dofs=len(native.joint_names),
@@ -204,6 +234,8 @@ try:
     cg.compute, cg._resample_command = compute, resample
     obs, _ = env.reset()
     fixed()
+    if args.light_slope_case:
+        light_slope.validate_reset_state(env, summary['light_slope'])
     if args.sequence:
         env.command.copy_(commanded)
         obs = env._get_observations()
@@ -212,6 +244,21 @@ try:
         {'start_s':10.,'end_s':15.,'vx':-.6,'yaw':0.}] if args.sequence else None)
     summary['domain_randomization_enabled'] = bool(env._domain_randomization_health()['enabled'])
     summary['domain_randomization_initial'] = env._domain_randomization_health()
+    summary['comparison_controls'] = {
+        'profile': args.profile,
+        'seed': args.seed,
+        'checkpoint_sha256': summary['checkpoint_sha256'],
+        'fixed_command': args.fixed_command,
+        'steps': args.steps,
+        'policy_mode': 'deterministic actor mean',
+        'domain_randomization': 'enabled',
+        'profile_override_allowed': args.allow_profile_override,
+        'pairing_note': (
+            'Same seed, profile, checkpoint and command are used. DR remains enabled, '
+            'so terrain-dependent random draws evolve with each trajectory; runs are '
+            'comparable but are not a strict paired experiment.'
+        ),
+    }
     summary['training_modified'] = False
     assert obs['policy'].shape == (1, 35) and obs['critic'].shape == (1, 78)
     summary['observation_shapes'] = {k: list(v.shape) for k, v in obs.items()}
@@ -346,7 +393,8 @@ try:
                 annotated = Image.fromarray(frame)
                 draw = ImageDraw.Draw(annotated, 'RGBA')
                 draw.rounded_rectangle((12,12,1268,106), radius=8, fill=(10,18,28,205))
-                draw.text((25,20), f'Unified policy | {args.profile} | cp {saved["iter"]} | DR ON | {summary["terrain_selection"]["family"]}',
+                title = 'Frozen policy' if args.light_slope_case else 'Unified policy'
+                draw.text((25,20), f'{title} | {args.profile} | cp {saved["iter"]} | DR ON | {summary["terrain_selection"]["family"]}',
                     font=title_font, fill=(240,247,255,255))
                 draw.text((25,53), f't={(step+1)*env.step_dt:05.2f}s  |  command vx={float(command[0]):+.2f} m/s, yaw={float(command[2]):+.2f} rad/s',
                     font=small_font, fill=(190,221,248,255))
@@ -368,10 +416,15 @@ try:
                    mean_abs_vx_m_s=sum(abs_vx) / len(abs_vx),
                    base_height_range_m=[min(heights), max(heights)],
                    sim_seconds=summary['steps'] * env.step_dt)
-    summary['status'] = 'PASS' if (summary['longest_above_2mm_s'] <= .1
-                                 and summary['max_closure_m'] < .005
-                                 and summary['spring_effort_error_N'] <= .1
-                                 and not any(summary['reset_causes'].values())) else 'FAIL'
+    if args.light_slope_case:
+        light_slope.add_metrics(env, args.output / 'rollout.jsonl', summary['light_slope'])
+    mechanics_ok = (summary['longest_above_2mm_s'] <= .1
+                    and summary['max_closure_m'] < .005
+                    and summary['spring_effort_error_N'] <= .1
+                    and not any(summary['reset_causes'].values()))
+    light_slope_ok = (not args.light_slope_case
+                      or summary['light_slope']['status'] == 'PASS')
+    summary['status'] = 'PASS' if mechanics_ok and light_slope_ok else 'FAIL'
     physics_out.close()
     env.close()
 except BaseException:

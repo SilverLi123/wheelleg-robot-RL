@@ -1,0 +1,720 @@
+{
+  "schema_version": 1,
+  "evaluation_scope": {
+    "command_vx_m_s": 0.5,
+    "command_yaw_rad_s": 0.0,
+    "steps_per_seed": 600,
+    "duration_s": 12.0,
+    "seeds": [
+      20261111,
+      20261112,
+      20261113
+    ],
+    "terrain": "flat, 6/10/14/18% upslope, 6/10/14/18% downslope"
+  },
+  "models": {
+    "baseline": {
+      "checkpoint_sha256": "dd55308419fbd04eecaf213588dd1249a09ec7eba86073d8338d0b06b46c3a61",
+      "checkpoint_iteration": 50,
+      "seeds": [
+        20261111,
+        20261112,
+        20261113
+      ],
+      "steps": 600,
+      "policy_dt_s": 0.02,
+      "command": [
+        0.5,
+        0.0
+      ],
+      "tiles": [
+        {
+          "tile": "flat",
+          "target_grade": 0.0,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.01815272184709708,
+            "std": 0.002033229518448508
+          },
+          "abs_lateral_m": {
+            "mean": 0.15421930948893228,
+            "std": 0.10802733668583338
+          },
+          "forward_m": {
+            "mean": 5.808526674906413,
+            "std": 0.01216783305596616
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.4840438961982727,
+            "std": 0.0010139825928020501
+          },
+          "pitch_min_deg": {
+            "mean": -2.4670094732518337,
+            "std": 0.5318474778034736
+          },
+          "pitch_max_deg": {
+            "mean": 1.5576127229642622,
+            "std": 0.4867542130941004
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "up06",
+          "target_grade": 0.06,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.01977756681541602,
+            "std": 0.0008483723977640342
+          },
+          "abs_lateral_m": {
+            "mean": 0.24975013732910156,
+            "std": 0.11054450260481173
+          },
+          "forward_m": {
+            "mean": 5.795939127604167,
+            "std": 0.03171788472403264
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.482994943857193,
+            "std": 0.0026431598018074854
+          },
+          "pitch_min_deg": {
+            "mean": -2.7552672195928594,
+            "std": 1.040428829425942
+          },
+          "pitch_max_deg": {
+            "mean": 1.1443318856824443,
+            "std": 0.379807676625591
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "up10",
+          "target_grade": 0.1,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.02780788702269395,
+            "std": 0.003959045444870774
+          },
+          "abs_lateral_m": {
+            "mean": 0.7125892639160156,
+            "std": 0.44833227704635353
+          },
+          "forward_m": {
+            "mean": 5.607595284779866,
+            "std": 0.05622302283310885
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.46729961037635803,
+            "std": 0.0046852528468522775
+          },
+          "pitch_min_deg": {
+            "mean": -4.7269455401154525,
+            "std": 1.0944778459875846
+          },
+          "pitch_max_deg": {
+            "mean": 1.5450635665987351,
+            "std": 0.13151391060604026
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "up14",
+          "target_grade": 0.14,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.0326165451357762,
+            "std": 0.0036936335658025593
+          },
+          "abs_lateral_m": {
+            "mean": 0.4084494908650716,
+            "std": 0.3234872705108608
+          },
+          "forward_m": {
+            "mean": 5.627039909362793,
+            "std": 0.05629938999489429
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.4689200023810069,
+            "std": 0.004691613167347331
+          },
+          "pitch_min_deg": {
+            "mean": -4.277698242898719,
+            "std": 0.6394236646099283
+          },
+          "pitch_max_deg": {
+            "mean": 1.313259823921,
+            "std": 0.2980630117697129
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "up18",
+          "target_grade": 0.18,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.03551023701826731,
+            "std": 0.01206607171520502
+          },
+          "abs_lateral_m": {
+            "mean": 0.7164072543382645,
+            "std": 0.5034938325237432
+          },
+          "forward_m": {
+            "mean": 5.564571062723796,
+            "std": 0.12230525576946279
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.46371426184972125,
+            "std": 0.010192108824899689
+          },
+          "pitch_min_deg": {
+            "mean": -5.104499899004756,
+            "std": 1.5660419908387457
+          },
+          "pitch_max_deg": {
+            "mean": 1.362254513958696,
+            "std": 0.10332011614293928
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "down06",
+          "target_grade": -0.06,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.01846584677696228,
+            "std": 0.0016858584056861391
+          },
+          "abs_lateral_m": {
+            "mean": 0.16074466705322266,
+            "std": 0.08238434463468716
+          },
+          "forward_m": {
+            "mean": 5.960740089416504,
+            "std": 0.06631391431344369
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.4967283507188161,
+            "std": 0.00552616405773821
+          },
+          "pitch_min_deg": {
+            "mean": -3.012532128801306,
+            "std": 0.8905275417442398
+          },
+          "pitch_max_deg": {
+            "mean": 3.2163093285847553,
+            "std": 0.4243662126164233
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "down10",
+          "target_grade": -0.1,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.020288591583569843,
+            "std": 0.0016033266922367486
+          },
+          "abs_lateral_m": {
+            "mean": 0.1003405253092448,
+            "std": 0.03589698695357716
+          },
+          "forward_m": {
+            "mean": 6.023911476135254,
+            "std": 0.0398628797213716
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.5019926428794861,
+            "std": 0.003321917266895245
+          },
+          "pitch_min_deg": {
+            "mean": -2.486622148010114,
+            "std": 0.6422895184448454
+          },
+          "pitch_max_deg": {
+            "mean": 4.238625291978015,
+            "std": 0.318173097910846
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "down14",
+          "target_grade": -0.14,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.022649367650349934,
+            "std": 0.0020344917620979184
+          },
+          "abs_lateral_m": {
+            "mean": 0.06294822692871094,
+            "std": 0.027194649058547654
+          },
+          "forward_m": {
+            "mean": 6.076152642567952,
+            "std": 0.025434056101548003
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.5063460866610209,
+            "std": 0.0021195006381941124
+          },
+          "pitch_min_deg": {
+            "mean": -2.745882610821065,
+            "std": 1.201134573928764
+          },
+          "pitch_max_deg": {
+            "mean": 4.80653716533118,
+            "std": 0.8129360016094325
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "down18",
+          "target_grade": -0.18,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.023338574916124344,
+            "std": 0.001928060990350348
+          },
+          "abs_lateral_m": {
+            "mean": 0.09650802612304688,
+            "std": 0.09643332578419055
+          },
+          "forward_m": {
+            "mean": 6.088510831197103,
+            "std": 0.04623999035468526
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.5073759158452352,
+            "std": 0.0038533416603934163
+          },
+          "pitch_min_deg": {
+            "mean": -2.014555829106602,
+            "std": 0.7859502752288693
+          },
+          "pitch_max_deg": {
+            "mean": 5.429002044176453,
+            "std": 0.5698036918862533
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        }
+      ]
+    },
+    "model59": {
+      "checkpoint_sha256": "66f6fb81799a7c64f8edf6a9748a3f79fed4cb0c75e2630b54d54706f708230e",
+      "checkpoint_iteration": 59,
+      "seeds": [
+        20261111,
+        20261112,
+        20261113
+      ],
+      "steps": 600,
+      "policy_dt_s": 0.02,
+      "command": [
+        0.5,
+        0.0
+      ],
+      "tiles": [
+        {
+          "tile": "flat",
+          "target_grade": 0.0,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.04284450660149256,
+            "std": 0.0033710927279280004
+          },
+          "abs_lateral_m": {
+            "mean": 0.2179590861002604,
+            "std": 0.04298779920745314
+          },
+          "forward_m": {
+            "mean": 5.494457085927327,
+            "std": 0.04480253584149094
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.4578714271386464,
+            "std": 0.003733543387325546
+          },
+          "pitch_min_deg": {
+            "mean": -4.097045360028386,
+            "std": 0.43356778510986865
+          },
+          "pitch_max_deg": {
+            "mean": 0.27596236085163334,
+            "std": 0.35431152018501233
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "up06",
+          "target_grade": 0.06,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.03835548212130865,
+            "std": 0.005053487270022351
+          },
+          "abs_lateral_m": {
+            "mean": 0.1754767100016276,
+            "std": 0.0838079933185485
+          },
+          "forward_m": {
+            "mean": 5.575853029886882,
+            "std": 0.06128153291043471
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.46465442577997845,
+            "std": 0.005106790074458126
+          },
+          "pitch_min_deg": {
+            "mean": -5.25230590412187,
+            "std": 0.4892821065553659
+          },
+          "pitch_max_deg": {
+            "mean": 0.6086030543921096,
+            "std": 0.28328188980852137
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "up10",
+          "target_grade": 0.1,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.05563368151585261,
+            "std": 0.00837833616915648
+          },
+          "abs_lateral_m": {
+            "mean": 0.23335393269856772,
+            "std": 0.23275345866519714
+          },
+          "forward_m": {
+            "mean": 5.37722126642863,
+            "std": 0.11955385638087365
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.4481017788251241,
+            "std": 0.009962830675604254
+          },
+          "pitch_min_deg": {
+            "mean": -6.58174146584036,
+            "std": 0.8578797476547512
+          },
+          "pitch_max_deg": {
+            "mean": 0.37763352416130397,
+            "std": 0.47945933522726814
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "up14",
+          "target_grade": 0.14,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.062428570042053856,
+            "std": 0.00945320239404507
+          },
+          "abs_lateral_m": {
+            "mean": 0.6892029444376627,
+            "std": 0.3606465059266748
+          },
+          "forward_m": {
+            "mean": 5.213459650675456,
+            "std": 0.214949106920809
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.4344549775123596,
+            "std": 0.017912430482862448
+          },
+          "pitch_min_deg": {
+            "mean": -6.614308661576627,
+            "std": 0.8711369496642014
+          },
+          "pitch_max_deg": {
+            "mean": 0.0606381793275352,
+            "std": 0.08575533560261211
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "up18",
+          "target_grade": 0.18,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.06380573411782582,
+            "std": 0.023271780286589903
+          },
+          "abs_lateral_m": {
+            "mean": 0.5925886382659277,
+            "std": 0.4271967272946957
+          },
+          "forward_m": {
+            "mean": 5.228740692138672,
+            "std": 0.416576919109093
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.43572840094566345,
+            "std": 0.034714738590892885
+          },
+          "pitch_min_deg": {
+            "mean": -7.682488776064091,
+            "std": 0.8693979625969077
+          },
+          "pitch_max_deg": {
+            "mean": 0.24301153560114175,
+            "std": 0.294587753204707
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "down06",
+          "target_grade": -0.06,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.0316693422695001,
+            "std": 0.004505078949581929
+          },
+          "abs_lateral_m": {
+            "mean": 0.24855264027913412,
+            "std": 0.13510014382352356
+          },
+          "forward_m": {
+            "mean": 5.624410788218181,
+            "std": 0.0750111119973961
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.46870090564092,
+            "std": 0.006250934708701947
+          },
+          "pitch_min_deg": {
+            "mean": -3.9637155851180945,
+            "std": 0.41769525229828536
+          },
+          "pitch_max_deg": {
+            "mean": 0.46798061179980116,
+            "std": 0.09610338720501534
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "down10",
+          "target_grade": -0.1,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.02521892823278904,
+            "std": 0.000902245405824171
+          },
+          "abs_lateral_m": {
+            "mean": 0.6084925333658854,
+            "std": 0.20077266833482982
+          },
+          "forward_m": {
+            "mean": 5.668269316355388,
+            "std": 0.04645539586048897
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.47235579291979474,
+            "std": 0.0038712802624497893
+          },
+          "pitch_min_deg": {
+            "mean": -3.543635472387038,
+            "std": 0.2983670134468729
+          },
+          "pitch_max_deg": {
+            "mean": 0.6741001129013156,
+            "std": 0.12631915524215404
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "down14",
+          "target_grade": -0.14,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.025458762422204018,
+            "std": 0.004741463162895505
+          },
+          "abs_lateral_m": {
+            "mean": 0.5948378245035807,
+            "std": 0.21093761314608095
+          },
+          "forward_m": {
+            "mean": 5.772674560546875,
+            "std": 0.010226416473074594
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.48105621337890625,
+            "std": 0.0008522013727562162
+          },
+          "pitch_min_deg": {
+            "mean": -4.172538089116263,
+            "std": 1.0208250666804497
+          },
+          "pitch_max_deg": {
+            "mean": 0.42066923433392067,
+            "std": 0.2974622116315434
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        },
+        {
+          "tile": "down18",
+          "target_grade": -0.18,
+          "seeds": 3,
+          "vx_mae": {
+            "mean": 0.02797710398832957,
+            "std": 0.0016202651830508998
+          },
+          "abs_lateral_m": {
+            "mean": 0.48262914021809894,
+            "std": 0.08381777304346213
+          },
+          "forward_m": {
+            "mean": 5.784834384918213,
+            "std": 0.03899310879484936
+          },
+          "mean_forward_speed_m_s": {
+            "mean": 0.4820695420106252,
+            "std": 0.0032494337046996722
+          },
+          "pitch_min_deg": {
+            "mean": -3.487689606338875,
+            "std": 0.2454412739089643
+          },
+          "pitch_max_deg": {
+            "mean": 1.5420538010522868,
+            "std": 0.4737317564984935
+          },
+          "resets": 0,
+          "tiles_with_nonwheel_contact": 0,
+          "successful_seed_rows": 3,
+          "success_rate": 1.0
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "mean_vx_mae_over_all_tiles": {
+      "baseline": {
+        "mean": 0.024289704307361885,
+        "std": 0.0059549955836407245
+      },
+      "model59": {
+        "mean": 0.04148801236792847,
+        "std": 0.014715491904663173
+      },
+      "candidate_minus_baseline": 0.017198308060566585
+    },
+    "mean_abs_lateral_over_all_tiles_m": {
+      "baseline": {
+        "mean": 0.29577298903906785,
+        "std": 0.24400840700430904
+      },
+      "model59": {
+        "mean": 0.4270103833189717,
+        "std": 0.1934131976238074
+      },
+      "candidate_minus_baseline": 0.13123739427990383
+    },
+    "per_tile": [
+      {
+        "tile": "flat",
+        "vx_mae_delta_candidate_minus_baseline": 0.02469178475439548,
+        "abs_lateral_delta_candidate_minus_baseline_m": 0.06373977661132812
+      },
+      {
+        "tile": "up06",
+        "vx_mae_delta_candidate_minus_baseline": 0.018577915305892628,
+        "abs_lateral_delta_candidate_minus_baseline_m": -0.07427342732747397
+      },
+      {
+        "tile": "up10",
+        "vx_mae_delta_candidate_minus_baseline": 0.027825794493158657,
+        "abs_lateral_delta_candidate_minus_baseline_m": -0.4792353312174479
+      },
+      {
+        "tile": "up14",
+        "vx_mae_delta_candidate_minus_baseline": 0.029812024906277657,
+        "abs_lateral_delta_candidate_minus_baseline_m": 0.2807534535725911
+      },
+      {
+        "tile": "up18",
+        "vx_mae_delta_candidate_minus_baseline": 0.02829549709955851,
+        "abs_lateral_delta_candidate_minus_baseline_m": -0.1238186160723368
+      },
+      {
+        "tile": "down06",
+        "vx_mae_delta_candidate_minus_baseline": 0.013203495492537819,
+        "abs_lateral_delta_candidate_minus_baseline_m": 0.08780797322591147
+      },
+      {
+        "tile": "down10",
+        "vx_mae_delta_candidate_minus_baseline": 0.004930336649219196,
+        "abs_lateral_delta_candidate_minus_baseline_m": 0.5081520080566406
+      },
+      {
+        "tile": "down14",
+        "vx_mae_delta_candidate_minus_baseline": 0.002809394771854084,
+        "abs_lateral_delta_candidate_minus_baseline_m": 0.5318895975748698
+      },
+      {
+        "tile": "down18",
+        "vx_mae_delta_candidate_minus_baseline": 0.004638529072205227,
+        "abs_lateral_delta_candidate_minus_baseline_m": 0.38612111409505206
+      }
+    ]
+  },
+  "selection": {
+    "recommended": "baseline",
+    "reason": "The mixed-slope fine-tune completed without resets or body contact, but its mean velocity error increased on every terrain and its lateral result was not consistently better across seeds."
+  }
+}

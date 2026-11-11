@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "checkpoint": "/data/wheeled-legged/projects/v14_6_downhill_pilot_8KMxPj/runs/train_udMln2/logs/rsl_rl/wheelbipe_v14_6_dr_20261108/2026-11-11_06-29-46_downhill_pilot/model_50.pt",
+  "checkpoint_sha256": "dd55308419fbd04eecaf213588dd1249a09ec7eba86073d8338d0b06b46c3a61",
+  "checkpoint_iteration": 50,
+  "seed": 20261111,
+  "steps": 600,
+  "policy_dt_s": 0.02,
+  "command": [
+    0.5,
+    0.0
+  ],
+  "terrain_types": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "target_grades": {
+    "flat": 0.0,
+    "up06": 0.06,
+    "up10": 0.1,
+    "up14": 0.14,
+    "up18": 0.18,
+    "down06": -0.06,
+    "down10": -0.1,
+    "down14": -0.14,
+    "down18": -0.18
+  },
+  "results": [
+    {
+      "tile": "flat",
+      "target_grade": 0.0,
+      "resets": 0,
+      "vx_mae": 0.017303459346294403,
+      "forward_m": 5.802104949951172,
+      "lateral_m": -0.24105072021484375,
+      "mean_forward_speed_m_s": 0.48350876569747925,
+      "vertical_change_m": -0.015916943550109863,
+      "pitch_range_deg": [
+        -3.2140048512179145,
+        1.4777725784696714
+      ],
+      "nonwheel_contact_peak_n": {}
+    },
+    {
+      "tile": "up06",
+      "target_grade": 0.06,
+      "resets": 0,
+      "vx_mae": 0.020186781883239746,
+      "forward_m": 5.77757453918457,
+      "lateral_m": -0.3941993713378906,
+      "mean_forward_speed_m_s": 0.48146456480026245,
+      "vertical_change_m": 0.21585461497306824,
+      "pitch_range_deg": [
+        -1.9819046789617871,
+        1.5505292476125283
+      ],
+      "nonwheel_contact_peak_n": {}
+    },
+    {
+      "tile": "up10",
+      "target_grade": 0.1,
+      "resets": 0,
+      "vx_mae": 0.02231181040406227,
+      "forward_m": 5.623624801635742,
+      "lateral_m": -1.0674667358398438,
+      "mean_forward_speed_m_s": 0.4686354100704193,
+      "vertical_change_m": 0.34280991554260254,
+      "pitch_range_deg": [
+        -4.337013882380833,
+        1.7303063365913165
+      ],
+      "nonwheel_contact_peak_n": {}
+    },
+    {
+      "tile": "up14",
+      "target_grade": 0.14,
+      "resets": 0,
+      "vx_mae": 0.029701169580221176,
+      "forward_m": 5.612101078033447,
+      "lateral_m": -0.8377132415771484,
+      "mean_forward_speed_m_s": 0.4676750898361206,
+      "vertical_change_m": 0.49533918499946594,
+      "pitch_range_deg": [
+        -5.001720208443658,
+        1.4189093678722668
+      ],
+      "nonwheel_contact_peak_n": {}
+    },
+    {
+      "tile": "up18",
+      "target_grade": 0.18,
+      "resets": 0,
+      "vx_mae": 0.047807130962610245,
+      "forward_m": 5.410277366638184,
+      "lateral_m": 0.5179292559623718,
+      "mean_forward_speed_m_s": 0.45085644721984863,
+      "vertical_change_m": 0.5908956527709961,
+      "pitch_range_deg": [
+        -4.077052186815093,
+        1.247089129111426
+      ],
+      "nonwheel_contact_peak_n": {}
+    },
+    {
+      "tile": "down06",
+      "target_grade": -0.06,
+      "resets": 0,
+      "vx_mae": 0.019926417618989944,
+      "forward_m": 6.045005798339844,
+      "lateral_m": -0.21868228912353516,
+      "mean_forward_speed_m_s": 0.5037505030632019,
+      "vertical_change_m": -0.26088523864746094,
+      "pitch_range_deg": [
+        -1.92269697069812,
+        2.617180573664673
+      ],
+      "nonwheel_contact_peak_n": {}
+    },
+    {
+      "tile": "down10",
+      "target_grade": -0.1,
+      "resets": 0,
+      "vx_mae": 0.022278493270277977,
+      "forward_m": 6.066516399383545,
+      "lateral_m": -0.13233566284179688,
+      "mean_forward_speed_m_s": 0.505543053150177,
+      "vertical_change_m": -0.42822200059890747,
+      "pitch_range_deg": [
+        -1.7485805077156855,
+        4.493122124729705
+      ],
+      "nonwheel_contact_peak_n": {}
+    },
+    {
+      "tile": "down14",
+      "target_grade": -0.14,
+      "resets": 0,
+      "vx_mae": 0.02355387806892395,
+      "forward_m": 6.09165620803833,
+      "lateral_m": -0.08743858337402344,
+      "mean_forward_speed_m_s": 0.5076380372047424,
+      "vertical_change_m": -0.5952619910240173,
+      "pitch_range_deg": [
+        -2.521549387548032,
+        5.835915971213056
+      ],
+      "nonwheel_contact_peak_n": {}
+    },
+    {
+      "tile": "down18",
+      "target_grade": -0.18,
+      "resets": 0,
+      "vx_mae": 0.02228124625980854,
+      "forward_m": 6.132996559143066,
+      "lateral_m": -0.2292327880859375,
+      "mean_forward_speed_m_s": 0.5110830664634705,
+      "vertical_change_m": -0.7605941295623779,
+      "pitch_range_deg": [
+        -2.105281160704078,
+        6.2300708202888595
+      ],
+      "nonwheel_contact_peak_n": {}
+    }
+  ]
+}

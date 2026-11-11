@@ -14,3 +14,6 @@ runs/
 /project/source/agent_world/agent_world/assets/usd_files/wheelbipe_own/robot.usdc
 /project/source/agent_world/agent_world/assets/usd_files/wheelbipe_own/reset_bank.json
 /diagnostics/
+
+# Local delivery artifacts are kept for viewing but not committed as large files.
+/artifacts/

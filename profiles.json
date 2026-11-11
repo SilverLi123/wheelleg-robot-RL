@@ -323,5 +323,222 @@
     "terrain_generation": "variable cycle spacing, heights, directions, multiscale rough patches; lightly textured slopes",
     "initial_mastery_level": 2,
     "terrain_relative_height_reward": true
+  },
+  "mixed_slopes_20261111": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "mixed_slopes",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": true,
+    "terrain_seed": 20261111,
+    "terrain_version": "mixed_slopes_straight_v1",
+    "terrain_generation": "three flat columns plus six/twelve/fourteen/eighteen percent straight up and down ramps; five-row distance curriculum"
+  },
+  "mixed_slopes_forward_20261111": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.55,
+    "command_yaw": 0.15,
+    "command_lin_vel_x": [
+      0.4,
+      0.55
+    ],
+    "command_ang_vel_z": [
+      -0.15,
+      0.15
+    ],
+    "command_standing_fraction": 0.0,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "mixed_slopes",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": true,
+    "terrain_seed": 20261111,
+    "terrain_version": "mixed_slopes_straight_v1",
+    "terrain_generation": "same mixed slope geometry with forward-only commands near the evaluation target"
   }
 }

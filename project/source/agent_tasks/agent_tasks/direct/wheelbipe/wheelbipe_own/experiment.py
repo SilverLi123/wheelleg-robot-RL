@@ -11,6 +11,7 @@ from .unified_environment import UnifiedLocomotionMixin, configure_unified
 from .domain_randomization import DomainRandomizationMixin, configure_domain_randomization
 from agent_world.assets.wheelbipe_own import MECHANISM
 from .runner_cfg import WheelbipeOwnPPORunnerCfg
+from . import mixed_slopes
 
 PROFILE_FILE = Path(__file__).resolve().parents[7] / 'profiles.json'
 
@@ -41,10 +42,18 @@ class WheelbipeOwnExperimentCfg(WheelbipeOwnFlatEnvCfg):
             setattr(self, key, value)
         # POLICY_REBUILD_20261107: explicit limits at actuator and solver levels.
         if 'leg_target_rate' in p:
-            self.commands.ranges.lin_vel_x = (-p['command_speed'], p['command_speed'])
-            self.commands.ranges.ang_vel_z = (-p['command_yaw'], p['command_yaw'])
+            # Mixed-slope ablations may narrow the command distribution while
+            # preserving the existing 35/78 observation and 6D action contract.
+            self.commands.ranges.lin_vel_x = tuple(
+                p.get('command_lin_vel_x', (-p['command_speed'], p['command_speed']))
+            )
+            self.commands.ranges.ang_vel_z = tuple(
+                p.get('command_ang_vel_z', (-p['command_yaw'], p['command_yaw']))
+            )
             self.commands.resampling_time_range = tuple(p['command_resampling'])
-            self.commands.rel_standing_envs = 0.2
+            self.commands.rel_standing_envs = float(
+                p.get('command_standing_fraction', 0.2)
+            )
             self.own_random_reset = True
             for key, limit, speed in [('legs_act', p['leg_effort_limit'], 17.0),
                                        ('wheel', p['wheel_effort_limit'], 60.0)]:
@@ -91,6 +100,7 @@ class WheelbipeOwnExperimentCfg(WheelbipeOwnFlatEnvCfg):
         self.action_low_pass_curr_weight = 1.0 - self.action_low_pass_prev_weight
         configure_domain_randomization(self, p['domain_randomization'])
         configure_unified(self, p)
+        mixed_slopes.configure(self)
 
 @configclass
 class WheelbipeOwnExperimentPlayCfg(WheelbipeOwnExperimentCfg):
@@ -203,7 +213,10 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
         if self.cfg.experiment_profile_settings.get('unified_locomotion'):
             return self._unified_reset(env_ids)
         # Terrain progression requires observed travel, never the PPO iteration alone.
-        if self.cfg.experiment_profile_settings.get('terrain_mix') and hasattr(self, '_slew_leg'):
+        if (
+            self.cfg.experiment_profile_settings.get('terrain_mix')
+            or self.cfg.experiment_profile_settings.get('mixed_slopes')
+        ) and hasattr(self, '_slew_leg'):
             distance = torch.linalg.vector_norm(self.robot.data.root_pos_w[env_ids, :2] - self.terrain.env_origins[env_ids, :2], dim=1)
             move_up = distance > 2.0
             move_down = (self.episode_length_buf[env_ids] * self.step_dt < 2.0) & ~move_up
@@ -301,3 +314,16 @@ class WheelbipeOwnExperimentRunnerCfg(WheelbipeOwnPPORunnerCfg):
             self.policy.init_noise_std = .35
             self.algorithm.clip_param = .15
             self.algorithm.max_grad_norm = .5
+
+        save_interval = os.environ.get('WHEELBIPE_SAVE_INTERVAL')
+        if save_interval is not None:
+            self.save_interval = int(save_interval)
+            if self.save_interval <= 0:
+                raise ValueError('WHEELBIPE_SAVE_INTERVAL must be positive')
+
+        learning_rate = os.environ.get('WHEELBIPE_LEARNING_RATE')
+        if learning_rate is not None:
+            value = float(learning_rate)
+            if value <= 0.0:
+                raise ValueError('WHEELBIPE_LEARNING_RATE must be positive')
+            self.algorithm.learning_rate = value

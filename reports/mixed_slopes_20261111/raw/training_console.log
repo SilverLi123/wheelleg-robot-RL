@@ -1,0 +1,3908 @@
+[PREFLIGHT620] {"packages": {"isaacsim": "6.2.0.0", "torch": "2.11.0+cu130", "rsl-rl-lib": "3.0.1", "warp-lang": "1.17.0"}, "lab": "/data/isaac620-migration-20261103/IsaacLab", "torch_cuda": "13.0"}
+AppLauncher is deprecated; use isaaclab.app.launch_simulation.
+Loading user config located at: '/data/isaac620-migration-20261103/env620/lib/python3.12/site-packages/isaacsim/kit/data/Kit/IsaacLab/3.0/user.config.json'
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1794396753.310729  229189 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1794396753.310772  229189 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+2026-11-11T11:32:33Z [0ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-11-11T11:32:34Z [530ms] [Warning] [omni.platforminfo.plugin] failed to open the default display.  Can't verify X Server version.
+Warning: Possible version incompatibility. Attempting to load carb::ujitso::IFactory with version v0.3 against v0.2.
+Warp 1.17.0 initialized:
+   CUDA Toolkit 12.9, Driver 13.2
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090 D" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /data/wheeled-legged/projects/v14_6_mixed_slopes_20261111/runs/train_Gli8zO/cache/warp/1.17.0
+[ISAACLAB] KitLauncher initialization complete
+[INFO]: Parsing configuration from: agent_tasks.direct.wheelbipe.wheelbipe_own.experiment:WheelbipeOwnExperimentCfg
+[INFO]: Parsing configuration from: agent_tasks.direct.wheelbipe.wheelbipe_own.experiment:WheelbipeOwnExperimentRunnerCfg
+[INFO] Checkpoint observation/action configuration matches compared fields. USD content/training code provenance is not proven by YAML.
+[INFO] Logging experiment in directory: /data/wheeled-legged/projects/v14_6_mixed_slopes_20261111/runs/train_Gli8zO/logs/rsl_rl/own_low_speed_exploration
+Exact experiment name requested from command line: 2026-11-11_11-32-43
+[INFO]: Base environment:
+	Environment device    : cuda:0
+	Environment seed      : 20261111
+	Physics step-size     : 0.0025
+	Rendering step-size   : 0.02
+	Environment step-size : 0.02
+[INFO] Generating terrains based on curriculum took Last: 0.053702 s
+[INFO]: Registered backend 'physx' for factory Articulation.
+[INFO]: Registered backend 'physx' for factory ContactSensor.
+[INFO]: Physics scene prim path: /physicsScene
+[INFO]: Time taken for scene creation Last: 4.309608 s, Mean: 4.309608 s, Std: 0.000000 s, N: 1
+[INFO]: Scene manager:  <class InteractiveScene>
+	Number of environments: 256
+	Environment spacing   : 3.0
+	Source prim name      : /World/envs/env_0
+	Global prim paths     : ['/World/ground']
+	Replicate physics     : False
+[INFO]: Starting the simulation. This may take a few seconds. Please wait...
+2026-11-11T11:33:25Z [51,260ms] [Warning] [usdrt.population.plugin] Last global time was not created. Did you call setEnableUsdNoticeHandling?
+2026-11-11T11:33:26Z [52,096ms] [Warning] [omni.physx.plugin] Detected an articulation at /World/envs/env_0/Robot/base_link with more than 4 velocity iterations being added to a TGS scene.The related behavior changed recently, please consult the changelog. This warning will only print once.
+[INFO]: Simulation parameters for joints in /World/envs/env_.*/Robot:
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                         Simulation Joint Information (Prim path: /World/envs/env_.*/Robot)                                                         |
++-------+---------------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+| Index | Name                      | Stiffness | Damping | Armature | Static Friction | Dynamic Friction | Viscous Friction |   Position Limits   | Velocity Limits | Effort Limits |
++-------+---------------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+|   0   | gimbal_yaw_joint          |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   1   | left_buttom_guide1_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   2   | left_buttom_guide2_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   3   | left_front1_joint         |   0.000   |  0.000  |  0.016   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      17.000     |     40.000    |
+|   4   | left_front_guide1_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   5   | left_front_guide2_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   6   | left_front_guide3_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   7   | left_rear1_joint          |   0.000   |  0.000  |  0.016   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      17.000     |     40.000    |
+|   8   | left_rear_guide1_joint    |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   9   | right_buttom_guide1_joint |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   10  | right_buttom_guide2_joint |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   11  | right_front1_joint        |   0.000   |  0.000  |  0.016   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      17.000     |     40.000    |
+|   12  | right_front_guide1_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   13  | right_front_guide2_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   14  | right_front_guide3_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   15  | right_rear1_joint         |   0.000   |  0.000  |  0.016   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      17.000     |     40.000    |
+|   16  | right_rear_guide1_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   17  | left_front2_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       |   [-0.100, 1.000]   |      10.000     |    1.0e+09    |
+|   18  | left_rear2_joint          |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   19  | left_spring1_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   20  | right_front2_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       |   [-0.100, 1.000]   |      10.000     |    1.0e+09    |
+|   21  | right_rear2_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   22  | right_spring1_joint       |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   23  | left_front3_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   24  | left_rear2_guide_joint    |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   25  | left_wheel_joint          |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      60.000     |     5.000     |
+|   26  | left_spring2_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       |    [0.000, 0.300]   |      1.000      |    1.0e+09    |
+|   27  | right_front3_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   28  | right_rear2_guide_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   29  | right_wheel_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      60.000     |     5.000     |
+|   30  | right_spring2_joint       |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       |    [0.000, 0.300]   |      1.000      |    1.0e+09    |
+|   31  | left_front4_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   32  | right_front4_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
++-------+---------------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+[INFO]: Time taken for simulation start Last: 58.425316 s, Mean: 58.425316 s, Std: 0.000000 s, N: 1
+[INFO]: Completed setting up the environment...
+[WheelCtrl] 轮速控制模式已启用: scale=10.0, max_vel=90.0 rad/s
+2026-11-11T11:33:46Z [72,878ms] [Warning] [isaaclab.envs.mdp.commands.velocity_command] The velocity command has the 'ranges.heading' attribute set to '(-3.141592653589793, 3.141592653589793)' but the heading command is not active. Consider setting the flag for the heading command to True.
+[Sim2Real] 观测延迟已启用 (物理步级) - 分组: ['root_ang_vel_b', 'projected_gravity_b', 'joint_pos', 'joint_vel']
+[Sim2Real]   - 延迟范围: {'root_ang_vel_b': [0, 3], 'projected_gravity_b': [0, 3], 'joint_pos': [0, 3], 'joint_vel': [0, 3]}
+[Sim2Real]   - 缓冲区长度: 7
+[Sim2Real]   - 初始化默认延迟: 0 步 (0.0ms)
+[Sim2Real]   - 物理步时间: 2.5ms (1步 ≈ 2.5ms)
+[Sim2Real] 执行延迟已启用 (物理步级) - 分组: ['leg_actions', 'wheel_actions']
+[Sim2Real]   - 延迟范围: {'leg_actions': [0, 3], 'wheel_actions': [0, 3]}
+[Sim2Real]   - 缓冲区长度: 5
+2026-11-11T11:33:55Z [81,527ms] [Warning] [omni.rtx] CUDA_VISIBLE_DEVICES environment variable is set.
+2026-11-11T11:33:55Z [81,527ms] [Warning] [omni.rtx] Note CUDA device enumeration and Omniverse device enumeration are different.
+2026-11-11T11:33:55Z [81,527ms] [Warning] [omni.rtx] Setting CUDA_VISIBLE_DEVICES can lead to undesired behavior or crashes.
+--------------------------------------------------------------------------------
+Resolved observation sets: 
+	 policy :  ['policy']
+	 critic :  ['critic']
+--------------------------------------------------------------------------------
+Actor MLP: MLP(
+  (0): Linear(in_features=35, out_features=256, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=256, out_features=128, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=128, out_features=64, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=64, out_features=6, bias=True)
+)
+Critic MLP: MLP(
+  (0): Linear(in_features=78, out_features=256, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=256, out_features=128, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=128, out_features=64, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=64, out_features=1, bias=True)
+)
+[INFO]: Loading model checkpoint from: /data/wheeled-legged/projects/v14_6_downhill_pilot_8KMxPj/runs/train_udMln2/logs/rsl_rl/wheelbipe_v14_6_dr_20261108/2026-11-11_06-29-46_downhill_pilot/model_50.pt
+[INFO]: Finetune checkpoint load: loaded 17 policy tensors, expanded 0 input tensors, skipped 0 incompatible tensors.
+[FINETUNE] Fresh Adam, iteration 0; exploration std explicitly set to 0.18
+[INFO] Launch manifest: /data/wheeled-legged/projects/v14_6_mixed_slopes_20261111/runs/train_Gli8zO/logs/rsl_rl/own_low_speed_exploration/2026-11-11_11-32-43_mixed_slopes_60/params/launch.json
+[TRAINING AUDIT] Enabled finite loss/gradient/parameter and update checks
+################################################################################
+                       [1m Learning iteration 0/60 [0m                        
+
+                       Computation: 278 steps/s (collection: 21.548s, learning 0.496s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.2550
+               Mean surrogate loss: -0.0030
+                 Mean entropy loss: -1.7762
+                       Mean reward: 1.94
+               Mean episode length: 13.25
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0028
+      Episode/Reward/leg_joint_vel: -0.0001
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0001
+          Episode/Reward/wheel_acc: -0.0001
+          Episode/Reward/wheel_vel: -0.0000
+        Episode/Reward/wheel_power: -0.0000
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0001
+         Episode/Reward/ang_vel_xy: -0.0000
+Episode/Reward/action_smoothness_leg: -0.0009
+        Episode/Reward/action_rate: -0.0001
+Episode/Reward/action_smoothness_wheel: -0.0001
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0000
+Episode/Reward/flat_orientation_y_exp: 0.0074
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0000
+Episode/Reward/flat_orientation_x_exp: 0.0074
+   Episode/Reward/track_lin_vel_xy: 0.0272
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0000
+    Episode/Reward/track_ang_vel_z: 0.0124
+Episode/Reward/track_ang_vel_z_square: -0.0000
+Episode/Reward/stand_still_lin_vel: -0.0002
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.0068
+Episode/Reward/track_height_square: -0.0001
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0000
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0001
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9850
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 6144
+                    Iteration time: 22.04s
+                      Time elapsed: 00:00:22
+                               ETA: 00:22:02
+
+Could not find git repository in /data/isaac620-migration-20261103/env620/lib/python3.12/site-packages/rsl_rl/__init__.py. Skipping.
+Could not find git repository in /data/wheeled-legged/projects/v14_6_mixed_slopes_20261111/project/scripts/rsl_rl/train.py. Skipping.
+################################################################################
+                       [1m Learning iteration 1/60 [0m                        
+
+                       Computation: 406 steps/s (collection: 14.764s, learning 0.346s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0336
+               Mean surrogate loss: -0.0036
+                 Mean entropy loss: -1.7786
+                       Mean reward: 3.42
+               Mean episode length: 22.62
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0034
+      Episode/Reward/leg_joint_vel: -0.0005
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0003
+          Episode/Reward/wheel_acc: -0.0000
+          Episode/Reward/wheel_vel: -0.0000
+        Episode/Reward/wheel_power: -0.0000
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0003
+         Episode/Reward/ang_vel_xy: -0.0001
+Episode/Reward/action_smoothness_leg: -0.0023
+        Episode/Reward/action_rate: -0.0002
+Episode/Reward/action_smoothness_wheel: -0.0004
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0009
+Episode/Reward/flat_orientation_y_exp: 0.0319
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0001
+Episode/Reward/flat_orientation_x_exp: 0.0329
+   Episode/Reward/track_lin_vel_xy: 0.1175
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0001
+    Episode/Reward/track_ang_vel_z: 0.0539
+Episode/Reward/track_ang_vel_z_square: -0.0002
+Episode/Reward/stand_still_lin_vel: -0.0000
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.0312
+Episode/Reward/track_height_square: -0.0002
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0001
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0003
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 12288
+                    Iteration time: 15.11s
+                      Time elapsed: 00:00:37
+                               ETA: 00:18:16
+
+################################################################################
+                       [1m Learning iteration 2/60 [0m                        
+
+                       Computation: 404 steps/s (collection: 14.810s, learning 0.361s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0327
+               Mean surrogate loss: -0.0023
+                 Mean entropy loss: -1.7814
+                       Mean reward: 6.42
+               Mean episode length: 40.80
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0009
+      Episode/Reward/leg_joint_vel: -0.0009
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0005
+          Episode/Reward/wheel_acc: -0.0001
+          Episode/Reward/wheel_vel: -0.0000
+        Episode/Reward/wheel_power: -0.0000
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0006
+         Episode/Reward/ang_vel_xy: -0.0003
+Episode/Reward/action_smoothness_leg: -0.0040
+        Episode/Reward/action_rate: -0.0003
+Episode/Reward/action_smoothness_wheel: -0.0007
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0009
+Episode/Reward/flat_orientation_y_exp: 0.0563
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0001
+Episode/Reward/flat_orientation_x_exp: 0.0574
+   Episode/Reward/track_lin_vel_xy: 0.2148
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0001
+    Episode/Reward/track_ang_vel_z: 0.0880
+Episode/Reward/track_ang_vel_z_square: -0.0005
+Episode/Reward/stand_still_lin_vel: -0.0001
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.0549
+Episode/Reward/track_height_square: -0.0003
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0003
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0006
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 18432
+                    Iteration time: 15.17s
+                      Time elapsed: 00:00:52
+                               ETA: 00:16:51
+
+################################################################################
+                       [1m Learning iteration 3/60 [0m                        
+
+                       Computation: 406 steps/s (collection: 14.766s, learning 0.356s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0298
+               Mean surrogate loss: -0.0035
+                 Mean entropy loss: -1.7839
+                       Mean reward: 9.04
+               Mean episode length: 56.21
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0003
+      Episode/Reward/leg_joint_vel: -0.0012
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0007
+          Episode/Reward/wheel_acc: -0.0001
+          Episode/Reward/wheel_vel: -0.0001
+        Episode/Reward/wheel_power: -0.0000
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0006
+         Episode/Reward/ang_vel_xy: -0.0003
+Episode/Reward/action_smoothness_leg: -0.0054
+        Episode/Reward/action_rate: -0.0005
+Episode/Reward/action_smoothness_wheel: -0.0010
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0010
+Episode/Reward/flat_orientation_y_exp: 0.0809
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0001
+Episode/Reward/flat_orientation_x_exp: 0.0821
+   Episode/Reward/track_lin_vel_xy: 0.3109
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0001
+    Episode/Reward/track_ang_vel_z: 0.1336
+Episode/Reward/track_ang_vel_z_square: -0.0005
+Episode/Reward/stand_still_lin_vel: -0.0013
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.0787
+Episode/Reward/track_height_square: -0.0004
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0004
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0002
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.2500
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 24576
+                    Iteration time: 15.12s
+                      Time elapsed: 00:01:07
+                               ETA: 00:16:01
+
+################################################################################
+                       [1m Learning iteration 4/60 [0m                        
+
+                       Computation: 404 steps/s (collection: 14.788s, learning 0.402s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0690
+               Mean surrogate loss: -0.0021
+                 Mean entropy loss: -1.7866
+                       Mean reward: 10.35
+               Mean episode length: 63.82
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0002
+      Episode/Reward/leg_joint_vel: -0.0016
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0008
+          Episode/Reward/wheel_acc: -0.0000
+          Episode/Reward/wheel_vel: -0.0002
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0007
+         Episode/Reward/ang_vel_xy: -0.0004
+Episode/Reward/action_smoothness_leg: -0.0060
+        Episode/Reward/action_rate: -0.0005
+Episode/Reward/action_smoothness_wheel: -0.0013
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0014
+Episode/Reward/flat_orientation_y_exp: 0.0985
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0002
+Episode/Reward/flat_orientation_x_exp: 0.1002
+   Episode/Reward/track_lin_vel_xy: 0.3650
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0003
+    Episode/Reward/track_ang_vel_z: 0.1696
+Episode/Reward/track_ang_vel_z_square: -0.0005
+Episode/Reward/stand_still_lin_vel: -0.0005
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.0985
+Episode/Reward/track_height_square: -0.0003
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0005
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0003
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 30720
+                    Iteration time: 15.19s
+                      Time elapsed: 00:01:22
+                               ETA: 00:15:25
+
+################################################################################
+                       [1m Learning iteration 5/60 [0m                        
+
+                       Computation: 406 steps/s (collection: 14.761s, learning 0.366s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0929
+               Mean surrogate loss: -0.0030
+                 Mean entropy loss: -1.7887
+                       Mean reward: 12.42
+               Mean episode length: 75.56
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0028
+      Episode/Reward/leg_joint_vel: -0.0015
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0013
+          Episode/Reward/wheel_acc: -0.0002
+          Episode/Reward/wheel_vel: -0.0000
+        Episode/Reward/wheel_power: -0.0000
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0005
+         Episode/Reward/ang_vel_xy: -0.0003
+Episode/Reward/action_smoothness_leg: -0.0074
+        Episode/Reward/action_rate: -0.0007
+Episode/Reward/action_smoothness_wheel: -0.0018
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0010
+Episode/Reward/flat_orientation_y_exp: 0.1264
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0002
+Episode/Reward/flat_orientation_x_exp: 0.1273
+   Episode/Reward/track_lin_vel_xy: 0.5002
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0000
+    Episode/Reward/track_ang_vel_z: 0.2345
+Episode/Reward/track_ang_vel_z_square: -0.0003
+Episode/Reward/stand_still_lin_vel: -0.0049
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.1237
+Episode/Reward/track_height_square: -0.0004
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0008
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: 0.0000
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 36864
+                    Iteration time: 15.13s
+                      Time elapsed: 00:01:37
+                               ETA: 00:14:56
+
+################################################################################
+                       [1m Learning iteration 6/60 [0m                        
+
+                       Computation: 407 steps/s (collection: 14.736s, learning 0.326s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0786
+               Mean surrogate loss: -0.0027
+                 Mean entropy loss: -1.7911
+                       Mean reward: 15.19
+               Mean episode length: 92.63
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0013
+      Episode/Reward/leg_joint_vel: -0.0021
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0015
+          Episode/Reward/wheel_acc: -0.0002
+          Episode/Reward/wheel_vel: -0.0001
+        Episode/Reward/wheel_power: -0.0000
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0010
+         Episode/Reward/ang_vel_xy: -0.0006
+Episode/Reward/action_smoothness_leg: -0.0100
+        Episode/Reward/action_rate: -0.0009
+Episode/Reward/action_smoothness_wheel: -0.0022
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0018
+Episode/Reward/flat_orientation_y_exp: 0.1506
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0002
+Episode/Reward/flat_orientation_x_exp: 0.1526
+   Episode/Reward/track_lin_vel_xy: 0.5783
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0002
+    Episode/Reward/track_ang_vel_z: 0.2449
+Episode/Reward/track_ang_vel_z_square: -0.0011
+Episode/Reward/stand_still_lin_vel: -0.0019
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.1467
+Episode/Reward/track_height_square: -0.0007
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0007
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0001
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0833
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 43008
+                    Iteration time: 15.06s
+                      Time elapsed: 00:01:52
+                               ETA: 00:14:30
+
+################################################################################
+                       [1m Learning iteration 7/60 [0m                        
+
+                       Computation: 406 steps/s (collection: 14.783s, learning 0.342s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0471
+               Mean surrogate loss: -0.0037
+                 Mean entropy loss: -1.7931
+                       Mean reward: 17.43
+               Mean episode length: 106.29
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0005
+      Episode/Reward/leg_joint_vel: -0.0021
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0018
+          Episode/Reward/wheel_acc: -0.0001
+          Episode/Reward/wheel_vel: -0.0002
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0013
+         Episode/Reward/ang_vel_xy: -0.0006
+Episode/Reward/action_smoothness_leg: -0.0111
+        Episode/Reward/action_rate: -0.0009
+Episode/Reward/action_smoothness_wheel: -0.0022
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0037
+Episode/Reward/flat_orientation_y_exp: 0.1730
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0005
+Episode/Reward/flat_orientation_x_exp: 0.1772
+   Episode/Reward/track_lin_vel_xy: 0.6750
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0002
+    Episode/Reward/track_ang_vel_z: 0.2982
+Episode/Reward/track_ang_vel_z_square: -0.0009
+Episode/Reward/stand_still_lin_vel: -0.0030
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.1686
+Episode/Reward/track_height_square: -0.0011
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0009
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0010
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 49152
+                    Iteration time: 15.13s
+                      Time elapsed: 00:02:07
+                               ETA: 00:14:07
+
+################################################################################
+                       [1m Learning iteration 8/60 [0m                        
+
+                       Computation: 397 steps/s (collection: 15.148s, learning 0.313s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0913
+               Mean surrogate loss: -0.0021
+                 Mean entropy loss: -1.7956
+                       Mean reward: 19.21
+               Mean episode length: 117.02
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0007
+      Episode/Reward/leg_joint_vel: -0.0024
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0021
+          Episode/Reward/wheel_acc: -0.0002
+          Episode/Reward/wheel_vel: -0.0002
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0013
+         Episode/Reward/ang_vel_xy: -0.0008
+Episode/Reward/action_smoothness_leg: -0.0132
+        Episode/Reward/action_rate: -0.0011
+Episode/Reward/action_smoothness_wheel: -0.0028
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0027
+Episode/Reward/flat_orientation_y_exp: 0.1967
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0005
+Episode/Reward/flat_orientation_x_exp: 0.1995
+   Episode/Reward/track_lin_vel_xy: 0.7542
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0004
+    Episode/Reward/track_ang_vel_z: 0.3217
+Episode/Reward/track_ang_vel_z_square: -0.0013
+Episode/Reward/stand_still_lin_vel: -0.0007
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.1912
+Episode/Reward/track_height_square: -0.0011
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0008
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0010
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 55296
+                    Iteration time: 15.46s
+                      Time elapsed: 00:02:23
+                               ETA: 00:13:48
+
+################################################################################
+                       [1m Learning iteration 9/60 [0m                        
+
+                       Computation: 400 steps/s (collection: 14.972s, learning 0.350s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 2.8277
+               Mean surrogate loss: -0.0025
+                 Mean entropy loss: -1.7972
+                       Mean reward: 20.49
+               Mean episode length: 124.77
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0004
+      Episode/Reward/leg_joint_vel: -0.0027
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0015
+          Episode/Reward/wheel_acc: -0.0004
+          Episode/Reward/wheel_vel: -0.0001
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0009
+         Episode/Reward/ang_vel_xy: -0.0007
+Episode/Reward/action_smoothness_leg: -0.0143
+        Episode/Reward/action_rate: -0.0012
+Episode/Reward/action_smoothness_wheel: -0.0029
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0026
+Episode/Reward/flat_orientation_y_exp: 0.2196
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0006
+Episode/Reward/flat_orientation_x_exp: 0.2219
+   Episode/Reward/track_lin_vel_xy: 0.8472
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0002
+    Episode/Reward/track_ang_vel_z: 0.3702
+Episode/Reward/track_ang_vel_z_square: -0.0012
+Episode/Reward/stand_still_lin_vel: -0.0015
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.2175
+Episode/Reward/track_height_square: -0.0007
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0015
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0011
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 61440
+                    Iteration time: 15.32s
+                      Time elapsed: 00:02:38
+                               ETA: 00:13:29
+
+################################################################################
+                       [1m Learning iteration 10/60 [0m                       
+
+                       Computation: 396 steps/s (collection: 15.188s, learning 0.324s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 2.0825
+               Mean surrogate loss: -0.0006
+                 Mean entropy loss: -1.7975
+                       Mean reward: 22.07
+               Mean episode length: 141.43
+        Episode/Reward/termination: -0.0583
+      Episode/Reward/leg_joint_acc: -0.0006
+      Episode/Reward/leg_joint_vel: -0.0030
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0034
+          Episode/Reward/wheel_acc: -0.0003
+          Episode/Reward/wheel_vel: -0.0007
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0663
+         Episode/Reward/ang_vel_xy: -0.0156
+Episode/Reward/action_smoothness_leg: -0.0155
+        Episode/Reward/action_rate: -0.0014
+Episode/Reward/action_smoothness_wheel: -0.0031
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0978
+Episode/Reward/flat_orientation_y_exp: 0.2350
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0457
+Episode/Reward/flat_orientation_x_exp: 0.2412
+   Episode/Reward/track_lin_vel_xy: 0.9319
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0009
+    Episode/Reward/track_ang_vel_z: 0.3975
+Episode/Reward/track_ang_vel_z_square: -0.0103
+Episode/Reward/stand_still_lin_vel: -0.0236
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.2323
+Episode/Reward/track_height_square: -0.2183
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0012
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0045
+     Episode/Reward/flight_penalty: -0.0180
+           Episode/Reset/terminate: 0.2917
+            Episode/Reset/time_out: 0.7083
+            Episode/Length/seconds: 17.0133
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.2917
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 67584
+                    Iteration time: 15.51s
+                      Time elapsed: 00:02:54
+                               ETA: 00:13:12
+
+################################################################################
+                       [1m Learning iteration 11/60 [0m                       
+
+                       Computation: 400 steps/s (collection: 14.984s, learning 0.356s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 3.2236
+               Mean surrogate loss: -0.0004
+                 Mean entropy loss: -1.7974
+                       Mean reward: 23.47
+               Mean episode length: 157.41
+        Episode/Reward/termination: -0.0417
+      Episode/Reward/leg_joint_acc: -0.0015
+      Episode/Reward/leg_joint_vel: -0.0031
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0032
+          Episode/Reward/wheel_acc: -0.0004
+          Episode/Reward/wheel_vel: -0.0006
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0719
+         Episode/Reward/ang_vel_xy: -0.0114
+Episode/Reward/action_smoothness_leg: -0.0178
+        Episode/Reward/action_rate: -0.0020
+Episode/Reward/action_smoothness_wheel: -0.0044
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0759
+Episode/Reward/flat_orientation_y_exp: 0.2606
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0161
+Episode/Reward/flat_orientation_x_exp: 0.2674
+   Episode/Reward/track_lin_vel_xy: 1.0290
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0009
+    Episode/Reward/track_ang_vel_z: 0.4236
+Episode/Reward/track_ang_vel_z_square: -0.0063
+Episode/Reward/stand_still_lin_vel: -0.0060
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.2540
+Episode/Reward/track_height_square: -0.2850
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0012
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0012
+     Episode/Reward/flight_penalty: -0.0155
+           Episode/Reset/terminate: 0.2500
+            Episode/Reset/time_out: 1.0417
+            Episode/Length/seconds: 19.5300
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.2500
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 73728
+                    Iteration time: 15.34s
+                      Time elapsed: 00:03:09
+                               ETA: 00:12:54
+
+################################################################################
+                       [1m Learning iteration 12/60 [0m                       
+
+                       Computation: 404 steps/s (collection: 14.946s, learning 0.245s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0598
+               Mean surrogate loss: -0.0028
+                 Mean entropy loss: -1.7978
+                       Mean reward: 24.79
+               Mean episode length: 165.62
+        Episode/Reward/termination: -0.0042
+      Episode/Reward/leg_joint_acc: -0.0046
+      Episode/Reward/leg_joint_vel: -0.0050
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0035
+          Episode/Reward/wheel_acc: -0.0008
+          Episode/Reward/wheel_vel: -0.0005
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0090
+         Episode/Reward/ang_vel_xy: -0.0043
+Episode/Reward/action_smoothness_leg: -0.0196
+        Episode/Reward/action_rate: -0.0021
+Episode/Reward/action_smoothness_wheel: -0.0048
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0127
+Episode/Reward/flat_orientation_y_exp: 0.2860
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0387
+Episode/Reward/flat_orientation_x_exp: 0.2827
+   Episode/Reward/track_lin_vel_xy: 1.1078
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0005
+    Episode/Reward/track_ang_vel_z: 0.4606
+Episode/Reward/track_ang_vel_z_square: -0.0095
+Episode/Reward/stand_still_lin_vel: -0.0118
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.2719
+Episode/Reward/track_height_square: -0.0276
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0013
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0225
+     Episode/Reward/flight_penalty: -0.0112
+           Episode/Reset/terminate: 0.0417
+            Episode/Reset/time_out: 1.4583
+            Episode/Length/seconds: 19.8233
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0417
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 79872
+                    Iteration time: 15.19s
+                      Time elapsed: 00:03:24
+                               ETA: 00:12:36
+
+################################################################################
+                       [1m Learning iteration 13/60 [0m                       
+
+                       Computation: 400 steps/s (collection: 14.941s, learning 0.382s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 3.5871
+               Mean surrogate loss: -0.0017
+                 Mean entropy loss: -1.7992
+                       Mean reward: 27.29
+               Mean episode length: 179.55
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0029
+      Episode/Reward/leg_joint_vel: -0.0047
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0034
+          Episode/Reward/wheel_acc: -0.0004
+          Episode/Reward/wheel_vel: -0.0003
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0021
+         Episode/Reward/ang_vel_xy: -0.0022
+Episode/Reward/action_smoothness_leg: -0.0193
+        Episode/Reward/action_rate: -0.0020
+Episode/Reward/action_smoothness_wheel: -0.0047
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0054
+Episode/Reward/flat_orientation_y_exp: 0.3128
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0181
+Episode/Reward/flat_orientation_x_exp: 0.3134
+   Episode/Reward/track_lin_vel_xy: 1.2065
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0005
+    Episode/Reward/track_ang_vel_z: 0.5166
+Episode/Reward/track_ang_vel_z_square: -0.0052
+Episode/Reward/stand_still_lin_vel: -0.0073
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.3023
+Episode/Reward/track_height_square: -0.0031
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0015
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0100
+     Episode/Reward/flight_penalty: -0.0061
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0833
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 86016
+                    Iteration time: 15.32s
+                      Time elapsed: 00:03:40
+                               ETA: 00:12:18
+
+################################################################################
+                       [1m Learning iteration 14/60 [0m                       
+
+                       Computation: 386 steps/s (collection: 15.613s, learning 0.296s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.7793
+               Mean surrogate loss: -0.0019
+                 Mean entropy loss: -1.7995
+                       Mean reward: 28.76
+               Mean episode length: 193.11
+        Episode/Reward/termination: -0.0833
+      Episode/Reward/leg_joint_acc: -0.0015
+      Episode/Reward/leg_joint_vel: -0.0043
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0051
+          Episode/Reward/wheel_acc: -0.0003
+          Episode/Reward/wheel_vel: -0.0009
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0962
+         Episode/Reward/ang_vel_xy: -0.0215
+Episode/Reward/action_smoothness_leg: -0.0219
+        Episode/Reward/action_rate: -0.0023
+Episode/Reward/action_smoothness_wheel: -0.0048
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.1206
+Episode/Reward/flat_orientation_y_exp: 0.3304
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0687
+Episode/Reward/flat_orientation_x_exp: 0.3330
+   Episode/Reward/track_lin_vel_xy: 1.2882
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0012
+    Episode/Reward/track_ang_vel_z: 0.5381
+Episode/Reward/track_ang_vel_z_square: -0.0254
+Episode/Reward/stand_still_lin_vel: -0.0103
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.3234
+Episode/Reward/track_height_square: -0.4836
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0018
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0038
+     Episode/Reward/flight_penalty: -0.0320
+           Episode/Reset/terminate: 0.4167
+            Episode/Reset/time_out: 0.7500
+            Episode/Length/seconds: 16.6367
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.4167
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 92160
+                    Iteration time: 15.91s
+                      Time elapsed: 00:03:56
+                               ETA: 00:12:03
+
+################################################################################
+                       [1m Learning iteration 15/60 [0m                       
+
+                       Computation: 382 steps/s (collection: 15.701s, learning 0.347s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.1288
+               Mean surrogate loss: -0.0020
+                 Mean entropy loss: -1.7993
+                       Mean reward: 33.00
+               Mean episode length: 220.97
+        Episode/Reward/termination: -0.0250
+      Episode/Reward/leg_joint_acc: -0.0047
+      Episode/Reward/leg_joint_vel: -0.0041
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0033
+          Episode/Reward/wheel_acc: -0.0005
+          Episode/Reward/wheel_vel: -0.0005
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0080
+         Episode/Reward/ang_vel_xy: -0.0064
+Episode/Reward/action_smoothness_leg: -0.0243
+        Episode/Reward/action_rate: -0.0021
+Episode/Reward/action_smoothness_wheel: -0.0050
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0522
+Episode/Reward/flat_orientation_y_exp: 0.3582
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0118
+Episode/Reward/flat_orientation_x_exp: 0.3652
+   Episode/Reward/track_lin_vel_xy: 1.3851
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0006
+    Episode/Reward/track_ang_vel_z: 0.5842
+Episode/Reward/track_ang_vel_z_square: -0.0051
+Episode/Reward/stand_still_lin_vel: -0.0086
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.3439
+Episode/Reward/track_height_square: -0.0477
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0019
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0055
+     Episode/Reward/flight_penalty: -0.0071
+           Episode/Reset/terminate: 0.1250
+            Episode/Reset/time_out: 0.8750
+            Episode/Length/seconds: 18.8025
+       Episode/Reset/cause_contact: 0.1250
+          Episode/Reset/cause_roll: 0.1250
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 98304
+                    Iteration time: 16.05s
+                      Time elapsed: 00:04:12
+                               ETA: 00:11:48
+
+################################################################################
+                       [1m Learning iteration 16/60 [0m                       
+
+                       Computation: 396 steps/s (collection: 15.155s, learning 0.337s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 3.3657
+               Mean surrogate loss: -0.0009
+                 Mean entropy loss: -1.7997
+                       Mean reward: 35.78
+               Mean episode length: 237.87
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0009
+      Episode/Reward/leg_joint_vel: -0.0036
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0041
+          Episode/Reward/wheel_acc: -0.0002
+          Episode/Reward/wheel_vel: -0.0003
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0019
+         Episode/Reward/ang_vel_xy: -0.0014
+Episode/Reward/action_smoothness_leg: -0.0253
+        Episode/Reward/action_rate: -0.0021
+Episode/Reward/action_smoothness_wheel: -0.0055
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0050
+Episode/Reward/flat_orientation_y_exp: 0.3843
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0007
+Episode/Reward/flat_orientation_x_exp: 0.3899
+   Episode/Reward/track_lin_vel_xy: 1.4889
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0004
+    Episode/Reward/track_ang_vel_z: 0.6391
+Episode/Reward/track_ang_vel_z_square: -0.0024
+Episode/Reward/stand_still_lin_vel: -0.0136
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.3664
+Episode/Reward/track_height_square: -0.0028
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0022
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0013
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.5417
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 104448
+                    Iteration time: 15.49s
+                      Time elapsed: 00:04:27
+                               ETA: 00:11:32
+
+################################################################################
+                       [1m Learning iteration 17/60 [0m                       
+
+                       Computation: 393 steps/s (collection: 15.340s, learning 0.273s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.0888
+               Mean surrogate loss: -0.0026
+                 Mean entropy loss: -1.8004
+                       Mean reward: 39.38
+               Mean episode length: 262.14
+        Episode/Reward/termination: -0.0667
+      Episode/Reward/leg_joint_acc: -0.0018
+      Episode/Reward/leg_joint_vel: -0.0044
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0048
+          Episode/Reward/wheel_acc: -0.0007
+          Episode/Reward/wheel_vel: -0.0008
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0476
+         Episode/Reward/ang_vel_xy: -0.0118
+Episode/Reward/action_smoothness_leg: -0.0263
+        Episode/Reward/action_rate: -0.0025
+Episode/Reward/action_smoothness_wheel: -0.0061
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0713
+Episode/Reward/flat_orientation_y_exp: 0.4015
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.1341
+Episode/Reward/flat_orientation_x_exp: 0.4054
+   Episode/Reward/track_lin_vel_xy: 1.5501
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0014
+    Episode/Reward/track_ang_vel_z: 0.6780
+Episode/Reward/track_ang_vel_z_square: -0.0337
+Episode/Reward/stand_still_lin_vel: -0.0320
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.3916
+Episode/Reward/track_height_square: -0.2406
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0019
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0067
+     Episode/Reward/flight_penalty: -0.0207
+           Episode/Reset/terminate: 0.3333
+            Episode/Reset/time_out: 0.9167
+            Episode/Length/seconds: 17.8267
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.3333
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 110592
+                    Iteration time: 15.61s
+                      Time elapsed: 00:04:43
+                               ETA: 00:11:16
+
+################################################################################
+                       [1m Learning iteration 18/60 [0m                       
+
+                       Computation: 383 steps/s (collection: 15.682s, learning 0.352s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.5546
+               Mean surrogate loss: -0.0019
+                 Mean entropy loss: -1.8012
+                       Mean reward: 43.47
+               Mean episode length: 289.86
+        Episode/Reward/termination: -0.0083
+      Episode/Reward/leg_joint_acc: -0.0020
+      Episode/Reward/leg_joint_vel: -0.0039
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0046
+          Episode/Reward/wheel_acc: -0.0005
+          Episode/Reward/wheel_vel: -0.0003
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0041
+         Episode/Reward/ang_vel_xy: -0.0072
+Episode/Reward/action_smoothness_leg: -0.0278
+        Episode/Reward/action_rate: -0.0028
+Episode/Reward/action_smoothness_wheel: -0.0068
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0248
+Episode/Reward/flat_orientation_y_exp: 0.4327
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0077
+Episode/Reward/flat_orientation_x_exp: 0.4388
+   Episode/Reward/track_lin_vel_xy: 1.6828
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0005
+    Episode/Reward/track_ang_vel_z: 0.7285
+Episode/Reward/track_ang_vel_z_square: -0.0107
+Episode/Reward/stand_still_lin_vel: -0.0104
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.4102
+Episode/Reward/track_height_square: -0.0330
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0019
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0011
+     Episode/Reward/flight_penalty: -0.0044
+           Episode/Reset/terminate: 0.0417
+            Episode/Reset/time_out: 0.9583
+            Episode/Length/seconds: 19.5408
+       Episode/Reset/cause_contact: 0.0417
+          Episode/Reset/cause_roll: 0.0417
+         Episode/Reset/cause_pitch: 0.0417
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 0.7826
+--------------------------------------------------------------------------------
+                   Total timesteps: 116736
+                    Iteration time: 16.03s
+                      Time elapsed: 00:04:59
+                               ETA: 00:11:01
+
+################################################################################
+                       [1m Learning iteration 19/60 [0m                       
+
+                       Computation: 402 steps/s (collection: 14.919s, learning 0.329s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0451
+               Mean surrogate loss: -0.0020
+                 Mean entropy loss: -1.8030
+                       Mean reward: 45.73
+               Mean episode length: 303.70
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0015
+      Episode/Reward/leg_joint_vel: -0.0047
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0041
+          Episode/Reward/wheel_acc: -0.0004
+          Episode/Reward/wheel_vel: -0.0003
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0030
+         Episode/Reward/ang_vel_xy: -0.0017
+Episode/Reward/action_smoothness_leg: -0.0280
+        Episode/Reward/action_rate: -0.0023
+Episode/Reward/action_smoothness_wheel: -0.0050
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0074
+Episode/Reward/flat_orientation_y_exp: 0.4544
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0007
+Episode/Reward/flat_orientation_x_exp: 0.4625
+   Episode/Reward/track_lin_vel_xy: 1.7543
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0005
+    Episode/Reward/track_ang_vel_z: 0.7703
+Episode/Reward/track_ang_vel_z_square: -0.0026
+Episode/Reward/stand_still_lin_vel: -0.0129
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.4367
+Episode/Reward/track_height_square: -0.0031
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0021
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0027
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 122880
+                    Iteration time: 15.25s
+                      Time elapsed: 00:05:14
+                               ETA: 00:10:44
+
+################################################################################
+                       [1m Learning iteration 20/60 [0m                       
+
+                       Computation: 405 steps/s (collection: 14.812s, learning 0.349s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.8287
+               Mean surrogate loss: -0.0011
+                 Mean entropy loss: -1.8060
+                       Mean reward: 50.17
+               Mean episode length: 330.76
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0006
+      Episode/Reward/leg_joint_vel: -0.0045
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0039
+          Episode/Reward/wheel_acc: -0.0004
+          Episode/Reward/wheel_vel: -0.0003
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0022
+         Episode/Reward/ang_vel_xy: -0.0016
+Episode/Reward/action_smoothness_leg: -0.0298
+        Episode/Reward/action_rate: -0.0023
+Episode/Reward/action_smoothness_wheel: -0.0054
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0110
+Episode/Reward/flat_orientation_y_exp: 0.4743
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0040
+Episode/Reward/flat_orientation_x_exp: 0.4793
+   Episode/Reward/track_lin_vel_xy: 1.8626
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0005
+    Episode/Reward/track_ang_vel_z: 0.8186
+Episode/Reward/track_ang_vel_z_square: -0.0025
+Episode/Reward/stand_still_lin_vel: -0.0119
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.4702
+Episode/Reward/track_height_square: -0.0022
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0021
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0010
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0417
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 129024
+                    Iteration time: 15.16s
+                      Time elapsed: 00:05:29
+                               ETA: 00:10:27
+
+################################################################################
+                       [1m Learning iteration 21/60 [0m                       
+
+                       Computation: 409 steps/s (collection: 14.604s, learning 0.400s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 2.0032
+               Mean surrogate loss: -0.0025
+                 Mean entropy loss: -1.8066
+                       Mean reward: 52.78
+               Mean episode length: 351.84
+        Episode/Reward/termination: -0.0389
+      Episode/Reward/leg_joint_acc: -0.0038
+      Episode/Reward/leg_joint_vel: -0.0049
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0048
+          Episode/Reward/wheel_acc: -0.0004
+          Episode/Reward/wheel_vel: -0.0005
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0417
+         Episode/Reward/ang_vel_xy: -0.0119
+Episode/Reward/action_smoothness_leg: -0.0331
+        Episode/Reward/action_rate: -0.0030
+Episode/Reward/action_smoothness_wheel: -0.0082
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0574
+Episode/Reward/flat_orientation_y_exp: 0.4939
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0437
+Episode/Reward/flat_orientation_x_exp: 0.5045
+   Episode/Reward/track_lin_vel_xy: 1.9495
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0012
+    Episode/Reward/track_ang_vel_z: 0.8166
+Episode/Reward/track_ang_vel_z_square: -0.0147
+Episode/Reward/stand_still_lin_vel: -0.0108
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.4885
+Episode/Reward/track_height_square: -0.1757
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: -0.0000
+     Episode/Reward/no_fork_square: -0.0023
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0024
+     Episode/Reward/flight_penalty: -0.0151
+           Episode/Reset/terminate: 0.2500
+            Episode/Reset/time_out: 0.9167
+            Episode/Length/seconds: 19.7756
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.2500
+         Episode/Reset/cause_pitch: 0.2500
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 135168
+                    Iteration time: 15.00s
+                      Time elapsed: 00:05:44
+                               ETA: 00:10:10
+
+################################################################################
+                       [1m Learning iteration 22/60 [0m                       
+
+                       Computation: 406 steps/s (collection: 14.750s, learning 0.382s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0479
+               Mean surrogate loss: -0.0022
+                 Mean entropy loss: -1.8081
+                       Mean reward: 56.28
+               Mean episode length: 373.47
+        Episode/Reward/termination: -0.1000
+      Episode/Reward/leg_joint_acc: -0.0033
+      Episode/Reward/leg_joint_vel: -0.0060
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0068
+          Episode/Reward/wheel_acc: -0.0006
+          Episode/Reward/wheel_vel: -0.0010
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.1208
+         Episode/Reward/ang_vel_xy: -0.0304
+Episode/Reward/action_smoothness_leg: -0.0354
+        Episode/Reward/action_rate: -0.0037
+Episode/Reward/action_smoothness_wheel: -0.0084
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.1085
+Episode/Reward/flat_orientation_y_exp: 0.5140
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.1220
+Episode/Reward/flat_orientation_x_exp: 0.5173
+   Episode/Reward/track_lin_vel_xy: 2.0080
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0029
+    Episode/Reward/track_ang_vel_z: 0.8336
+Episode/Reward/track_ang_vel_z_square: -0.0312
+Episode/Reward/stand_still_lin_vel: -0.0077
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.4989
+Episode/Reward/track_height_square: -0.4902
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0023
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0040
+     Episode/Reward/flight_penalty: -0.0396
+           Episode/Reset/terminate: 0.5000
+            Episode/Reset/time_out: 0.5000
+            Episode/Length/seconds: 19.6300
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.5000
+         Episode/Reset/cause_pitch: 0.5000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 141312
+                    Iteration time: 15.13s
+                      Time elapsed: 00:05:59
+                               ETA: 00:09:54
+
+################################################################################
+                       [1m Learning iteration 23/60 [0m                       
+
+                       Computation: 394 steps/s (collection: 15.250s, learning 0.337s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 2.0057
+               Mean surrogate loss: -0.0014
+                 Mean entropy loss: -1.8121
+                       Mean reward: 58.04
+               Mean episode length: 384.15
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0010
+      Episode/Reward/leg_joint_vel: -0.0056
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0058
+          Episode/Reward/wheel_acc: -0.0010
+          Episode/Reward/wheel_vel: -0.0006
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0022
+         Episode/Reward/ang_vel_xy: -0.0018
+Episode/Reward/action_smoothness_leg: -0.0357
+        Episode/Reward/action_rate: -0.0029
+Episode/Reward/action_smoothness_wheel: -0.0072
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0092
+Episode/Reward/flat_orientation_y_exp: 0.5455
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0011
+Episode/Reward/flat_orientation_x_exp: 0.5566
+   Episode/Reward/track_lin_vel_xy: 2.0561
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0018
+    Episode/Reward/track_ang_vel_z: 0.9235
+Episode/Reward/track_ang_vel_z_square: -0.0031
+Episode/Reward/stand_still_lin_vel: -0.0054
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.5438
+Episode/Reward/track_height_square: -0.0017
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0023
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0014
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 147456
+                    Iteration time: 15.59s
+                      Time elapsed: 00:06:15
+                               ETA: 00:09:38
+
+################################################################################
+                       [1m Learning iteration 24/60 [0m                       
+
+                       Computation: 390 steps/s (collection: 15.327s, learning 0.406s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 3.8200
+               Mean surrogate loss: 0.0003
+                 Mean entropy loss: -1.8127
+                       Mean reward: 62.13
+               Mean episode length: 408.84
+        Episode/Reward/termination: -0.0083
+      Episode/Reward/leg_joint_acc: -0.0011
+      Episode/Reward/leg_joint_vel: -0.0058
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0053
+          Episode/Reward/wheel_acc: -0.0007
+          Episode/Reward/wheel_vel: -0.0004
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0051
+         Episode/Reward/ang_vel_xy: -0.0037
+Episode/Reward/action_smoothness_leg: -0.0362
+        Episode/Reward/action_rate: -0.0030
+Episode/Reward/action_smoothness_wheel: -0.0066
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0196
+Episode/Reward/flat_orientation_y_exp: 0.5533
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0182
+Episode/Reward/flat_orientation_x_exp: 0.5656
+   Episode/Reward/track_lin_vel_xy: 2.1633
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0010
+    Episode/Reward/track_ang_vel_z: 0.9475
+Episode/Reward/track_ang_vel_z_square: -0.0039
+Episode/Reward/stand_still_lin_vel: -0.0159
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.5421
+Episode/Reward/track_height_square: -0.0262
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0026
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0009
+     Episode/Reward/flight_penalty: -0.0037
+           Episode/Reset/terminate: 0.0833
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.3333
+       Episode/Reset/cause_contact: 0.0833
+          Episode/Reset/cause_roll: 0.0833
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 153600
+                    Iteration time: 15.73s
+                      Time elapsed: 00:06:31
+                               ETA: 00:09:23
+
+################################################################################
+                       [1m Learning iteration 25/60 [0m                       
+
+                       Computation: 396 steps/s (collection: 15.150s, learning 0.328s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.2469
+               Mean surrogate loss: -0.0018
+                 Mean entropy loss: -1.8125
+                       Mean reward: 65.58
+               Mean episode length: 433.49
+        Episode/Reward/termination: -0.0333
+      Episode/Reward/leg_joint_acc: -0.0048
+      Episode/Reward/leg_joint_vel: -0.0072
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0049
+          Episode/Reward/wheel_acc: -0.0008
+          Episode/Reward/wheel_vel: -0.0008
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0305
+         Episode/Reward/ang_vel_xy: -0.0104
+Episode/Reward/action_smoothness_leg: -0.0372
+        Episode/Reward/action_rate: -0.0032
+Episode/Reward/action_smoothness_wheel: -0.0074
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0761
+Episode/Reward/flat_orientation_y_exp: 0.5512
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0341
+Episode/Reward/flat_orientation_x_exp: 0.5721
+   Episode/Reward/track_lin_vel_xy: 2.1516
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0017
+    Episode/Reward/track_ang_vel_z: 0.9376
+Episode/Reward/track_ang_vel_z_square: -0.0060
+Episode/Reward/stand_still_lin_vel: -0.0210
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.5509
+Episode/Reward/track_height_square: -0.1111
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0029
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0043
+     Episode/Reward/flight_penalty: -0.0112
+           Episode/Reset/terminate: 0.3333
+            Episode/Reset/time_out: 0.8333
+            Episode/Length/seconds: 18.0917
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.3333
+         Episode/Reset/cause_pitch: 0.1667
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 159744
+                    Iteration time: 15.48s
+                      Time elapsed: 00:06:46
+                               ETA: 00:09:07
+
+################################################################################
+                       [1m Learning iteration 26/60 [0m                       
+
+                       Computation: 415 steps/s (collection: 14.394s, learning 0.386s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0456
+               Mean surrogate loss: -0.0023
+                 Mean entropy loss: -1.8148
+                       Mean reward: 66.19
+               Mean episode length: 437.18
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0009
+      Episode/Reward/leg_joint_vel: -0.0077
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0044
+          Episode/Reward/wheel_acc: -0.0012
+          Episode/Reward/wheel_vel: -0.0010
+        Episode/Reward/wheel_power: -0.0004
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0033
+         Episode/Reward/ang_vel_xy: -0.0030
+Episode/Reward/action_smoothness_leg: -0.0396
+        Episode/Reward/action_rate: -0.0033
+Episode/Reward/action_smoothness_wheel: -0.0079
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0281
+Episode/Reward/flat_orientation_y_exp: 0.5874
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0008
+Episode/Reward/flat_orientation_x_exp: 0.6245
+   Episode/Reward/track_lin_vel_xy: 2.2116
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0040
+    Episode/Reward/track_ang_vel_z: 0.9917
+Episode/Reward/track_ang_vel_z_square: -0.0042
+Episode/Reward/stand_still_lin_vel: -0.0017
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.6084
+Episode/Reward/track_height_square: -0.0020
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0025
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0008
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 165888
+                    Iteration time: 14.78s
+                      Time elapsed: 00:07:01
+                               ETA: 00:08:50
+
+################################################################################
+                       [1m Learning iteration 27/60 [0m                       
+
+                       Computation: 401 steps/s (collection: 14.881s, learning 0.428s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 3.9766
+               Mean surrogate loss: -0.0010
+                 Mean entropy loss: -1.8175
+                       Mean reward: 69.80
+               Mean episode length: 455.85
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0011
+      Episode/Reward/leg_joint_vel: -0.0055
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0055
+          Episode/Reward/wheel_acc: -0.0005
+          Episode/Reward/wheel_vel: -0.0004
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0027
+         Episode/Reward/ang_vel_xy: -0.0028
+Episode/Reward/action_smoothness_leg: -0.0432
+        Episode/Reward/action_rate: -0.0035
+Episode/Reward/action_smoothness_wheel: -0.0087
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0129
+Episode/Reward/flat_orientation_y_exp: 0.6366
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0012
+Episode/Reward/flat_orientation_x_exp: 0.6527
+   Episode/Reward/track_lin_vel_xy: 2.4968
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0007
+    Episode/Reward/track_ang_vel_z: 1.0463
+Episode/Reward/track_ang_vel_z_square: -0.0043
+Episode/Reward/stand_still_lin_vel: -0.0103
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.6341
+Episode/Reward/track_height_square: -0.0024
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0030
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0019
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.4167
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 172032
+                    Iteration time: 15.31s
+                      Time elapsed: 00:07:16
+                               ETA: 00:08:34
+
+################################################################################
+                       [1m Learning iteration 28/60 [0m                       
+
+                       Computation: 388 steps/s (collection: 15.443s, learning 0.359s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.6158
+               Mean surrogate loss: -0.0017
+                 Mean entropy loss: -1.8176
+                       Mean reward: 76.41
+               Mean episode length: 497.71
+        Episode/Reward/termination: -0.0583
+      Episode/Reward/leg_joint_acc: -0.0019
+      Episode/Reward/leg_joint_vel: -0.0067
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0065
+          Episode/Reward/wheel_acc: -0.0009
+          Episode/Reward/wheel_vel: -0.0011
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0820
+         Episode/Reward/ang_vel_xy: -0.0209
+Episode/Reward/action_smoothness_leg: -0.0418
+        Episode/Reward/action_rate: -0.0035
+Episode/Reward/action_smoothness_wheel: -0.0079
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.1424
+Episode/Reward/flat_orientation_y_exp: 0.6547
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0808
+Episode/Reward/flat_orientation_x_exp: 0.6629
+   Episode/Reward/track_lin_vel_xy: 2.5643
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0021
+    Episode/Reward/track_ang_vel_z: 1.1046
+Episode/Reward/track_ang_vel_z_square: -0.0319
+Episode/Reward/stand_still_lin_vel: -0.0402
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.6321
+Episode/Reward/track_height_square: -0.3794
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0032
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0052
+     Episode/Reward/flight_penalty: -0.0281
+           Episode/Reset/terminate: 0.2917
+            Episode/Reset/time_out: 0.8333
+            Episode/Length/seconds: 19.0525
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.2917
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 178176
+                    Iteration time: 15.80s
+                      Time elapsed: 00:07:32
+                               ETA: 00:08:19
+
+################################################################################
+                       [1m Learning iteration 29/60 [0m                       
+
+                       Computation: 398 steps/s (collection: 15.064s, learning 0.354s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.5111
+               Mean surrogate loss: -0.0018
+                 Mean entropy loss: -1.8169
+                       Mean reward: 77.30
+               Mean episode length: 509.58
+        Episode/Reward/termination: -0.0625
+      Episode/Reward/leg_joint_acc: -0.0044
+      Episode/Reward/leg_joint_vel: -0.0063
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0078
+          Episode/Reward/wheel_acc: -0.0005
+          Episode/Reward/wheel_vel: -0.0013
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0770
+         Episode/Reward/ang_vel_xy: -0.0145
+Episode/Reward/action_smoothness_leg: -0.0394
+        Episode/Reward/action_rate: -0.0033
+Episode/Reward/action_smoothness_wheel: -0.0072
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.1436
+Episode/Reward/flat_orientation_y_exp: 0.5680
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0766
+Episode/Reward/flat_orientation_x_exp: 0.5315
+   Episode/Reward/track_lin_vel_xy: 2.2264
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0020
+    Episode/Reward/track_ang_vel_z: 0.9417
+Episode/Reward/track_ang_vel_z_square: -0.0173
+Episode/Reward/stand_still_lin_vel: -0.0030
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.4462
+Episode/Reward/track_height_square: -0.8339
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0028
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0062
+     Episode/Reward/flight_penalty: -0.0234
+           Episode/Reset/terminate: 0.6250
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 16.2550
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.6250
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 184320
+                    Iteration time: 15.42s
+                      Time elapsed: 00:07:47
+                               ETA: 00:08:03
+
+################################################################################
+                       [1m Learning iteration 30/60 [0m                       
+
+                       Computation: 402 steps/s (collection: 14.871s, learning 0.385s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.2086
+               Mean surrogate loss: -0.0022
+                 Mean entropy loss: -1.8166
+                       Mean reward: 80.02
+               Mean episode length: 525.06
+        Episode/Reward/termination: -0.0833
+      Episode/Reward/leg_joint_acc: -0.0023
+      Episode/Reward/leg_joint_vel: -0.0070
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0078
+          Episode/Reward/wheel_acc: -0.0006
+          Episode/Reward/wheel_vel: -0.0011
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0895
+         Episode/Reward/ang_vel_xy: -0.0211
+Episode/Reward/action_smoothness_leg: -0.0426
+        Episode/Reward/action_rate: -0.0040
+Episode/Reward/action_smoothness_wheel: -0.0084
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.1521
+Episode/Reward/flat_orientation_y_exp: 0.6529
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0685
+Episode/Reward/flat_orientation_x_exp: 0.6476
+   Episode/Reward/track_lin_vel_xy: 2.5670
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0013
+    Episode/Reward/track_ang_vel_z: 1.1125
+Episode/Reward/track_ang_vel_z_square: -0.0137
+Episode/Reward/stand_still_lin_vel: -0.0125
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.5853
+Episode/Reward/track_height_square: -0.5170
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0031
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0066
+     Episode/Reward/flight_penalty: -0.0302
+           Episode/Reset/terminate: 0.5417
+            Episode/Reset/time_out: 0.8333
+            Episode/Length/seconds: 18.0583
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.5417
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 190464
+                    Iteration time: 15.26s
+                      Time elapsed: 00:08:03
+                               ETA: 00:07:47
+
+################################################################################
+                       [1m Learning iteration 31/60 [0m                       
+
+                       Computation: 402 steps/s (collection: 14.876s, learning 0.404s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0462
+               Mean surrogate loss: -0.0018
+                 Mean entropy loss: -1.8181
+                       Mean reward: 83.05
+               Mean episode length: 541.31
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0038
+      Episode/Reward/leg_joint_vel: -0.0066
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0059
+          Episode/Reward/wheel_acc: -0.0005
+          Episode/Reward/wheel_vel: -0.0005
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0028
+         Episode/Reward/ang_vel_xy: -0.0021
+Episode/Reward/action_smoothness_leg: -0.0473
+        Episode/Reward/action_rate: -0.0038
+Episode/Reward/action_smoothness_wheel: -0.0103
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0186
+Episode/Reward/flat_orientation_y_exp: 0.7231
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0029
+Episode/Reward/flat_orientation_x_exp: 0.7420
+   Episode/Reward/track_lin_vel_xy: 2.8489
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0010
+    Episode/Reward/track_ang_vel_z: 1.2292
+Episode/Reward/track_ang_vel_z_square: -0.0042
+Episode/Reward/stand_still_lin_vel: -0.0140
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.7148
+Episode/Reward/track_height_square: -0.0039
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0038
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0006
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 196608
+                    Iteration time: 15.28s
+                      Time elapsed: 00:08:18
+                               ETA: 00:07:31
+
+################################################################################
+                       [1m Learning iteration 32/60 [0m                       
+
+                       Computation: 393 steps/s (collection: 15.233s, learning 0.380s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0464
+               Mean surrogate loss: -0.0023
+                 Mean entropy loss: -1.8213
+                       Mean reward: 88.02
+               Mean episode length: 569.99
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0018
+      Episode/Reward/leg_joint_vel: -0.0065
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0060
+          Episode/Reward/wheel_acc: -0.0007
+          Episode/Reward/wheel_vel: -0.0005
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0029
+         Episode/Reward/ang_vel_xy: -0.0031
+Episode/Reward/action_smoothness_leg: -0.0498
+        Episode/Reward/action_rate: -0.0041
+Episode/Reward/action_smoothness_wheel: -0.0094
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0150
+Episode/Reward/flat_orientation_y_exp: 0.7557
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0013
+Episode/Reward/flat_orientation_x_exp: 0.7744
+   Episode/Reward/track_lin_vel_xy: 2.9348
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0013
+    Episode/Reward/track_ang_vel_z: 1.2663
+Episode/Reward/track_ang_vel_z_square: -0.0049
+Episode/Reward/stand_still_lin_vel: -0.0207
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.7282
+Episode/Reward/track_height_square: -0.0054
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0036
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0004
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 202752
+                    Iteration time: 15.61s
+                      Time elapsed: 00:08:33
+                               ETA: 00:07:16
+
+################################################################################
+                       [1m Learning iteration 33/60 [0m                       
+
+                       Computation: 386 steps/s (collection: 15.509s, learning 0.379s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0562
+               Mean surrogate loss: -0.0016
+                 Mean entropy loss: -1.8247
+                       Mean reward: 92.19
+               Mean episode length: 594.79
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0009
+      Episode/Reward/leg_joint_vel: -0.0058
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0067
+          Episode/Reward/wheel_acc: -0.0002
+          Episode/Reward/wheel_vel: -0.0003
+        Episode/Reward/wheel_power: -0.0001
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0032
+         Episode/Reward/ang_vel_xy: -0.0024
+Episode/Reward/action_smoothness_leg: -0.0480
+        Episode/Reward/action_rate: -0.0037
+Episode/Reward/action_smoothness_wheel: -0.0091
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0200
+Episode/Reward/flat_orientation_y_exp: 0.7694
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0013
+Episode/Reward/flat_orientation_x_exp: 0.7953
+   Episode/Reward/track_lin_vel_xy: 3.0871
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0005
+    Episode/Reward/track_ang_vel_z: 1.3992
+Episode/Reward/track_ang_vel_z_square: -0.0030
+Episode/Reward/stand_still_lin_vel: -0.0288
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.7675
+Episode/Reward/track_height_square: -0.0034
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0043
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0001
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0833
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 208896
+                    Iteration time: 15.89s
+                      Time elapsed: 00:08:49
+                               ETA: 00:07:00
+
+################################################################################
+                       [1m Learning iteration 34/60 [0m                       
+
+                       Computation: 374 steps/s (collection: 16.013s, learning 0.371s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.1531
+               Mean surrogate loss: -0.0013
+                 Mean entropy loss: -1.8276
+                       Mean reward: 98.41
+               Mean episode length: 630.78
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0015
+      Episode/Reward/leg_joint_vel: -0.0069
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0066
+          Episode/Reward/wheel_acc: -0.0003
+          Episode/Reward/wheel_vel: -0.0006
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0032
+         Episode/Reward/ang_vel_xy: -0.0026
+Episode/Reward/action_smoothness_leg: -0.0513
+        Episode/Reward/action_rate: -0.0040
+Episode/Reward/action_smoothness_wheel: -0.0097
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0270
+Episode/Reward/flat_orientation_y_exp: 0.7862
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0014
+Episode/Reward/flat_orientation_x_exp: 0.8225
+   Episode/Reward/track_lin_vel_xy: 3.1243
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0012
+    Episode/Reward/track_ang_vel_z: 1.3848
+Episode/Reward/track_ang_vel_z_square: -0.0043
+Episode/Reward/stand_still_lin_vel: -0.0198
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.7938
+Episode/Reward/track_height_square: -0.0035
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0043
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0009
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.1250
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 215040
+                    Iteration time: 16.38s
+                      Time elapsed: 00:09:06
+                               ETA: 00:06:45
+
+################################################################################
+                       [1m Learning iteration 35/60 [0m                       
+
+                       Computation: 381 steps/s (collection: 15.707s, learning 0.386s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.0215
+               Mean surrogate loss: -0.0002
+                 Mean entropy loss: -1.8279
+                       Mean reward: 102.72
+               Mean episode length: 658.45
+        Episode/Reward/termination: -0.0194
+      Episode/Reward/leg_joint_acc: -0.0020
+      Episode/Reward/leg_joint_vel: -0.0071
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0070
+          Episode/Reward/wheel_acc: -0.0007
+          Episode/Reward/wheel_vel: -0.0007
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0431
+         Episode/Reward/ang_vel_xy: -0.0078
+Episode/Reward/action_smoothness_leg: -0.0536
+        Episode/Reward/action_rate: -0.0042
+Episode/Reward/action_smoothness_wheel: -0.0105
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0537
+Episode/Reward/flat_orientation_y_exp: 0.8054
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0146
+Episode/Reward/flat_orientation_x_exp: 0.8277
+   Episode/Reward/track_lin_vel_xy: 3.1952
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0012
+    Episode/Reward/track_ang_vel_z: 1.3901
+Episode/Reward/track_ang_vel_z_square: -0.0071
+Episode/Reward/stand_still_lin_vel: -0.0204
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.8006
+Episode/Reward/track_height_square: -0.1609
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0040
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0004
+     Episode/Reward/flight_penalty: -0.0081
+           Episode/Reset/terminate: 0.2917
+            Episode/Reset/time_out: 1.2917
+            Episode/Length/seconds: 19.6183
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.2917
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 221184
+                    Iteration time: 16.09s
+                      Time elapsed: 00:09:22
+                               ETA: 00:06:30
+
+################################################################################
+                       [1m Learning iteration 36/60 [0m                       
+
+                       Computation: 389 steps/s (collection: 15.385s, learning 0.370s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.5165
+               Mean surrogate loss: -0.0011
+                 Mean entropy loss: -1.8279
+                       Mean reward: 103.43
+               Mean episode length: 662.51
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0014
+      Episode/Reward/leg_joint_vel: -0.0078
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0076
+          Episode/Reward/wheel_acc: -0.0003
+          Episode/Reward/wheel_vel: -0.0003
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0032
+         Episode/Reward/ang_vel_xy: -0.0021
+Episode/Reward/action_smoothness_leg: -0.0511
+        Episode/Reward/action_rate: -0.0043
+Episode/Reward/action_smoothness_wheel: -0.0124
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0186
+Episode/Reward/flat_orientation_y_exp: 0.8397
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0014
+Episode/Reward/flat_orientation_x_exp: 0.8630
+   Episode/Reward/track_lin_vel_xy: 3.3170
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0008
+    Episode/Reward/track_ang_vel_z: 1.4644
+Episode/Reward/track_ang_vel_z_square: -0.0040
+Episode/Reward/stand_still_lin_vel: -0.0146
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.8343
+Episode/Reward/track_height_square: -0.0035
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0031
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: 0.0000
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 227328
+                    Iteration time: 15.76s
+                      Time elapsed: 00:09:38
+                               ETA: 00:06:14
+
+################################################################################
+                       [1m Learning iteration 37/60 [0m                       
+
+                       Computation: 386 steps/s (collection: 15.541s, learning 0.376s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.9202
+               Mean surrogate loss: -0.0006
+                 Mean entropy loss: -1.8282
+                       Mean reward: 107.03
+               Mean episode length: 687.52
+        Episode/Reward/termination: -0.0417
+      Episode/Reward/leg_joint_acc: -0.0013
+      Episode/Reward/leg_joint_vel: -0.0079
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0074
+          Episode/Reward/wheel_acc: -0.0013
+          Episode/Reward/wheel_vel: -0.0009
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0554
+         Episode/Reward/ang_vel_xy: -0.0111
+Episode/Reward/action_smoothness_leg: -0.0574
+        Episode/Reward/action_rate: -0.0047
+Episode/Reward/action_smoothness_wheel: -0.0132
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0533
+Episode/Reward/flat_orientation_y_exp: 0.8583
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0664
+Episode/Reward/flat_orientation_x_exp: 0.8849
+   Episode/Reward/track_lin_vel_xy: 3.3977
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0013
+    Episode/Reward/track_ang_vel_z: 1.4727
+Episode/Reward/track_ang_vel_z_square: -0.0111
+Episode/Reward/stand_still_lin_vel: -0.0253
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.8453
+Episode/Reward/track_height_square: -0.1848
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0042
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0025
+     Episode/Reward/flight_penalty: -0.0159
+           Episode/Reset/terminate: 0.2083
+            Episode/Reset/time_out: 0.7917
+            Episode/Length/seconds: 19.7675
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.2083
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 233472
+                    Iteration time: 15.92s
+                      Time elapsed: 00:09:54
+                               ETA: 00:05:59
+
+################################################################################
+                       [1m Learning iteration 38/60 [0m                       
+
+                       Computation: 380 steps/s (collection: 15.791s, learning 0.346s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 2.7303
+               Mean surrogate loss: -0.0009
+                 Mean entropy loss: -1.8287
+                       Mean reward: 110.78
+               Mean episode length: 715.34
+        Episode/Reward/termination: -0.0333
+      Episode/Reward/leg_joint_acc: -0.0029
+      Episode/Reward/leg_joint_vel: -0.0088
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0087
+          Episode/Reward/wheel_acc: -0.0014
+          Episode/Reward/wheel_vel: -0.0011
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0601
+         Episode/Reward/ang_vel_xy: -0.0111
+Episode/Reward/action_smoothness_leg: -0.0567
+        Episode/Reward/action_rate: -0.0047
+Episode/Reward/action_smoothness_wheel: -0.0117
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0758
+Episode/Reward/flat_orientation_y_exp: 0.8576
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0191
+Episode/Reward/flat_orientation_x_exp: 0.8889
+   Episode/Reward/track_lin_vel_xy: 3.3384
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0024
+    Episode/Reward/track_ang_vel_z: 1.4368
+Episode/Reward/track_ang_vel_z_square: -0.0150
+Episode/Reward/stand_still_lin_vel: -0.0193
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.8451
+Episode/Reward/track_height_square: -0.3025
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0038
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0007
+     Episode/Reward/flight_penalty: -0.0146
+           Episode/Reset/terminate: 0.1667
+            Episode/Reset/time_out: 0.8333
+            Episode/Length/seconds: 19.2767
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.1667
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 239616
+                    Iteration time: 16.14s
+                      Time elapsed: 00:10:10
+                               ETA: 00:05:44
+
+################################################################################
+                       [1m Learning iteration 39/60 [0m                       
+
+                       Computation: 385 steps/s (collection: 15.529s, learning 0.406s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0608
+               Mean surrogate loss: -0.0018
+                 Mean entropy loss: -1.8290
+                       Mean reward: 117.45
+               Mean episode length: 752.40
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0021
+      Episode/Reward/leg_joint_vel: -0.0081
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0070
+          Episode/Reward/wheel_acc: -0.0006
+          Episode/Reward/wheel_vel: -0.0005
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0043
+         Episode/Reward/ang_vel_xy: -0.0045
+Episode/Reward/action_smoothness_leg: -0.0577
+        Episode/Reward/action_rate: -0.0051
+Episode/Reward/action_smoothness_wheel: -0.0115
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0291
+Episode/Reward/flat_orientation_y_exp: 0.9030
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0033
+Episode/Reward/flat_orientation_x_exp: 0.9360
+   Episode/Reward/track_lin_vel_xy: 3.5836
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0012
+    Episode/Reward/track_ang_vel_z: 1.5483
+Episode/Reward/track_ang_vel_z_square: -0.0055
+Episode/Reward/stand_still_lin_vel: -0.0242
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.8098
+Episode/Reward/track_height_square: -0.0684
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0040
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0012
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0417
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 245760
+                    Iteration time: 15.93s
+                      Time elapsed: 00:10:26
+                               ETA: 00:05:28
+
+################################################################################
+                       [1m Learning iteration 40/60 [0m                       
+
+                       Computation: 393 steps/s (collection: 15.209s, learning 0.389s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0724
+               Mean surrogate loss: -0.0023
+                 Mean entropy loss: -1.8283
+                       Mean reward: 121.29
+               Mean episode length: 776.30
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0025
+      Episode/Reward/leg_joint_vel: -0.0081
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0091
+          Episode/Reward/wheel_acc: -0.0008
+          Episode/Reward/wheel_vel: -0.0006
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0039
+         Episode/Reward/ang_vel_xy: -0.0035
+Episode/Reward/action_smoothness_leg: -0.0603
+        Episode/Reward/action_rate: -0.0049
+Episode/Reward/action_smoothness_wheel: -0.0122
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0338
+Episode/Reward/flat_orientation_y_exp: 0.9204
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0025
+Episode/Reward/flat_orientation_x_exp: 0.9626
+   Episode/Reward/track_lin_vel_xy: 3.6728
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0010
+    Episode/Reward/track_ang_vel_z: 1.5280
+Episode/Reward/track_ang_vel_z_square: -0.0072
+Episode/Reward/stand_still_lin_vel: -0.0222
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9312
+Episode/Reward/track_height_square: -0.0042
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0041
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0016
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 251904
+                    Iteration time: 15.60s
+                      Time elapsed: 00:10:41
+                               ETA: 00:05:13
+
+################################################################################
+                       [1m Learning iteration 41/60 [0m                       
+
+                       Computation: 398 steps/s (collection: 15.067s, learning 0.367s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.5445
+               Mean surrogate loss: -0.0014
+                 Mean entropy loss: -1.8285
+                       Mean reward: 125.49
+               Mean episode length: 800.23
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0027
+      Episode/Reward/leg_joint_vel: -0.0085
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0081
+          Episode/Reward/wheel_acc: -0.0007
+          Episode/Reward/wheel_vel: -0.0005
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0040
+         Episode/Reward/ang_vel_xy: -0.0034
+Episode/Reward/action_smoothness_leg: -0.0605
+        Episode/Reward/action_rate: -0.0048
+Episode/Reward/action_smoothness_wheel: -0.0118
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0297
+Episode/Reward/flat_orientation_y_exp: 0.9484
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0018
+Episode/Reward/flat_orientation_x_exp: 0.9872
+   Episode/Reward/track_lin_vel_xy: 3.7778
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0013
+    Episode/Reward/track_ang_vel_z: 1.5800
+Episode/Reward/track_ang_vel_z_square: -0.0069
+Episode/Reward/stand_still_lin_vel: -0.0229
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9509
+Episode/Reward/track_height_square: -0.0045
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0043
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0003
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 258048
+                    Iteration time: 15.43s
+                      Time elapsed: 00:10:57
+                               ETA: 00:04:57
+
+################################################################################
+                       [1m Learning iteration 42/60 [0m                       
+
+                       Computation: 393 steps/s (collection: 15.285s, learning 0.314s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.2784
+               Mean surrogate loss: -0.0010
+                 Mean entropy loss: -1.8289
+                       Mean reward: 130.25
+               Mean episode length: 826.64
+        Episode/Reward/termination: -0.0667
+      Episode/Reward/leg_joint_acc: -0.0055
+      Episode/Reward/leg_joint_vel: -0.0102
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0087
+          Episode/Reward/wheel_acc: -0.0029
+          Episode/Reward/wheel_vel: -0.0013
+        Episode/Reward/wheel_power: -0.0004
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0794
+         Episode/Reward/ang_vel_xy: -0.0210
+Episode/Reward/action_smoothness_leg: -0.0628
+        Episode/Reward/action_rate: -0.0052
+Episode/Reward/action_smoothness_wheel: -0.0113
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.1423
+Episode/Reward/flat_orientation_y_exp: 0.9283
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0331
+Episode/Reward/flat_orientation_x_exp: 0.9663
+   Episode/Reward/track_lin_vel_xy: 3.6895
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0014
+    Episode/Reward/track_ang_vel_z: 1.5318
+Episode/Reward/track_ang_vel_z_square: -0.0113
+Episode/Reward/stand_still_lin_vel: -0.0167
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9391
+Episode/Reward/track_height_square: -0.2220
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0043
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0107
+     Episode/Reward/flight_penalty: -0.0204
+           Episode/Reset/terminate: 0.3333
+            Episode/Reset/time_out: 0.6667
+            Episode/Length/seconds: 19.6267
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.3333
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 264192
+                    Iteration time: 15.60s
+                      Time elapsed: 00:11:12
+                               ETA: 00:04:41
+
+################################################################################
+                       [1m Learning iteration 43/60 [0m                       
+
+                       Computation: 401 steps/s (collection: 14.964s, learning 0.335s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0464
+               Mean surrogate loss: -0.0013
+                 Mean entropy loss: -1.8318
+                       Mean reward: 131.46
+               Mean episode length: 834.20
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0020
+      Episode/Reward/leg_joint_vel: -0.0100
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0101
+          Episode/Reward/wheel_acc: -0.0003
+          Episode/Reward/wheel_vel: -0.0009
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0045
+         Episode/Reward/ang_vel_xy: -0.0039
+Episode/Reward/action_smoothness_leg: -0.0580
+        Episode/Reward/action_rate: -0.0049
+Episode/Reward/action_smoothness_wheel: -0.0119
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0346
+Episode/Reward/flat_orientation_y_exp: 0.9490
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0020
+Episode/Reward/flat_orientation_x_exp: 0.9926
+   Episode/Reward/track_lin_vel_xy: 3.7653
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0013
+    Episode/Reward/track_ang_vel_z: 1.5620
+Episode/Reward/track_ang_vel_z_square: -0.0073
+Episode/Reward/stand_still_lin_vel: -0.0149
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9499
+Episode/Reward/track_height_square: -0.0054
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0044
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: 0.0000
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 270336
+                    Iteration time: 15.30s
+                      Time elapsed: 00:11:28
+                               ETA: 00:04:25
+
+################################################################################
+                       [1m Learning iteration 44/60 [0m                       
+
+                       Computation: 380 steps/s (collection: 15.734s, learning 0.426s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0464
+               Mean surrogate loss: -0.0015
+                 Mean entropy loss: -1.8359
+                       Mean reward: 134.64
+               Mean episode length: 858.16
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0023
+      Episode/Reward/leg_joint_vel: -0.0090
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0079
+          Episode/Reward/wheel_acc: -0.0006
+          Episode/Reward/wheel_vel: -0.0006
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0043
+         Episode/Reward/ang_vel_xy: -0.0033
+Episode/Reward/action_smoothness_leg: -0.0627
+        Episode/Reward/action_rate: -0.0050
+Episode/Reward/action_smoothness_wheel: -0.0127
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0518
+Episode/Reward/flat_orientation_y_exp: 0.9250
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0605
+Episode/Reward/flat_orientation_x_exp: 0.8900
+   Episode/Reward/track_lin_vel_xy: 3.7321
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0018
+    Episode/Reward/track_ang_vel_z: 1.6343
+Episode/Reward/track_ang_vel_z_square: -0.0059
+Episode/Reward/stand_still_lin_vel: -0.0163
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.8597
+Episode/Reward/track_height_square: -0.2372
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0039
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0006
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 276480
+                    Iteration time: 16.16s
+                      Time elapsed: 00:11:44
+                               ETA: 00:04:10
+
+################################################################################
+                       [1m Learning iteration 45/60 [0m                       
+
+                       Computation: 392 steps/s (collection: 15.292s, learning 0.368s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0576
+               Mean surrogate loss: -0.0010
+                 Mean entropy loss: -1.8373
+                       Mean reward: 139.00
+               Mean episode length: 883.49
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0038
+      Episode/Reward/leg_joint_vel: -0.0086
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0079
+          Episode/Reward/wheel_acc: -0.0004
+          Episode/Reward/wheel_vel: -0.0007
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0045
+         Episode/Reward/ang_vel_xy: -0.0034
+Episode/Reward/action_smoothness_leg: -0.0617
+        Episode/Reward/action_rate: -0.0049
+Episode/Reward/action_smoothness_wheel: -0.0126
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0749
+Episode/Reward/flat_orientation_y_exp: 0.8952
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0307
+Episode/Reward/flat_orientation_x_exp: 0.9376
+   Episode/Reward/track_lin_vel_xy: 3.7074
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0016
+    Episode/Reward/track_ang_vel_z: 1.6088
+Episode/Reward/track_ang_vel_z_square: -0.0064
+Episode/Reward/stand_still_lin_vel: -0.0251
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.7013
+Episode/Reward/track_height_square: -0.3828
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0037
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0004
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.2500
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 282624
+                    Iteration time: 15.66s
+                      Time elapsed: 00:11:59
+                               ETA: 00:03:54
+
+################################################################################
+                       [1m Learning iteration 46/60 [0m                       
+
+                       Computation: 383 steps/s (collection: 15.654s, learning 0.353s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0325
+               Mean surrogate loss: -0.0025
+                 Mean entropy loss: -1.8396
+                       Mean reward: 143.41
+               Mean episode length: 904.44
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0029
+      Episode/Reward/leg_joint_vel: -0.0087
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0079
+          Episode/Reward/wheel_acc: -0.0004
+          Episode/Reward/wheel_vel: -0.0007
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0035
+         Episode/Reward/ang_vel_xy: -0.0032
+Episode/Reward/action_smoothness_leg: -0.0597
+        Episode/Reward/action_rate: -0.0046
+Episode/Reward/action_smoothness_wheel: -0.0102
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0354
+Episode/Reward/flat_orientation_y_exp: 0.9460
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0017
+Episode/Reward/flat_orientation_x_exp: 0.9935
+   Episode/Reward/track_lin_vel_xy: 3.7497
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0013
+    Episode/Reward/track_ang_vel_z: 1.6297
+Episode/Reward/track_ang_vel_z_square: -0.0060
+Episode/Reward/stand_still_lin_vel: -0.0219
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9583
+Episode/Reward/track_height_square: -0.0043
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0043
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: 0.0000
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 288768
+                    Iteration time: 16.01s
+                      Time elapsed: 00:12:15
+                               ETA: 00:03:39
+
+################################################################################
+                       [1m Learning iteration 47/60 [0m                       
+
+                       Computation: 399 steps/s (collection: 15.032s, learning 0.333s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.2470
+               Mean surrogate loss: -0.0030
+                 Mean entropy loss: -1.8421
+                       Mean reward: 145.00
+               Mean episode length: 912.46
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0014
+      Episode/Reward/leg_joint_vel: -0.0086
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0102
+          Episode/Reward/wheel_acc: -0.0009
+          Episode/Reward/wheel_vel: -0.0007
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0037
+         Episode/Reward/ang_vel_xy: -0.0036
+Episode/Reward/action_smoothness_leg: -0.0642
+        Episode/Reward/action_rate: -0.0049
+Episode/Reward/action_smoothness_wheel: -0.0120
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0421
+Episode/Reward/flat_orientation_y_exp: 0.9356
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0026
+Episode/Reward/flat_orientation_x_exp: 0.9906
+   Episode/Reward/track_lin_vel_xy: 3.7738
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0012
+    Episode/Reward/track_ang_vel_z: 1.5784
+Episode/Reward/track_ang_vel_z_square: -0.0071
+Episode/Reward/stand_still_lin_vel: -0.0129
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9483
+Episode/Reward/track_height_square: -0.0053
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0048
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: 0.0000
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 294912
+                    Iteration time: 15.37s
+                      Time elapsed: 00:12:31
+                               ETA: 00:03:23
+
+################################################################################
+                       [1m Learning iteration 48/60 [0m                       
+
+                       Computation: 380 steps/s (collection: 15.745s, learning 0.396s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.3372
+               Mean surrogate loss: -0.0011
+                 Mean entropy loss: -1.8441
+                       Mean reward: 147.35
+               Mean episode length: 930.60
+        Episode/Reward/termination: -0.0083
+      Episode/Reward/leg_joint_acc: -0.0026
+      Episode/Reward/leg_joint_vel: -0.0093
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0081
+          Episode/Reward/wheel_acc: -0.0011
+          Episode/Reward/wheel_vel: -0.0007
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0157
+         Episode/Reward/ang_vel_xy: -0.0061
+Episode/Reward/action_smoothness_leg: -0.0631
+        Episode/Reward/action_rate: -0.0049
+Episode/Reward/action_smoothness_wheel: -0.0109
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0630
+Episode/Reward/flat_orientation_y_exp: 0.8997
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0058
+Episode/Reward/flat_orientation_x_exp: 0.9689
+   Episode/Reward/track_lin_vel_xy: 3.6578
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0018
+    Episode/Reward/track_ang_vel_z: 1.6020
+Episode/Reward/track_ang_vel_z_square: -0.0066
+Episode/Reward/stand_still_lin_vel: -0.0267
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9263
+Episode/Reward/track_height_square: -0.0475
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0043
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0017
+     Episode/Reward/flight_penalty: -0.0049
+           Episode/Reset/terminate: 0.0417
+            Episode/Reset/time_out: 1.0417
+            Episode/Length/seconds: 19.5367
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0417
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 301056
+                    Iteration time: 16.14s
+                      Time elapsed: 00:12:47
+                               ETA: 00:03:07
+
+################################################################################
+                       [1m Learning iteration 49/60 [0m                       
+
+                       Computation: 388 steps/s (collection: 15.435s, learning 0.378s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0328
+               Mean surrogate loss: -0.0029
+                 Mean entropy loss: -1.8457
+                       Mean reward: 149.07
+               Mean episode length: 944.44
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0016
+      Episode/Reward/leg_joint_vel: -0.0083
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0099
+          Episode/Reward/wheel_acc: -0.0007
+          Episode/Reward/wheel_vel: -0.0004
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0039
+         Episode/Reward/ang_vel_xy: -0.0029
+Episode/Reward/action_smoothness_leg: -0.0621
+        Episode/Reward/action_rate: -0.0048
+Episode/Reward/action_smoothness_wheel: -0.0121
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0482
+Episode/Reward/flat_orientation_y_exp: 0.9282
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0130
+Episode/Reward/flat_orientation_x_exp: 0.9673
+   Episode/Reward/track_lin_vel_xy: 3.8067
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0010
+    Episode/Reward/track_ang_vel_z: 1.6718
+Episode/Reward/track_ang_vel_z_square: -0.0052
+Episode/Reward/stand_still_lin_vel: -0.0297
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9329
+Episode/Reward/track_height_square: -0.0449
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0037
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0003
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 307200
+                    Iteration time: 15.81s
+                      Time elapsed: 00:13:03
+                               ETA: 00:02:52
+
+################################################################################
+                       [1m Learning iteration 50/60 [0m                       
+
+                       Computation: 385 steps/s (collection: 15.563s, learning 0.357s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0323
+               Mean surrogate loss: -0.0013
+                 Mean entropy loss: -1.8480
+                       Mean reward: 150.46
+               Mean episode length: 953.44
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0035
+      Episode/Reward/leg_joint_vel: -0.0094
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0080
+          Episode/Reward/wheel_acc: -0.0020
+          Episode/Reward/wheel_vel: -0.0008
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0042
+         Episode/Reward/ang_vel_xy: -0.0030
+Episode/Reward/action_smoothness_leg: -0.0631
+        Episode/Reward/action_rate: -0.0049
+Episode/Reward/action_smoothness_wheel: -0.0121
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0521
+Episode/Reward/flat_orientation_y_exp: 0.9215
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0021
+Episode/Reward/flat_orientation_x_exp: 0.9924
+   Episode/Reward/track_lin_vel_xy: 3.7231
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0021
+    Episode/Reward/track_ang_vel_z: 1.6159
+Episode/Reward/track_ang_vel_z_square: -0.0062
+Episode/Reward/stand_still_lin_vel: -0.0216
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9703
+Episode/Reward/track_height_square: -0.0030
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0038
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0011
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 313344
+                    Iteration time: 15.92s
+                      Time elapsed: 00:13:19
+                               ETA: 00:02:36
+
+################################################################################
+                       [1m Learning iteration 51/60 [0m                       
+
+                       Computation: 378 steps/s (collection: 15.841s, learning 0.397s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.6922
+               Mean surrogate loss: -0.0013
+                 Mean entropy loss: -1.8498
+                       Mean reward: 152.06
+               Mean episode length: 964.98
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0028
+      Episode/Reward/leg_joint_vel: -0.0078
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0075
+          Episode/Reward/wheel_acc: -0.0009
+          Episode/Reward/wheel_vel: -0.0006
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0041
+         Episode/Reward/ang_vel_xy: -0.0033
+Episode/Reward/action_smoothness_leg: -0.0623
+        Episode/Reward/action_rate: -0.0048
+Episode/Reward/action_smoothness_wheel: -0.0117
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0726
+Episode/Reward/flat_orientation_y_exp: 0.8988
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0187
+Episode/Reward/flat_orientation_x_exp: 0.9637
+   Episode/Reward/track_lin_vel_xy: 3.7555
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0014
+    Episode/Reward/track_ang_vel_z: 1.6409
+Episode/Reward/track_ang_vel_z_square: -0.0057
+Episode/Reward/stand_still_lin_vel: -0.0278
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9205
+Episode/Reward/track_height_square: -0.0283
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0045
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0011
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0000
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 319488
+                    Iteration time: 16.24s
+                      Time elapsed: 00:13:35
+                               ETA: 00:02:21
+
+################################################################################
+                       [1m Learning iteration 52/60 [0m                       
+
+                       Computation: 372 steps/s (collection: 16.201s, learning 0.312s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.2937
+               Mean surrogate loss: -0.0001
+                 Mean entropy loss: -1.8494
+                       Mean reward: 153.82
+               Mean episode length: 975.18
+        Episode/Reward/termination: -0.0292
+      Episode/Reward/leg_joint_acc: -0.0062
+      Episode/Reward/leg_joint_vel: -0.0079
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0097
+          Episode/Reward/wheel_acc: -0.0012
+          Episode/Reward/wheel_vel: -0.0009
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0189
+         Episode/Reward/ang_vel_xy: -0.0077
+Episode/Reward/action_smoothness_leg: -0.0633
+        Episode/Reward/action_rate: -0.0049
+Episode/Reward/action_smoothness_wheel: -0.0117
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0716
+Episode/Reward/flat_orientation_y_exp: 0.9221
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0463
+Episode/Reward/flat_orientation_x_exp: 0.9776
+   Episode/Reward/track_lin_vel_xy: 3.7358
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0017
+    Episode/Reward/track_ang_vel_z: 1.6232
+Episode/Reward/track_ang_vel_z_square: -0.0068
+Episode/Reward/stand_still_lin_vel: -0.0407
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9026
+Episode/Reward/track_height_square: -0.0759
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0039
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0014
+     Episode/Reward/flight_penalty: -0.0107
+           Episode/Reset/terminate: 0.1667
+            Episode/Reset/time_out: 0.8750
+            Episode/Length/seconds: 19.8075
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.1667
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 325632
+                    Iteration time: 16.51s
+                      Time elapsed: 00:13:51
+                               ETA: 00:02:05
+
+################################################################################
+                       [1m Learning iteration 53/60 [0m                       
+
+                       Computation: 377 steps/s (collection: 15.893s, learning 0.389s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.4418
+               Mean surrogate loss: -0.0016
+                 Mean entropy loss: -1.8487
+                       Mean reward: 155.43
+               Mean episode length: 981.77
+        Episode/Reward/termination: -0.0167
+      Episode/Reward/leg_joint_acc: -0.0042
+      Episode/Reward/leg_joint_vel: -0.0090
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0074
+          Episode/Reward/wheel_acc: -0.0013
+          Episode/Reward/wheel_vel: -0.0006
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0047
+         Episode/Reward/ang_vel_xy: -0.0039
+Episode/Reward/action_smoothness_leg: -0.0584
+        Episode/Reward/action_rate: -0.0047
+Episode/Reward/action_smoothness_wheel: -0.0112
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0680
+Episode/Reward/flat_orientation_y_exp: 0.8723
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0095
+Episode/Reward/flat_orientation_x_exp: 0.9549
+   Episode/Reward/track_lin_vel_xy: 3.6368
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0015
+    Episode/Reward/track_ang_vel_z: 1.6134
+Episode/Reward/track_ang_vel_z_square: -0.0074
+Episode/Reward/stand_still_lin_vel: -0.0222
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9219
+Episode/Reward/track_height_square: -0.0051
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0039
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0035
+     Episode/Reward/flight_penalty: -0.0029
+           Episode/Reset/terminate: 0.1667
+            Episode/Reset/time_out: 1.6250
+            Episode/Length/seconds: 19.2600
+       Episode/Reset/cause_contact: 0.1667
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 331776
+                    Iteration time: 16.28s
+                      Time elapsed: 00:14:08
+                               ETA: 00:01:49
+
+################################################################################
+                       [1m Learning iteration 54/60 [0m                       
+
+                       Computation: 372 steps/s (collection: 16.085s, learning 0.399s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0717
+               Mean surrogate loss: -0.0022
+                 Mean entropy loss: -1.8484
+                       Mean reward: 155.42
+               Mean episode length: 982.79
+        Episode/Reward/termination: -0.1500
+      Episode/Reward/leg_joint_acc: -0.0054
+      Episode/Reward/leg_joint_vel: -0.0113
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0114
+          Episode/Reward/wheel_acc: -0.0008
+          Episode/Reward/wheel_vel: -0.0017
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0300
+         Episode/Reward/ang_vel_xy: -0.0260
+Episode/Reward/action_smoothness_leg: -0.0601
+        Episode/Reward/action_rate: -0.0055
+Episode/Reward/action_smoothness_wheel: -0.0102
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0889
+Episode/Reward/flat_orientation_y_exp: 0.8755
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.3473
+Episode/Reward/flat_orientation_x_exp: 0.9206
+   Episode/Reward/track_lin_vel_xy: 3.6328
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0012
+    Episode/Reward/track_ang_vel_z: 1.5190
+Episode/Reward/track_ang_vel_z_square: -0.0380
+Episode/Reward/stand_still_lin_vel: -0.0513
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.8938
+Episode/Reward/track_height_square: -0.2141
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0038
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0270
+     Episode/Reward/flight_penalty: -0.0540
+           Episode/Reset/terminate: 0.7500
+            Episode/Reset/time_out: 0.3333
+            Episode/Length/seconds: 19.1400
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.7500
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 337920
+                    Iteration time: 16.48s
+                      Time elapsed: 00:14:24
+                               ETA: 00:01:34
+
+################################################################################
+                       [1m Learning iteration 55/60 [0m                       
+
+                       Computation: 385 steps/s (collection: 15.536s, learning 0.391s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0411
+               Mean surrogate loss: -0.0022
+                 Mean entropy loss: -1.8487
+                       Mean reward: 155.66
+               Mean episode length: 985.42
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0024
+      Episode/Reward/leg_joint_vel: -0.0089
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0096
+          Episode/Reward/wheel_acc: -0.0006
+          Episode/Reward/wheel_vel: -0.0007
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0036
+         Episode/Reward/ang_vel_xy: -0.0038
+Episode/Reward/action_smoothness_leg: -0.0657
+        Episode/Reward/action_rate: -0.0050
+Episode/Reward/action_smoothness_wheel: -0.0112
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0524
+Episode/Reward/flat_orientation_y_exp: 0.9222
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0038
+Episode/Reward/flat_orientation_x_exp: 0.9868
+   Episode/Reward/track_lin_vel_xy: 3.7203
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0022
+    Episode/Reward/track_ang_vel_z: 1.5952
+Episode/Reward/track_ang_vel_z_square: -0.0067
+Episode/Reward/stand_still_lin_vel: -0.0227
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9720
+Episode/Reward/track_height_square: -0.0028
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0035
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0016
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.0833
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 344064
+                    Iteration time: 15.93s
+                      Time elapsed: 00:14:40
+                               ETA: 00:01:18
+
+################################################################################
+                       [1m Learning iteration 56/60 [0m                       
+
+                       Computation: 392 steps/s (collection: 15.330s, learning 0.333s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.8032
+               Mean surrogate loss: -0.0017
+                 Mean entropy loss: -1.8483
+                       Mean reward: 155.80
+               Mean episode length: 986.28
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0024
+      Episode/Reward/leg_joint_vel: -0.0081
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0079
+          Episode/Reward/wheel_acc: -0.0013
+          Episode/Reward/wheel_vel: -0.0005
+        Episode/Reward/wheel_power: -0.0002
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0042
+         Episode/Reward/ang_vel_xy: -0.0037
+Episode/Reward/action_smoothness_leg: -0.0605
+        Episode/Reward/action_rate: -0.0052
+Episode/Reward/action_smoothness_wheel: -0.0138
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0618
+Episode/Reward/flat_orientation_y_exp: 0.9076
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0019
+Episode/Reward/flat_orientation_x_exp: 0.9930
+   Episode/Reward/track_lin_vel_xy: 3.8064
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0011
+    Episode/Reward/track_ang_vel_z: 1.6802
+Episode/Reward/track_ang_vel_z_square: -0.0050
+Episode/Reward/stand_still_lin_vel: -0.0278
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9507
+Episode/Reward/track_height_square: -0.0051
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0036
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0003
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.6667
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 350208
+                    Iteration time: 15.66s
+                      Time elapsed: 00:14:56
+                               ETA: 00:01:02
+
+################################################################################
+                       [1m Learning iteration 57/60 [0m                       
+
+                       Computation: 382 steps/s (collection: 15.693s, learning 0.387s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 1.6894
+               Mean surrogate loss: -0.0015
+                 Mean entropy loss: -1.8479
+                       Mean reward: 155.10
+               Mean episode length: 985.23
+        Episode/Reward/termination: -0.0222
+      Episode/Reward/leg_joint_acc: -0.0046
+      Episode/Reward/leg_joint_vel: -0.0097
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0084
+          Episode/Reward/wheel_acc: -0.0017
+          Episode/Reward/wheel_vel: -0.0011
+        Episode/Reward/wheel_power: -0.0004
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0360
+         Episode/Reward/ang_vel_xy: -0.0101
+Episode/Reward/action_smoothness_leg: -0.0609
+        Episode/Reward/action_rate: -0.0051
+Episode/Reward/action_smoothness_wheel: -0.0119
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0950
+Episode/Reward/flat_orientation_y_exp: 0.8892
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0180
+Episode/Reward/flat_orientation_x_exp: 0.9702
+   Episode/Reward/track_lin_vel_xy: 3.6458
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0025
+    Episode/Reward/track_ang_vel_z: 1.5151
+Episode/Reward/track_ang_vel_z_square: -0.0172
+Episode/Reward/stand_still_lin_vel: -0.0105
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9172
+Episode/Reward/track_height_square: -0.1798
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0038
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0004
+     Episode/Reward/flight_penalty: -0.0114
+           Episode/Reset/terminate: 0.3333
+            Episode/Reset/time_out: 1.3333
+            Episode/Length/seconds: 19.6289
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.3333
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 356352
+                    Iteration time: 16.08s
+                      Time elapsed: 00:15:12
+                               ETA: 00:00:47
+
+################################################################################
+                       [1m Learning iteration 58/60 [0m                       
+
+                       Computation: 381 steps/s (collection: 15.741s, learning 0.343s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0455
+               Mean surrogate loss: -0.0023
+                 Mean entropy loss: -1.8485
+                       Mean reward: 155.50
+               Mean episode length: 985.23
+        Episode/Reward/termination: -0.0139
+      Episode/Reward/leg_joint_acc: -0.0045
+      Episode/Reward/leg_joint_vel: -0.0092
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0089
+          Episode/Reward/wheel_acc: -0.0015
+          Episode/Reward/wheel_vel: -0.0010
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0237
+         Episode/Reward/ang_vel_xy: -0.0069
+Episode/Reward/action_smoothness_leg: -0.0636
+        Episode/Reward/action_rate: -0.0051
+Episode/Reward/action_smoothness_wheel: -0.0130
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0818
+Episode/Reward/flat_orientation_y_exp: 0.8975
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0129
+Episode/Reward/flat_orientation_x_exp: 0.9759
+   Episode/Reward/track_lin_vel_xy: 3.7116
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0019
+    Episode/Reward/track_ang_vel_z: 1.5545
+Episode/Reward/track_ang_vel_z_square: -0.0129
+Episode/Reward/stand_still_lin_vel: -0.0155
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9398
+Episode/Reward/track_height_square: -0.1128
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0039
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: -0.0003
+     Episode/Reward/flight_penalty: -0.0075
+           Episode/Reset/terminate: 0.2083
+            Episode/Reset/time_out: 1.2083
+            Episode/Length/seconds: 19.7606
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.2083
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 362496
+                    Iteration time: 16.08s
+                      Time elapsed: 00:15:28
+                               ETA: 00:00:31
+
+################################################################################
+                       [1m Learning iteration 59/60 [0m                       
+
+                       Computation: 378 steps/s (collection: 15.912s, learning 0.312s)
+             Mean action noise std: 0.18
+          Mean value_function loss: 0.0279
+               Mean surrogate loss: -0.0018
+                 Mean entropy loss: -1.8515
+                       Mean reward: 155.59
+               Mean episode length: 985.23
+        Episode/Reward/termination: 0.0000
+      Episode/Reward/leg_joint_acc: -0.0051
+      Episode/Reward/leg_joint_vel: -0.0088
+Episode/Reward/leg_joint_pair_pos_diff: 0.0000
+       Episode/Reward/joint_torque: -0.0097
+          Episode/Reward/wheel_acc: -0.0024
+          Episode/Reward/wheel_vel: -0.0008
+        Episode/Reward/wheel_power: -0.0003
+     Episode/Reward/wheel_air_spin: 0.0000
+          Episode/Reward/lin_vel_z: -0.0047
+         Episode/Reward/ang_vel_xy: -0.0031
+Episode/Reward/action_smoothness_leg: -0.0639
+        Episode/Reward/action_rate: -0.0049
+Episode/Reward/action_smoothness_wheel: -0.0124
+ Episode/Reward/flat_orientation_y: 0.0000
+Episode/Reward/flat_orientation_y_v: -0.0677
+Episode/Reward/flat_orientation_y_exp: 0.9000
+ Episode/Reward/flat_orientation_x: 0.0000
+Episode/Reward/flat_orientation_x_v: -0.0055
+Episode/Reward/flat_orientation_x_exp: 0.9830
+   Episode/Reward/track_lin_vel_xy: 3.7576
+Episode/Reward/track_lin_vel_xy_tight: 0.0000
+Episode/Reward/track_lin_vel_xy_square: -0.0019
+    Episode/Reward/track_ang_vel_z: 1.6320
+Episode/Reward/track_ang_vel_z_square: -0.0063
+Episode/Reward/stand_still_lin_vel: -0.0146
+        Episode/Reward/stand_still: 0.0000
+   Episode/Reward/track_height_exp: 0.0000
+Episode/Reward/track_height_exp_soft: 0.0000
+Episode/Reward/track_height_exp_tight: 0.9569
+Episode/Reward/track_height_square: -0.0046
+Episode/Reward/track_height_exp_both_wheels_contact: 0.0000
+            Episode/Reward/no_fork: 0.0000
+     Episode/Reward/no_fork_square: -0.0032
+        Episode/Reward/no_fork_exp: 0.0000
+      Episode/Reward/no_fork_z_exp: 0.0000
+  Episode/Reward/undesired_contact: 0.0000
+     Episode/Reward/flight_penalty: -0.0022
+           Episode/Reset/terminate: 0.0000
+            Episode/Reset/time_out: 1.2500
+            Episode/Length/seconds: 19.9800
+       Episode/Reset/cause_contact: 0.0000
+          Episode/Reset/cause_roll: 0.0000
+         Episode/Reset/cause_pitch: 0.0000
+     Episode/Reset/cause_numerical: 0.0000
+Episode/Reset/cause_spring_working_range: 0.0000
+              Metrics/success_rate: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 368640
+                    Iteration time: 16.22s
+                      Time elapsed: 00:15:44
+                               ETA: 00:00:15
+
+[INFO]: SimulationContext cleared
