@@ -41,19 +41,32 @@ dd55308419fbd04eecaf213588dd1249a09ec7eba86073d8338d0b06b46c3a61
 
 ![训练曲线](training_curves.png)
 
-## 最终推荐模型的回放
+## 最终推荐模型的完整九地形回放
 
-推荐 baseline 已在相同 checkpoint、固定 `+0.5 m/s`、零转向和开启域随机化的条件下回放 800 步（16 s）。平地、18% 上坡和 18% 下坡均为 `PASS`，无策略重置，闭链峰值不超过 `0.224 mm`。
+推荐 baseline 使用与定量评估相同的、每种地形一列且为完整难度的评估生成器，
+在固定 `+0.5 m/s`、零转向、种子 `20261111` 和开启域随机化的条件下，依次录制：
 
-![平地、18% 上坡和 18% 下坡回放帧](video_contact_sheet.png)
+`flat → up06 → up10 → up14 → up18 → down06 → down10 → down14 → down18`
 
-完整 MP4、逐帧摘要和 SHA-256 在服务器：
+每种地形运行 400 个策略步，即 8 s。九段全部为 `PASS`、`resets=0`，接触终止
+计数为 0，地形标签和 `full_difficulty=true` 也已逐项核对。九段的平均速度误差为
+`0.02356 m/s`，最大速度误差为 `0.02776 m/s`，闭链峰值不超过 `0.22712 mm`。
+
+![九种完整难度地形的回放帧](all_terrains_contact_sheet.png)
+
+- 九宫格同屏版（`1920x1080`、25 FPS、8 s）：
+  [all_terrains_grid_1920x1080.mp4](../../artifacts/v14_6_mixed_slopes_20261111/videos/all_terrains_grid_1920x1080.mp4)
+- 九地形连续完整版（`1280x720`、25 FPS、77.32 s）：
+  [all_terrains_sequence_1280x720.mp4](../../artifacts/v14_6_mixed_slopes_20261111/videos/all_terrains_sequence_1280x720.mp4)
+
+完整 MP4、九段逐帧摘要和 SHA-256 位于服务器：
 
 ```text
-/data/wheeled-legged/projects/v14_6_mixed_slopes_20261111/runs/videos_baseline_20261111_v3
+/data/wheeled-legged/projects/v14_6_mixed_slopes_20261111/runs/videos_all_terrains_20261111_v3
 ```
 
-视频只用于观察，不替代下面的三种子定量评估。
+逐地形视频指标见 [video_metrics.json](video_metrics.json)。视频用于观察实际运动，
+成功率、速度误差和横向偏移仍以下面的三种子冻结策略评估为准。
 
 ## 三种子冻结策略评估
 
@@ -114,9 +127,12 @@ dd55308419fbd04eecaf213588dd1249a09ec7eba86073d8338d0b06b46c3a61
 - 表格形式：[summary.csv](summary.csv)
 - 原始三种子报告：[raw/](raw/)
 - 训练曲线：[training_curves.png](training_curves.png)
+- 九地形回放指标：[video_metrics.json](video_metrics.json)
+- 九地形回放预览：[all_terrains_contact_sheet.png](all_terrains_contact_sheet.png)
 - 复现脚本：[../../tools/train_mixed_slopes.sh](../../tools/train_mixed_slopes.sh)
 - 三种子汇总脚本：[../../tools/summarize_mixed_slopes_eval.py](../../tools/summarize_mixed_slopes_eval.py)
 - 录像脚本：[../../tools/record_mixed_slopes.sh](../../tools/record_mixed_slopes.sh)
+- 视频合成脚本：[../../tools/assemble_mixed_slopes_video.py](../../tools/assemble_mixed_slopes_video.py)
 
 服务器上的推荐模型将保存到：
 

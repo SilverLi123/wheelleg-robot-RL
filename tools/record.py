@@ -21,6 +21,11 @@ parser.add_argument('--profile', required=True)
 parser.add_argument('--sequence', action='store_true', help='5s straight, 5s turn, 5s reverse; deterministic actor with DR.')
 parser.add_argument('--terrain-column', type=int)
 parser.add_argument('--terrain-level', type=int, default=0)
+parser.add_argument(
+    '--mixed-eval-terrain',
+    action='store_true',
+    help='Use the same one-column-per-family full-difficulty terrain as mixed_slopes_eval.py.',
+)
 parser.add_argument('--light-slope-case', choices=('flat', 'up', 'down'), help=argparse.SUPPRESS)
 parser.add_argument(
     '--allow-profile-override',
@@ -40,6 +45,10 @@ import os
 os.environ['WHEELBIPE_EXPERIMENT'] = args.profile
 if args.standstill and args.fixed_command:
     parser.error('Choose either standstill or a fixed command')
+if args.mixed_eval_terrain and args.terrain_column is None:
+    parser.error('--mixed-eval-terrain requires --terrain-column')
+if args.mixed_eval_terrain and args.profile != 'mixed_slopes_20261111':
+    parser.error('--mixed-eval-terrain requires --profile mixed_slopes_20261111')
 if args.record:
     args.enable_cameras = True
     args.video = True
@@ -109,6 +118,12 @@ try:
         cfg.sim.visualizer_cfgs = [KitVisualizerCfg(headless=True, origin_type='asset',
             origin_track_path='robot', eye=(-.9, -1.15, .55), lookat=(0., 0., 0.),
             window_width=1280, window_height=720, enable_live_plots=False)]
+    if args.mixed_eval_terrain:
+        from agent_tasks.direct.wheelbipe.wheelbipe_own import mixed_slopes
+        # This is the same exact full-difficulty terrain used by the repeated
+        # frozen-policy evaluation. It changes only terrain geometry; policy,
+        # observation, action, physics and domain-randomization stay frozen.
+        mixed_slopes.configure_evaluation(cfg)
     from scripts.rsl_rl.checkpoint_utils import prepare_checkpoint
     prepare_checkpoint(cfg, None, str(args.checkpoint))
     summary['saved_observation_action_fields_match'] = True
@@ -186,7 +201,9 @@ try:
         summary['terrain_selection'] = dict(column=args.terrain_column, level=args.terrain_level,
             max_level=int(origins.shape[0])-1, family=terrain_name, fixed_for_video=True,
             origin=origins[args.terrain_level, args.terrain_column].tolist(),
-            note='Declared test tile selection, not training progress or full-terrain validation.')
+            full_difficulty=args.mixed_eval_terrain,
+            note=('Full-difficulty evaluation tile.' if args.mixed_eval_terrain
+                  else 'Declared training tile selection, not training progress or full-terrain validation.'))
     else:
         summary['terrain_selection'] = dict(family=args.light_slope_case or 'flat', level=None)
     if args.light_slope_case:

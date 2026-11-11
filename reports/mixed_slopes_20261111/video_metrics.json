@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "checkpoint": "teammate downhill_pilot model_50.pt",
+  "checkpoint_sha256": "dd55308419fbd04eecaf213588dd1249a09ec7eba86073d8338d0b06b46c3a61",
+  "terrain_profile": "mixed_slopes_20261111 evaluation generator",
+  "command": {
+    "vx_m_s": 0.5,
+    "yaw_rate_rad_s": 0.0
+  },
+  "seed": 20261111,
+  "steps_per_tile": 400,
+  "seconds_per_tile": 8.0,
+  "policy": "deterministic actor mean",
+  "domain_randomization": true,
+  "all_tiles_passed": true,
+  "mean_vx_mae_m_s": 0.023557913675904277,
+  "max_vx_mae_m_s": 0.02775857351720333,
+  "tiles": [
+    {
+      "tile": "flat",
+      "status": "PASS",
+      "resets": 0,
+      "full_difficulty": true,
+      "vx_mae_m_s": 0.021808143332600595,
+      "yaw_rate_mae_rad_s": 0.023898587373150804,
+      "max_closure_mm": 0.1201756313093938,
+      "world_height_range_m": [
+        0.2552962303161621,
+        0.2667059302330017
+      ]
+    },
+    {
+      "tile": "up06",
+      "status": "PASS",
+      "resets": 0,
+      "full_difficulty": true,
+      "vx_mae_m_s": 0.025793361738324166,
+      "yaw_rate_mae_rad_s": 0.022455591213401932,
+      "max_closure_mm": 0.12166907981736585,
+      "world_height_range_m": [
+        0.25542181730270386,
+        0.36162737011909485
+      ]
+    },
+    {
+      "tile": "up10",
+      "status": "PASS",
+      "resets": 0,
+      "full_difficulty": true,
+      "vx_mae_m_s": 0.027281545847654343,
+      "yaw_rate_mae_rad_s": 0.04325320618452679,
+      "max_closure_mm": 0.12138369493186474,
+      "world_height_range_m": [
+        0.25515443086624146,
+        0.43328237533569336
+      ]
+    },
+    {
+      "tile": "up14",
+      "status": "PASS",
+      "resets": 0,
+      "full_difficulty": true,
+      "vx_mae_m_s": 0.02775857351720333,
+      "yaw_rate_mae_rad_s": 0.03927559850744729,
+      "max_closure_mm": 0.12121491454308853,
+      "world_height_range_m": [
+        0.25524798035621643,
+        0.5008792281150818
+      ]
+    },
+    {
+      "tile": "up18",
+      "status": "PASS",
+      "resets": 0,
+      "full_difficulty": true,
+      "vx_mae_m_s": 0.025611313581466674,
+      "yaw_rate_mae_rad_s": 0.04865256768207473,
+      "max_closure_mm": 0.12118244194425642,
+      "world_height_range_m": [
+        0.25506895780563354,
+        0.5728402137756348
+      ]
+    },
+    {
+      "tile": "down06",
+      "status": "PASS",
+      "resets": 0,
+      "full_difficulty": true,
+      "vx_mae_m_s": 0.01893246464431286,
+      "yaw_rate_mae_rad_s": 0.02051079624587146,
+      "max_closure_mm": 0.22597429051529616,
+      "world_height_range_m": [
+        0.14612703025341034,
+        0.28170591592788696
+      ]
+    },
+    {
+      "tile": "down10",
+      "status": "PASS",
+      "resets": 0,
+      "full_difficulty": true,
+      "vx_mae_m_s": 0.021289968714118004,
+      "yaw_rate_mae_rad_s": 0.02443874083837727,
+      "max_closure_mm": 0.22711076599080116,
+      "world_height_range_m": [
+        0.07103268802165985,
+        0.28170591592788696
+      ]
+    },
+    {
+      "tile": "down14",
+      "status": "PASS",
+      "resets": 0,
+      "full_difficulty": true,
+      "vx_mae_m_s": 0.020853696018457414,
+      "yaw_rate_mae_rad_s": 0.024072014834828223,
+      "max_closure_mm": 0.22540459758602083,
+      "world_height_range_m": [
+        -0.008467312902212143,
+        0.28170591592788696
+      ]
+    },
+    {
+      "tile": "down18",
+      "status": "PASS",
+      "resets": 0,
+      "full_difficulty": true,
+      "vx_mae_m_s": 0.022692155689001084,
+      "yaw_rate_mae_rad_s": 0.024039313947032497,
+      "max_closure_mm": 0.22485115914605558,
+      "world_height_range_m": [
+        -0.08887530863285065,
+        0.28170591592788696
+      ]
+    }
+  ]
+}
