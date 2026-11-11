@@ -11,7 +11,7 @@ from .unified_environment import UnifiedLocomotionMixin, configure_unified
 from .domain_randomization import DomainRandomizationMixin, configure_domain_randomization
 from agent_world.assets.wheelbipe_own import MECHANISM
 from .runner_cfg import WheelbipeOwnPPORunnerCfg
-from . import mixed_slopes
+from . import mixed_slopes, random_terrain_map
 
 PROFILE_FILE = Path(__file__).resolve().parents[7] / 'profiles.json'
 
@@ -101,6 +101,7 @@ class WheelbipeOwnExperimentCfg(WheelbipeOwnFlatEnvCfg):
         configure_domain_randomization(self, p['domain_randomization'])
         configure_unified(self, p)
         mixed_slopes.configure(self)
+        random_terrain_map.configure(self)
 
 @configclass
 class WheelbipeOwnExperimentPlayCfg(WheelbipeOwnExperimentCfg):
@@ -129,6 +130,7 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
         self._slew_leg = self.robot.data.joint_pos[:, self._legs_act_idx].clone()
         self._slew_wheel = self.robot.data.joint_vel[:, self._wheel_idx].clone()
         self._init_unified()
+        random_terrain_map.initialize(self)
 
     def _init_training_audit(self):
         from pxr import Usd, UsdPhysics
@@ -190,6 +192,8 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
                        updated_unix=time.time())
             if getattr(self, '_dr_ready', False): row['domain_randomization'] = self._domain_randomization_health()
             if getattr(self, '_u_ready', False): row['unified'] = self._unified_health()
+            if hasattr(self, '_random_terrain_layout'):
+                row['random_terrain'] = random_terrain_map.health(self)
             tmp = self._audit_path.with_suffix('.tmp')
             tmp.write_text(json.dumps(row,indent=2))
             tmp.replace(self._audit_path)
@@ -210,6 +214,8 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
             self.wheel_actions = self._slew_wheel.clone()
 
     def _custom_reset_random(self, env_ids):
+        if self.cfg.experiment_profile_settings.get('random_terrain_map'):
+            return random_terrain_map.reset(self, env_ids)
         if self.cfg.experiment_profile_settings.get('unified_locomotion'):
             return self._unified_reset(env_ids)
         # Terrain progression requires observed travel, never the PPO iteration alone.
