@@ -232,6 +232,12 @@ def configure(cfg) -> None:
 
     layout_seed = int(settings.get("random_terrain_layout_seed", LAYOUT_SEED))
     layout = make_layout(layout_seed)
+    color_scheme = str(settings.get("terrain_color_scheme", "height"))
+    if color_scheme != "height":
+        raise ValueError(
+            "The connected random map requires terrain_color_scheme='height' "
+            "so uphill and downhill remain visually distinguishable"
+        )
     cfg.terrain = cfg.terrain.copy()
     cfg.terrain.terrain_type = "generator"
     cfg.terrain.max_init_terrain_level = 0
@@ -245,6 +251,10 @@ def configure(cfg) -> None:
         horizontal_scale=0.1,
         vertical_scale=0.001,
         use_cache=False,
+        # Isaac Lab applies the Turbo/inferno height palette to the combined
+        # terrain mesh.  High crests, neutral crossings and low valleys then
+        # read clearly in GUI previews and recorded videos.
+        color_scheme=color_scheme,
         difficulty_range=(1.0, 1.0),
         sub_terrains={
             "random_map": MeshPlaneTerrainCfg(

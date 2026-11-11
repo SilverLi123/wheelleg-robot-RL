@@ -645,6 +645,8 @@
     "terrain_version": "random_terrain_map_v1",
     "terrain_generation": "fixed-seed 3x3 shuffle of flat and 6/10/14/18 percent uphill/downhill ridges; zero-height connected boundaries; random patch and physical reset",
     "random_terrain_map": true,
-    "random_terrain_layout_seed": 20261112
+    "random_terrain_layout_seed": 20261112,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
   }
 }
