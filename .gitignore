@@ -17,4 +17,13 @@ runs/
 
 # Local delivery artifacts are kept for viewing but not committed as large files.
 /artifacts/
-artifacts
+/artifacts
+
+# 视频与其他模型产物留在个人工作区；reports 只选取必要的小型证据。
+/videos/
+*.mp4
+*.webm
+*.pth
+*.ckpt
+*.safetensors
+.pytest_cache/

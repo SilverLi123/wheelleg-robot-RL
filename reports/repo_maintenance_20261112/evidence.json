@@ -1,0 +1,128 @@
+{
+  "audited_at": "2026-11-12T08:59:21.466729+00:00",
+  "scope": "read-only repository/source and existing experiment inspection; no simulation/training or remote writes",
+  "skill_creator": {
+    "path": "/Users/silver/.codex/skills/.system/skill-creator/SKILL.md",
+    "sha256": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66",
+    "version": "No version declared in bundled SKILL.md",
+    "catalog_url": "https://www.skills.sh/openai/codex/skill-creator"
+  },
+  "checkouts": [
+    {
+      "path": "/Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab",
+      "branch": "v14-6-terrain-finetune",
+      "commit": "88c4957812aa84d87b83c7d234c8ce00d965a27d",
+      "common_git_dir": "/Users/silver/RL/wheelleg_lab_legacy/.git",
+      "dirty_status_at_audit": "M .gitignore\n M AGENT.md\n M AGENTS.md\n M README.md\n M TASKS.md\n M tools/README.md\n?? .agents/\n?? artifacts\n?? docs/upstream/tooling-20261108.md",
+      "sources": {
+        "tools/record.py": "1e832865c1d163cbbe502905190088c9be89da8fb14dfa7ce34c702c28157ebf",
+        "tools/test_random_terrain.py": "0990ec9d17541c83c9cf2a2bb25b4e4d1eda8c682784561f9711c631cd1ce9dd",
+        "project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/random_terrain_map.py": "000b631a254632e63f7295e6f4d9921cbf0565705696e71063f3f07d45f02ac0"
+      }
+    },
+    {
+      "path": "/Users/silver/RL/wheelleg_lab",
+      "branch": "v14-6-terrain-finetune",
+      "commit": "d3b06552943215dc5d1edbc357c38e854ee5c464",
+      "common_git_dir": ".git",
+      "dirty_status_at_audit": "M README.md\n M project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/random_terrain_map.py\n M tools/test_random_terrain.py\n?? docs/terrain-audit-and-obstacles-20261112.md\n?? project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/obstacle_terrain.py\n?? tools/prepare_obstacle_terrain.py\n?? tools/test_obstacle_terrain.py\n?? videos/",
+      "sources": {
+        "tools/record.py": "cdae86449078f0c75185014418577192f01008c9973559d75f749a45ea525086",
+        "tools/test_random_terrain.py": "f63cb371c1c77271d13e6c968c55bd13f76f2eb213c80843fb2a87759588fbf3",
+        "project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/random_terrain_map.py": "56ed33f9c61191c98c21796f94be7d110134992911d92a72750c7e381d2e48f2"
+      }
+    }
+  ],
+  "existing_evaluation_summaries": [
+    {
+      "label": "baseline",
+      "source": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/stack12_baseline_20261112T062224Z/summary.json",
+      "summary_sha256": "bf62df8b935833fa33be55ec92b697ef6ba4788fb7c882a12b4d8391a370ad74",
+      "checkpoint": "/data/wheeled-legged/projects/v14_6_downhill_pilot_8KMxPj/runs/train_udMln2/logs/rsl_rl/wheelbipe_v14_6_dr_20261108/2026-11-11_06-29-46_downhill_pilot/model_50.pt",
+      "checkpoint_sha256": "dd55308419fbd04eecaf213588dd1249a09ec7eba86073d8338d0b06b46c3a61",
+      "seed": 20261112,
+      "repeats": 3,
+      "seconds": 12.0,
+      "command_m_s": 0.65,
+      "status": "PASS",
+      "passed": 27,
+      "attempts": 27,
+      "physics_dt_s": 0.005,
+      "decimation": 4,
+      "vx_mae_m_s": 0.015013179931513689,
+      "mean_abs_lateral_m": 0.49199817122684586
+    },
+    {
+      "label": "model10",
+      "source": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/stack12_model10_20261112T062737Z/summary.json",
+      "summary_sha256": "f9143479412f92cdbff1b8d225627d3e3c18da9bc3c51884fc51dea4fe48431a",
+      "checkpoint": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/train_8uUtJL/logs/rsl_rl/own_low_speed_exploration/2026-11-12_05-50-01_terrain_tri_fix_4096_40/model_10.pt",
+      "checkpoint_sha256": "94b2f59139dd1203529ddfac03eaa58139063f1d0dcdb4af44511c327cdb81f3",
+      "seed": 20261112,
+      "repeats": 3,
+      "seconds": 12.0,
+      "command_m_s": 0.65,
+      "status": "PASS",
+      "passed": 27,
+      "attempts": 27,
+      "physics_dt_s": 0.005,
+      "decimation": 4,
+      "vx_mae_m_s": 0.013583449129429128,
+      "mean_abs_lateral_m": 0.5373542427464768
+    },
+    {
+      "label": "model20",
+      "source": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/stack12_model20_20261112T062224Z/summary.json",
+      "summary_sha256": "8e592b66f74e14a5d36ab51263ad9d09b3aa51692e0673f5c1e6a390664a3790",
+      "checkpoint": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/train_8uUtJL/logs/rsl_rl/own_low_speed_exploration/2026-11-12_05-50-01_terrain_tri_fix_4096_40/model_20.pt",
+      "checkpoint_sha256": "bc397f97ec26913547ddd2e7829eb2402fdde5d000a02f8a5a7bc2170433ca95",
+      "seed": 20261112,
+      "repeats": 3,
+      "seconds": 12.0,
+      "command_m_s": 0.65,
+      "status": "PASS",
+      "passed": 27,
+      "attempts": 27,
+      "physics_dt_s": 0.005,
+      "decimation": 4,
+      "vx_mae_m_s": 0.029008028097450733,
+      "mean_abs_lateral_m": 0.48229064806192007
+    },
+    {
+      "label": "model30",
+      "source": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/stack12_model30_20261112T062224Z/summary.json",
+      "summary_sha256": "727e5833e13c59797b067f20cb74dfb0f0764e0ad2116490e2f527fc2aa17b72",
+      "checkpoint": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/train_8uUtJL/logs/rsl_rl/own_low_speed_exploration/2026-11-12_05-50-01_terrain_tri_fix_4096_40/model_30.pt",
+      "checkpoint_sha256": "cef6b9cb0884f6e1a83f1ab7124d3895440fea7447450493d5fe6fbcb0509d91",
+      "seed": 20261112,
+      "repeats": 3,
+      "seconds": 12.0,
+      "command_m_s": 0.65,
+      "status": "PASS",
+      "passed": 27,
+      "attempts": 27,
+      "physics_dt_s": 0.005,
+      "decimation": 4,
+      "vx_mae_m_s": 0.04245126454366578,
+      "mean_abs_lateral_m": 0.44970658725058593
+    },
+    {
+      "label": "final39",
+      "source": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/stack12_final39_20261112T062225Z/summary.json",
+      "summary_sha256": "a8e185c6b0be85e99b140c1ca576770c2dab2351ba7161b5d9b65f16f36b76c0",
+      "checkpoint": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/train_8uUtJL/logs/rsl_rl/own_low_speed_exploration/2026-11-12_05-50-01_terrain_tri_fix_4096_40/model_39.pt",
+      "checkpoint_sha256": "25030a3f2f5c5add423f8637ad8e807eb54ad2b34cddcf2f9d3408e529f8d214",
+      "seed": 20261112,
+      "repeats": 3,
+      "seconds": 12.0,
+      "command_m_s": 0.65,
+      "status": "PASS",
+      "passed": 27,
+      "attempts": 27,
+      "physics_dt_s": 0.005,
+      "decimation": 4,
+      "vx_mae_m_s": 0.04960442127452956,
+      "mean_abs_lateral_m": 0.4543233647321661
+    }
+  ]
+}

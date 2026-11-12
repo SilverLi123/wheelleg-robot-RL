@@ -1,0 +1,195 @@
+{
+  "interpreter": "/private/var/folders/zf/9x8vcjy9091gxc3tdsz79_lm0000gn/T/wheelleg-skill-validation-e3dwvql6/bin/python",
+  "temporary_dependencies": {
+    "PyYAML": "6.0.3",
+    "numpy": "2.0.2"
+  },
+  "checks": [
+    {
+      "name": "skill-creator quick_validate",
+      "command": "/private/var/folders/zf/9x8vcjy9091gxc3tdsz79_lm0000gn/T/wheelleg-skill-validation-e3dwvql6/bin/python -B /Users/silver/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/.agents/skills/wheelleg-repo-maintenance",
+      "returncode": 0,
+      "stdout": "Skill is valid!",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "test_light_slope.py",
+      "command": "/private/var/folders/zf/9x8vcjy9091gxc3tdsz79_lm0000gn/T/wheelleg-skill-validation-e3dwvql6/bin/python -B /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/test_light_slope.py -v",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "test_down_uses_the_inverted_terrain_configuration (__main__.LightSlopeChecks) ... ok\ntest_forward_axis_uses_wxyz (__main__.LightSlopeChecks) ... ok\ntest_pitch_uses_wxyz_and_keeps_its_sign (__main__.LightSlopeChecks) ... ok\ntest_root_state_xyzw_is_reordered_before_calculation (__main__.LightSlopeChecks) ... ok\ntest_route_must_match_the_requested_direction_at_every_sample (__main__.LightSlopeChecks) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK",
+      "status": "PASS"
+    },
+    {
+      "name": "test_mixed_slopes.py",
+      "command": "/private/var/folders/zf/9x8vcjy9091gxc3tdsz79_lm0000gn/T/wheelleg-skill-validation-e3dwvql6/bin/python -B /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/test_mixed_slopes.py",
+      "returncode": 0,
+      "stdout": "trimesh runtime import: SKIP (not installed on this interpreter)\nmixed_slopes geometry contract: PASS",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "test_random_terrain.py",
+      "command": "/private/var/folders/zf/9x8vcjy9091gxc3tdsz79_lm0000gn/T/wheelleg-skill-validation-e3dwvql6/bin/python -B /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/test_random_terrain.py",
+      "returncode": 0,
+      "stdout": "random terrain geometry contract: PASS",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "test_terrain_curriculum.py",
+      "command": "/private/var/folders/zf/9x8vcjy9091gxc3tdsz79_lm0000gn/T/wheelleg-skill-validation-e3dwvql6/bin/python -B /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/test_terrain_curriculum.py",
+      "returncode": 0,
+      "stdout": "legacy terrain curriculum contract: PASS",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Python AST",
+      "status": "PASS",
+      "files": 160,
+      "detail": "Parse only; no Isaac imports or bytecode writes"
+    },
+    {
+      "name": "Shell syntax",
+      "status": "PASS",
+      "files": 9,
+      "command": "bash -n for each project/tools shell script"
+    },
+    {
+      "name": "Own task registration fixture",
+      "status": "PASS",
+      "ids": [
+        "Robotics-Wheelbipe-Own-Flat-v0",
+        "Robotics-Wheelbipe-Own-Flat-Play-v0",
+        "Robotics-Wheelbipe-Own-Explore-v0"
+      ],
+      "detail": "Real leaf registration executed against gym fixture; string entry points resolve to local AST classes; no runtime environment instantiated"
+    },
+    {
+      "name": "entry dry-run baseline",
+      "command": "bash tools/wheelleg.sh --dry-run baseline 6 --check",
+      "returncode": 0,
+      "stdout": "bash /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/reproduce_v14_6_flat.sh 6 --check",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "entry dry-run train",
+      "command": "bash tools/wheelleg.sh --dry-run train --task Robotics-Wheelbipe-Own-Explore-v0 --checkpoint /absolute/model.pt --max_iterations 1",
+      "returncode": 0,
+      "stdout": "bash /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/run.sh /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/project/scripts/rsl_rl/train.py --task Robotics-Wheelbipe-Own-Explore-v0 --checkpoint /absolute/model.pt --max_iterations 1",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "entry dry-run eval",
+      "command": "bash tools/wheelleg.sh --dry-run eval --root /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab --profile unified_locomotion --checkpoint /absolute/model.pt --output /absolute/personal/runs/eval",
+      "returncode": 0,
+      "stdout": "bash /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/run.sh /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/validate.py --root /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab --profile unified_locomotion --checkpoint /absolute/model.pt --output /absolute/personal/runs/eval",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "entry dry-run video",
+      "command": "bash tools/wheelleg.sh --dry-run view video --profile unified_locomotion --checkpoint /absolute/model.pt --output /absolute/personal/runs/video --steps 300",
+      "returncode": 0,
+      "stdout": "bash /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/run.sh /Users/silver/.codex/worktrees/v14-6-terrain-finetune/wheelleg_lab/tools/record.py --record --profile unified_locomotion --checkpoint /absolute/model.pt --output /absolute/personal/runs/video --steps 300",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "unsupported interactive remains explicit",
+      "status": "PASS",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "stderr": "当前 Sim 6.2 统一入口暂不支持交互回放：原 Own 回放入口要求 Sim 5.1；未启动仿真。可使用 view video。"
+    },
+    {
+      "name": "inherited modules and installation input preserved",
+      "status": "PASS",
+      "chain": [
+        [
+          "wheelbipe_own/env.py",
+          "WheelbipeOwnEnv",
+          "WheelbipeV14Env"
+        ],
+        [
+          "wheelbipe_V14/env.py",
+          "WheelbipeV14Env",
+          "WheelbipeV13Env"
+        ],
+        [
+          "wheelbipe_V13/env.py",
+          "WheelbipeV13Env",
+          "Wheelbipe25V3Env"
+        ]
+      ],
+      "installer_copy_pairs": [
+        [
+          "terrain.py",
+          "unified_terrain.py"
+        ],
+        [
+          "sampling.py",
+          "unified_sampling.py"
+        ],
+        [
+          "environment.py",
+          "unified_environment.py"
+        ]
+      ],
+      "sampling_sha256": "6ab1d054db5a2fb9f27e5b2daec85b0f984e9d398d17059509391d822b9ebe7a"
+    },
+    {
+      "name": "protected runtime hashes",
+      "status": "PASS",
+      "files": 170,
+      "detail": "All existing project Python/Shell, tools Python/Shell and profiles.json bytes unchanged"
+    },
+    {
+      "name": "historical tools README preserved verbatim",
+      "status": "PASS"
+    },
+    {
+      "name": "artifact exclusion and skill/evidence discoverability",
+      "status": "PASS",
+      "ignored_paths": [
+        "artifacts",
+        "videos/demo.mp4",
+        "runs/experiment/model.pt",
+        "logs/train.log",
+        "cache/test",
+        "candidate.pth",
+        "candidate.ckpt",
+        "candidate.safetensors"
+      ]
+    },
+    {
+      "name": "UI metadata",
+      "status": "PASS",
+      "detail": "YAML loads; prompt references skill; implicit invocation retains default true"
+    },
+    {
+      "name": "changed documentation local links",
+      "status": "PASS",
+      "links_checked": 26
+    },
+    {
+      "name": "diff whitespace",
+      "command": "git diff --check",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "status": "PASS"
+    }
+  ],
+  "limitations": [
+    "No live Isaac Sim, CUDA, GPU or long training execution",
+    "No torch/trimesh installed in temporary validation interpreter; explicit test skips are retained",
+    "No platform automatic skill-routing test; independent description/behavior forward-testing was performed",
+    "No deployment or disconnect-survival test of a watcher; existing supervisor compatibility was statically inspected"
+  ],
+  "harness_correction": "Initial inline harness resolved the venv Python symlink and looked for runtime-before.json in the Xcode base prefix; corrected to sys.prefix. The output report was also initialized before validating its incoming Markdown link. No runtime repository code changed for these harness corrections."
+}

@@ -1,98 +1,88 @@
 # Wheelbipe V14-6：复杂地形微调
 
-本分支直接以队友的统一地形项目作为开发基线。平地数值复现已通过，并通过冻结策略录像检查了站立、前进、后退和转向。
+基于队友稳定平地 PPO 策略，在 Isaac Sim 6.2 / Isaac Lab 3 / RSL-RL 中开发复杂地形能力，暂不实机部署。当前开发进度见 [TASKS](TASKS.md)，工具职责见 [tools/README](tools/README.md)。
 
-2026-11-11 已在平地以及 6%/10%/14%/18% 上下坡组成的混合地形上完成一次 60 次 PPO 微调。256 个环境共训练 368,640 timesteps，使用 GPU 3，耗时 15 分 44 秒。三种子评估显示新模型能稳定通过全部 12 秒地形探测，但速度跟踪和横向偏移没有稳定超过原 baseline，因此最终推荐仍使用原 `model_50.pt`。完整数据见[混合坡度实验报告](reports/mixed_slopes_20261111/README.md)。
+## 当前状态与来源
 
-随机连片地图曾存在两行交界处最大 1.44 m 的垂直断层，并且 `track_height` 奖励与旧课程逻辑分别错误使用世界海拔和清零后的回合时长。当前修复、6,000 步探针和 27 个单块评估见[随机混合地形核查报告](reports/random_terrain_20261112/README.md)。在该报告的连续九块视频完成前，不启动正式训练。
+- 平地 `model_2000.pt` 数值复现和动作录像已有完成记录。纵向混合坡度试验及能力退化结论见 [2026-11-11 报告](reports/mixed_slopes_20261111/README.md)。
+- 原随机地图的接缝、高度奖励、课程和连续路线失败见 [地形核查报告](reports/random_terrain_20261112/README.md)。它是历史证据，不表示整图已通过。
+- 后续三角面高度修复、4096×40 训练和候选录像发生在另一独立 clone `/Users/silver/RL/wheelleg_lab` 与 pi 个人目录，**当前 IDE 检出尚未合入这些源码修复**。本轮只读核实了服务器结果，来源、哈希及条件见 [维护审计](reports/repo_maintenance_20261112/README.md)。先核对同步，再复现实验。
+- `model_39.pt` 是已训练候选，不能标成最佳：已有九地块 27/27 结果来自一个 seed 下三个 repeat，训练物理为 400 Hz、评估为 200 Hz；尚需同条件能力保留与整图验证。`model_30` 的现有平均横移还略小于 `model_39`。
+- 本地 MP4 在 `/Users/silver/RL/wheelleg_lab/videos/final39_showcase_20261112/`；后续默认交付 MP4。二维 HTML 视频壳不提供自由三维相机。
 
-## 日常命令
+## 四个日常入口
 
-从仓库根目录使用 [tools/wheelleg.sh](tools/wheelleg.sh)。把 `--dry-run` 放在子命令之前可先查看实际转发的命令；它不连接服务器、不检查资产，也不启动仿真。
+从仓库根目录运行 `bash tools/wheelleg.sh ...`。`--dry-run` 放在子命令前，仅显示转发命令，不连接服务器或启动仿真；不代表兼容性预检。
 
-| 入口 | 在哪里执行 | 调用什么 |
+| 入口 | 执行地点 | 实际调用与前提 |
 | --- | --- | --- |
-| `baseline` | Mac | [平地复现脚本](tools/reproduce_v14_6_flat.sh)，固定原权重、配置与指令。加 `--check` 只做只读预检。 |
-| `train` | pi 的个人检出目录 | [train.py](project/scripts/rsl_rl/train.py)，从指定 checkpoint 初始化 PPO 微调。迭代数、任务和实验配置显式指定。 |
-| `eval` | pi 的个人检出目录 | [validate.py](tools/validate.py)，输出地形和速度评估的 `summary.json`。 |
-| `view video` | pi 的个人检出目录 | [record.py](tools/record.py)，输出 `policy.mp4`、`review.html` 与回放结果。 |
-| `view interactive` | 当前暂不可用 | 旧 Own 回放入口要求 Sim 5.1，本分支使用 6.2。该命令只提示，不启动仿真。 |
+| `baseline GPU [--check]` | Mac | `reproduce_v14_6_flat.sh`，SSH 校验队友原 `model_2000.pt` 配套配置；`--check` 只读。不加该参数会回放。 |
+| `train ...` | pi 个人检出 | `run.sh` → `project/scripts/rsl_rl/train.py`。显式指定 task、checkpoint、profile、预算与设备。 |
+| `eval ...` | pi 个人检出 | `run.sh` → `tools/validate.py`。用于原 unified 五家族速度矩阵，**不是**随机图九地块评估。 |
+| `view video ...` | pi 个人检出 | `run.sh` → `tools/record.py --record`。输出 `policy.mp4`、`review.html`、rollout、summary；配套 profile/资产须匹配。 |
 
-在 **Mac** 上先检查计划使用的 GPU，例如 4：
+`view interactive` 当前明确返回未支持，不启动仿真。`run.sh` 只设导入路径、缓存和设备，不自动保证 GPU 空闲。共享 GPU 在实际启动前需核对利用率、显存和 compute PID。
 
-```bash
-bash tools/wheelleg.sh baseline 4 --check
-bash tools/wheelleg.sh baseline 4
-```
-
-其余命令需先把本分支放到 **pi 的个人目录**，配齐训练 USD、复位姿态库，以及 checkpoint 和同级 `params/`。下面是命令模板：先替换两个权重路径、确认 GPU 空闲，并按该次实验确认 stage 和积分子步。示例不代表已验证平地权重可以直接迁移到统一地形。
+在 **Mac** 上查看四条路由，无运行副作用：
 
 ```bash
-FLAT=/absolute/path/to/model_2000.pt
-UNIFIED=/absolute/path/to/matching_unified_checkpoint.pt
-export WHEELBIPE_GPU=4 WHEELBIPE_STAGE=3 WHEELBIPE_INTEGRATION_SUBSTEPS=2
-
-WHEELBIPE_EXPERIMENT=unified_locomotion bash tools/wheelleg.sh train \
-  --task Robotics-Wheelbipe-Own-Explore-v0 --checkpoint "$FLAT" --checkpoint_architecture \
-  --num_envs 8 --max_iterations 1 --seed 42 --device cuda:0 --viz none --run_name slope_smoke
-
-bash tools/wheelleg.sh eval --root "$PWD" --profile unified_locomotion \
-  --checkpoint "$UNIFIED" --output "$PWD/runs/unified_eval" \
-  --level 0 --seed 71903 --seconds 8 --device cuda:0 --viz none
-
-bash tools/wheelleg.sh view video --profile unified_locomotion \
-  --checkpoint "$UNIFIED" --output "$PWD/runs/unified_video" \
-  --terrain-column 0 --terrain-level 0 --steps 300 --seed 71903 --device cuda:0
-
-bash tools/wheelleg.sh view interactive
+bash tools/wheelleg.sh --dry-run baseline 6 --check
+bash tools/wheelleg.sh --dry-run train --task Robotics-Wheelbipe-Own-Explore-v0 --checkpoint /absolute/model.pt --max_iterations 1
+bash tools/wheelleg.sh --dry-run eval --root /absolute/personal-checkout --profile unified_locomotion --checkpoint /absolute/model.pt --output /absolute/personal-checkout/runs/eval
+bash tools/wheelleg.sh --dry-run view video --profile unified_locomotion --checkpoint /absolute/model.pt --output /absolute/personal-checkout/runs/video --steps 300
 ```
 
-统一入口沿用原启动器和底层兼容性校验。启动前还会检查 checkpoint 的配套文件和资产哈希；评估与录制要求配套的统一地形 profile 和非归一化 ELU 策略。平地原权重的原条件评估请用 `baseline`。微调允许选择新的 profile，能否加载仍由训练入口检查；只有恢复同一实验才显式使用 `--resume_training`。统一入口不会代选权重、种子、地形或训练资源。
+实际运行使用共享 `/data/isaac620-migration-20261103/env620/bin/python` 与个人源码 PYTHONPATH，不在共享环境重复安装项目。Own checkpoint 需要同级 `params/launch.json`、`env.yaml`、`agent.yaml` 和匹配 USD/reset bank；详情由 `checkpoint_utils.py` 等现有校验实现。
 
-## 源码索引
+**已知 CLI 前提：** 当前 baseline 包装脚本保留旧 `--headless` 参数，而共享 Lab 的参数由实际 launcher 注册；使用前核对该版本支持的选项。本轮不修改运行脚本，也不宣称静态路由检查已验证真实 baseline 执行。
 
-| 入口 | 职责 |
+## 实验专用入口
+
+| 任务 | 已有工具 |
 | --- | --- |
-| [project/source/](project/source/) | 主源码：`agent_tasks` 定义任务，`agent_world` 定义机器人和执行器，`agent_rl` 提供 RL 接口和算法扩展。 |
-| [project/scripts/rsl_rl/train.py](project/scripts/rsl_rl/train.py) | RSL-RL 训练入口。 |
-| [profiles.json](profiles.json) | 队友统一地形的实验预设，按原路径供任务读取。 |
-| [tools/](tools/) | 启动、评测、监控和恢复工具。[平地复现脚本](tools/reproduce_v14_6_flat.sh)从 Mac 调用 pi 上的原评测。 |
-| [docs/v14-6-flat-baseline.md](docs/v14-6-flat-baseline.md) | 平地基线来源、复现命令和验收标准。 |
-| [docs/upstream/](docs/upstream/) | 队友历次实验的配置、评估与来源记录。里面的 `plan.json` 是队友的旧运行计划。 |
-| [reports/mixed_slopes_20261111/](reports/mixed_slopes_20261111/) | 本次混合坡度训练、三种子评估、曲线和模型选择证据。 |
-| [reports/random_terrain_20261112/](reports/random_terrain_20261112/) | 连片随机地图接缝、高度奖励、课程逻辑和逐块评估证据。 |
+| 随机连片地形训练/冒烟 | `tools/train_random_terrain.sh {train,smoke} GPU`；默认 4096×120，运行前显式确定有限预算与初始化权重。 |
+| 随机图九地块冻结评估 | `tools/eval_random_terrain.py`，显式设 profile/checkpoint/output/seconds/seed/repeats/speed。 |
+| 随机图连续路线录像 | `tools/record.py --random-terrain-route --record`；验收需同时检查 `route.completed`、reset 和物理结果。 |
+| 纵向混合坡度训练/评估/录像 | `train_mixed_slopes.sh`、`eval_mixed_slopes.sh`、`record_mixed_slopes.sh`。 |
+| 固定轻坡诊断 | `tools/light_slope.py {flat,up,down} GPU`；原平地权重、+0.50 m/s、300 策略步。 |
 
-做坡面适配时，先看 [unified_terrain.py](project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/unified_terrain.py) 如何生成地形，再看 [unified_environment.py](project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/unified_environment.py) 如何接入复位、终止和课程。观测与动作可对照[导出契约](docs/upstream/examples/export_724/input_contract.json)；它对应 724 号权重，不是平地 2000 号权重的验证记录。
+随机地形路线默认使用低空跟随相机；整图视角可显式传入 `--camera-mode overview`。现有 [video_review.py](tools/video_review.py) 会生成二维 `review.html`，也可用 `python3 tools/video_review.py <录像目录>` 补生成；它只缩放已录制画面，不提供自由三维相机，默认交付仍使用 MP4。录像工具更新已随本次推送合入，三角面地形修复仍需单独同步。
 
-训练用 USD、重置姿态库和 checkpoint 没有纳入 Git。运行统一地形代码前，需要在自己的服务器检出目录配齐同版本资产和权重，再建立自己的运行计划。当前平地复现继续读取 pi 上的原始训练项目和权重，结果写入个人日志目录。
+同 profile 也可能有不同物理 dt：`WHEELBIPE_INTEGRATION_SUBSTEPS` 默认 1，训练脚本设为 2。比较实验须看落盘配置。恢复同一优化器用原有 `--resume_training`，新分布微调用 fresh optimizer；不能混称。
 
-当前步骤见[任务清单](TASKS.md)。旧独立项目保存在 [main 分支](https://github.com/SilverLi123/wheelleg-robot-RL/tree/main)。
+长训练可在服务器 tmux 中存活，但持续自动监控需另有兼容的后台监控进程、心跳与有限重试。旧 `tools/supervise.py` 依赖历史 unified plan 和目录布局，当前随机图尚未适配；本轮没有启动训练或部署监控。
 
-轻坡评估使用 [light_slope.py](tools/light_slope.py) 调用原有录像逻辑。把它和同目录的 `record.py` 放在 pi 上自己的检出目录；从该目录执行 `python3 tools/light_slope.py up 6`（`up` 可换为 `flat` 或 `down`，`6` 换成当前空闲 GPU）。每次只跑一组，结果保存在个人日志目录。三组都以 +0.50 m/s、零转向、静止起步回放 6 秒。
+## 文件地图
 
-`policy.mp4` 用来观察运动，`summary.json` 记录速度误差、重置与世界坐标俯仰范围。录像完成后，[video_review.py](tools/video_review.py) 会在同一目录生成独立 `review.html`；它支持滚轮缩放、拖拽平移、进度控制、播放速度和全屏，不依赖网络或第三方库。该页面缩放的是已录制的二维画面，不会重新计算 3D 相机。已有录像可用 `python3 tools/video_review.py <录像目录>` 补生成页面。
-
-随机地形路线默认使用低空跟随相机，便于观察机架、腿和坡面细节；需要整张地图时显式传入 `--camera-mode overview`。Isaac Lab 3.0 的 `root_state_w` 按 `(x, y, z, w)` 存储四元数；计算函数按 `(w, x, y, z)` 接收，读取完整 root state 时会显式重排。`initial_pose_status` 检查机器人是否面向世界 `+X`，`direction_status` 检查第一次尝试是否实际向 `+X` 前进。坡面组另记录沿预计路线测出的坡度和实际地面高差，并通过 `slope_status` 判断是否走过预期方向。
-
-只有 `status`、`initial_pose_status` 和 `slope_status` 均满足预期时才判定通过。若 `first_attempt_forward_m` 为负，立即停止，不得继续用互换 `up/down` 标签的方式掩盖朝向错误。DR（域随机化）保持开启；三组使用相同 profile、seed、checkpoint、指令和步数，但 DR 的随机量会随地形交互继续演化，因此结果是可比较的重复实验，不是严格的配对实验。
-
-混合坡度训练与评估直接复用：
-
-```bash
-bash tools/train_mixed_slopes.sh train <空闲GPU编号>
-bash tools/eval_mixed_slopes.sh <空闲GPU编号> <checkpoint> 600 <seed>
-python3 tools/summarize_mixed_slopes_eval.py --raw-dir <原始报告目录> --output-dir <输出目录>
-bash tools/record_mixed_slopes.sh <空闲GPU编号> <checkpoint> <输出目录> 800
+```text
+.agents/skills/wheelleg-repo-maintenance/  仓库专属维护 Skill
+AGENTS.md / AGENT.md                      项目通用规则与授权边界
+TASKS.md                                 技术进度、下一验收与学习 Review
+profiles.json                            现有实验配置，保持与 project 相对布局
+project/source/{agent_tasks,agent_world,agent_rl}/
+                                         任务/地形、机器人资产、RL 适配
+project/scripts/rsl_rl/                   训练、checkpoint 与回放主入口
+tools/                                   操作薄入口、实验工具、轻量回归测试
+docs/                                    当前操作说明；upstream/ 为历史来源
+reports/                                 实验报告与选取的小型证据
+runs/ logs/ videos/                       个人产物目录，默认 Git 忽略
 ```
 
-长训练应从服务器 `tmux` 会话中执行。脚本会检查显存、GPU 利用率和可选的 checkpoint SHA-256，并把缓存、临时文件和日志写入个人工作区。
+Own→V14→V13→25_v3 的实现继承链仍在使用；不要按版本名删除。`tools/environment.py`、`sampling.py`、`terrain.py` 是旧安装器输入，与包内运行模块角色不同。完整工具索引和历史说明见 [tools/README](tools/README.md)。
 
-随机连片地图的纯几何与课程检查：
+## 维护与验证
+
+结构整理、脚本去重、实验归档、文档同步及训练监控流程维护时，使用 [wheelleg-repo-maintenance](.agents/skills/wheelleg-repo-maintenance/SKILL.md)。例如：
+
+> 使用 $wheelleg-repo-maintenance 整理本周实验与过时文档，先检查依赖，完成低风险修改并报告验证结果。
+
+本机可运行的轻量检查（所需 NumPy/Torch/trimesh 覆盖以实际输出为准）：
 
 ```bash
-python3 tools/test_random_terrain.py -v
-python3 tools/test_terrain_curriculum.py
-python3 tools/test_video_review.py
+python3 -B tools/test_light_slope.py -v
+python3 -B tools/test_random_terrain.py
+python3 -B tools/test_terrain_curriculum.py
+python3 -B tools/test_video_review.py
 ```
 
-随机地图的九地形逐块评估使用 `tools/eval_random_terrain.py`，完整九块路线录像使用 `tools/record.py --random-terrain-route`。两者都必须写入个人 `runs/` 目录。
+Mac 缺少 Isaac runtime 时用 AST/静态检查，不直接 import 仿真入口。模型、缓存、视频和原始大日志留个人目录；reports 保留必要小型证据与哈希。历史系统说明见 [docs/upstream](docs/upstream/)，旧独立项目保存在 [main 分支](https://github.com/SilverLi123/wheelleg-robot-RL/tree/main)。

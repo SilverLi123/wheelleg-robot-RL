@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wheelleg Repository Maintenance"
+  short_description: "维护 V14-6 仓库结构、实验来源与持续监控，保护现有训练契约"
+  default_prompt: "使用 $wheelleg-repo-maintenance 审计当前仓库并完成低风险维护，保留训练与评估行为。"
