@@ -15,7 +15,7 @@
 | `baseline` | Mac | [平地复现脚本](tools/reproduce_v14_6_flat.sh)，固定原权重、配置与指令。加 `--check` 只做只读预检。 |
 | `train` | pi 的个人检出目录 | [train.py](project/scripts/rsl_rl/train.py)，从指定 checkpoint 初始化 PPO 微调。迭代数、任务和实验配置显式指定。 |
 | `eval` | pi 的个人检出目录 | [validate.py](tools/validate.py)，输出地形和速度评估的 `summary.json`。 |
-| `view video` | pi 的个人检出目录 | [record.py](tools/record.py)，输出 `policy.mp4` 与回放结果。 |
+| `view video` | pi 的个人检出目录 | [record.py](tools/record.py)，输出 `policy.mp4`、`review.html` 与回放结果。 |
 | `view interactive` | 当前暂不可用 | 旧 Own 回放入口要求 Sim 5.1，本分支使用 6.2。该命令只提示，不启动仿真。 |
 
 在 **Mac** 上先检查计划使用的 GPU，例如 4：
@@ -70,7 +70,9 @@ bash tools/wheelleg.sh view interactive
 
 轻坡评估使用 [light_slope.py](tools/light_slope.py) 调用原有录像逻辑。把它和同目录的 `record.py` 放在 pi 上自己的检出目录；从该目录执行 `python3 tools/light_slope.py up 6`（`up` 可换为 `flat` 或 `down`，`6` 换成当前空闲 GPU）。每次只跑一组，结果保存在个人日志目录。三组都以 +0.50 m/s、零转向、静止起步回放 6 秒。
 
-`policy.mp4` 用来观察运动，`summary.json` 记录速度误差、重置与世界坐标俯仰范围。Isaac Lab 3.0 的 `root_state_w` 按 `(x, y, z, w)` 存储四元数；计算函数按 `(w, x, y, z)` 接收，读取完整 root state 时会显式重排。`initial_pose_status` 检查机器人是否面向世界 `+X`，`direction_status` 检查第一次尝试是否实际向 `+X` 前进。坡面组另记录沿预计路线测出的坡度和实际地面高差，并通过 `slope_status` 判断是否走过预期方向。
+`policy.mp4` 用来观察运动，`summary.json` 记录速度误差、重置与世界坐标俯仰范围。录像完成后，[video_review.py](tools/video_review.py) 会在同一目录生成独立 `review.html`；它支持滚轮缩放、拖拽平移、进度控制、播放速度和全屏，不依赖网络或第三方库。该页面缩放的是已录制的二维画面，不会重新计算 3D 相机。已有录像可用 `python3 tools/video_review.py <录像目录>` 补生成页面。
+
+随机地形路线默认使用低空跟随相机，便于观察机架、腿和坡面细节；需要整张地图时显式传入 `--camera-mode overview`。Isaac Lab 3.0 的 `root_state_w` 按 `(x, y, z, w)` 存储四元数；计算函数按 `(w, x, y, z)` 接收，读取完整 root state 时会显式重排。`initial_pose_status` 检查机器人是否面向世界 `+X`，`direction_status` 检查第一次尝试是否实际向 `+X` 前进。坡面组另记录沿预计路线测出的坡度和实际地面高差，并通过 `slope_status` 判断是否走过预期方向。
 
 只有 `status`、`initial_pose_status` 和 `slope_status` 均满足预期时才判定通过。若 `first_attempt_forward_m` 为负，立即停止，不得继续用互换 `up/down` 标签的方式掩盖朝向错误。DR（域随机化）保持开启；三组使用相同 profile、seed、checkpoint、指令和步数，但 DR 的随机量会随地形交互继续演化，因此结果是可比较的重复实验，不是严格的配对实验。
 
@@ -90,6 +92,7 @@ bash tools/record_mixed_slopes.sh <空闲GPU编号> <checkpoint> <输出目录> 
 ```bash
 python3 tools/test_random_terrain.py -v
 python3 tools/test_terrain_curriculum.py
+python3 tools/test_video_review.py
 ```
 
 随机地图的九地形逐块评估使用 `tools/eval_random_terrain.py`，完整九块路线录像使用 `tools/record.py --random-terrain-route`。两者都必须写入个人 `runs/` 目录。

@@ -8,6 +8,15 @@ import time
 import traceback
 from pathlib import Path
 
+import video_review
+
+CHASE_CAMERA = {
+    # Keep the chassis, legs and contact patch readable without placing the
+    # camera so high that a slope becomes a broad top-down overview.
+    'eye': (-2.4, -1.5, 1.35),
+    'lookat': (0.7, 0.0, 0.25),
+}
+
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--checkpoint', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)
@@ -42,6 +51,15 @@ parser.add_argument(
     '--random-terrain-route',
     action='store_true',
     help='Drive one robot continuously through the centres of all nine patches.',
+)
+parser.add_argument(
+    '--camera-mode',
+    choices=('auto', 'overview', 'chase'),
+    default='auto',
+    help=(
+        'Random-terrain route camera: chase follows the robot at a low angle; '
+        'overview keeps the whole map visible. auto uses chase for routes.'
+    ),
 )
 parser.add_argument(
     '--random-terrain-block',
@@ -102,6 +120,12 @@ if args.random_terrain_route:
     # The route uses the same whole-map camera and one-cell preview as the
     # overview mode; only the robot's command source differs.
     args.random_terrain_overview = True
+    if args.camera_mode == 'auto':
+        args.camera_mode = 'chase'
+elif args.camera_mode != 'auto':
+    parser.error('--camera-mode is only available for --random-terrain-route')
+if args.random_terrain_overview and args.camera_mode == 'auto':
+    args.camera_mode = 'overview'
 if args.random_terrain_block is not None and args.profile not in {
     'random_terrain_20261112',
     'random_terrain_forward_20261112',
@@ -187,7 +211,21 @@ try:
         cfg.default_height_cmd = args.height
         cfg.scene.light.spawn.intensity = 800.0
         from isaaclab_visualizers.kit import KitVisualizerCfg
-        if args.random_terrain_overview:
+        if (
+            args.random_terrain_route
+            and args.camera_mode == 'chase'
+        ):
+            cfg.sim.visualizer_cfgs = [KitVisualizerCfg(
+                headless=True,
+                origin_type='asset',
+                origin_track_path='robot',
+                eye=CHASE_CAMERA['eye'],
+                lookat=CHASE_CAMERA['lookat'],
+                window_width=1280,
+                window_height=720,
+                enable_live_plots=False,
+            )]
+        elif args.random_terrain_overview:
             from agent_tasks.direct.wheelbipe.wheelbipe_own import random_terrain_map
             # A one-cell TerrainGenerator places its map centre at the
             # lower-left corner of the generator's local coordinate frame.
@@ -549,12 +587,28 @@ try:
         origin = map_center
         camera_eye = map_center + (-42.0, -56.0, 55.0)
         summary['overview'] = {
+            'camera_mode': args.camera_mode,
             'environment_origin_m': origin.tolist(),
             'map_center_m': map_center.tolist(),
-            'camera_eye_m': camera_eye.tolist(),
+            'camera_eye_m': (
+                camera_eye.tolist()
+                if args.camera_mode == 'overview'
+                else None
+            ),
             'camera_target_m': map_center.tolist(),
+            'chase_camera': (
+                {
+                    'origin_type': 'asset',
+                    'origin_track_path': 'robot',
+                    'eye_m': list(CHASE_CAMERA['eye']),
+                    'lookat_m': list(CHASE_CAMERA['lookat']),
+                }
+                if args.camera_mode == 'chase'
+                else None
+            ),
         }
-        env.sim.set_camera_view(camera_eye, map_center)
+        if args.camera_mode == 'overview':
+            env.sim.set_camera_view(camera_eye, map_center)
         if args.random_terrain_route:
             from agent_tasks.direct.wheelbipe.wheelbipe_own import (
                 random_terrain_map,
@@ -898,6 +952,18 @@ finally:
         contact_report_out.close()
     summary['wall_seconds'] = time.perf_counter() - started
     (args.output / 'summary.json').write_text(json.dumps(summary, indent=2))
+    if args.record and (args.output / 'policy.mp4').is_file():
+        try:
+            video_review.write_viewer(args.output)
+        except Exception as exc:
+            summary['review_html_error'] = repr(exc)
+            (args.output / 'summary.json').write_text(
+                json.dumps(summary, indent=2)
+            )
+            print(
+                f'review.html generation failed: {exc!r}',
+                flush=True,
+            )
     print(json.dumps(summary, indent=2), flush=True)
     if app is not None:
         import inspect
