@@ -4,6 +4,8 @@
 
 2026-11-11 已在平地以及 6%/10%/14%/18% 上下坡组成的混合地形上完成一次 60 次 PPO 微调。256 个环境共训练 368,640 timesteps，使用 GPU 3，耗时 15 分 44 秒。三种子评估显示新模型能稳定通过全部 12 秒地形探测，但速度跟踪和横向偏移没有稳定超过原 baseline，因此最终推荐仍使用原 `model_50.pt`。完整数据见[混合坡度实验报告](reports/mixed_slopes_20261111/README.md)。
 
+随机连片地图曾存在两行交界处最大 1.44 m 的垂直断层，并且 `track_height` 奖励与旧课程逻辑分别错误使用世界海拔和清零后的回合时长。当前修复、6,000 步探针和 27 个单块评估见[随机混合地形核查报告](reports/random_terrain_20261112/README.md)。在该报告的连续九块视频完成前，不启动正式训练。
+
 ## 日常命令
 
 从仓库根目录使用 [tools/wheelleg.sh](tools/wheelleg.sh)。把 `--dry-run` 放在子命令之前可先查看实际转发的命令；它不连接服务器、不检查资产，也不启动仿真。
@@ -58,6 +60,7 @@ bash tools/wheelleg.sh view interactive
 | [docs/v14-6-flat-baseline.md](docs/v14-6-flat-baseline.md) | 平地基线来源、复现命令和验收标准。 |
 | [docs/upstream/](docs/upstream/) | 队友历次实验的配置、评估与来源记录。里面的 `plan.json` 是队友的旧运行计划。 |
 | [reports/mixed_slopes_20261111/](reports/mixed_slopes_20261111/) | 本次混合坡度训练、三种子评估、曲线和模型选择证据。 |
+| [reports/random_terrain_20261112/](reports/random_terrain_20261112/) | 连片随机地图接缝、高度奖励、课程逻辑和逐块评估证据。 |
 
 做坡面适配时，先看 [unified_terrain.py](project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/unified_terrain.py) 如何生成地形，再看 [unified_environment.py](project/source/agent_tasks/agent_tasks/direct/wheelbipe/wheelbipe_own/unified_environment.py) 如何接入复位、终止和课程。观测与动作可对照[导出契约](docs/upstream/examples/export_724/input_contract.json)；它对应 724 号权重，不是平地 2000 号权重的验证记录。
 
@@ -81,3 +84,12 @@ bash tools/record_mixed_slopes.sh <空闲GPU编号> <checkpoint> <输出目录> 
 ```
 
 长训练应从服务器 `tmux` 会话中执行。脚本会检查显存、GPU 利用率和可选的 checkpoint SHA-256，并把缓存、临时文件和日志写入个人工作区。
+
+随机连片地图的纯几何与课程检查：
+
+```bash
+python3 tools/test_random_terrain.py -v
+python3 tools/test_terrain_curriculum.py
+```
+
+随机地图的九地形逐块评估使用 `tools/eval_random_terrain.py`，完整九块路线录像使用 `tools/record.py --random-terrain-route`。两者都必须写入个人 `runs/` 目录。

@@ -10,8 +10,10 @@ from .env import WheelbipeOwnEnv
 from .unified_environment import UnifiedLocomotionMixin, configure_unified
 from .domain_randomization import DomainRandomizationMixin, configure_domain_randomization
 from agent_world.assets.wheelbipe_own import MECHANISM
+from agent_world.sim620_compat import torch_data as T
 from .runner_cfg import WheelbipeOwnPPORunnerCfg
 from . import mixed_slopes, random_terrain_map
+from .terrain_curriculum import terrain_curriculum_decisions
 
 PROFILE_FILE = Path(__file__).resolve().parents[7] / 'profiles.json'
 
@@ -111,6 +113,19 @@ class WheelbipeOwnExperimentPlayCfg(WheelbipeOwnExperimentCfg):
 class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin, WheelbipeOwnEnv):
     def __init__(self, cfg, *args, **kwargs):
         super().__init__(cfg, *args, **kwargs)
+        self._legacy_terrain_episode_start = torch.zeros(
+            (self.num_envs, 2), device=self.device
+        )
+        self._legacy_terrain_episode_heading = torch.zeros(
+            (self.num_envs, 2), device=self.device
+        )
+        self._legacy_terrain_pending_move_up = torch.zeros(
+            self.num_envs, device=self.device, dtype=torch.bool
+        )
+        self._legacy_terrain_pending_move_down = torch.zeros(
+            self.num_envs, device=self.device, dtype=torch.bool
+        )
+        self._capture_legacy_terrain_start(self.robot._ALL_INDICES)
         p = cfg.experiment_profile_settings
         if 'reset_band' in p:
             for side in ('left', 'right'):
@@ -131,6 +146,57 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
         self._slew_wheel = self.robot.data.joint_vel[:, self._wheel_idx].clone()
         self._init_unified()
         random_terrain_map.initialize(self)
+
+    def _legacy_terrain_enabled(self) -> bool:
+        settings = self.cfg.experiment_profile_settings
+        return bool(
+            settings.get('terrain_mix') or settings.get('mixed_slopes')
+        )
+
+    def _capture_legacy_terrain_start(self, env_ids) -> None:
+        """Record the heading and position against which progress is measured."""
+        if not hasattr(self, '_legacy_terrain_episode_start'):
+            return
+        from isaaclab.utils.math import euler_xyz_from_quat
+
+        ids = torch.as_tensor(
+            env_ids, device=self.device, dtype=torch.long
+        )
+        root_pos = T(self.robot.data.root_pos_w)[ids]
+        _, _, yaw = euler_xyz_from_quat(T(self.robot.data.root_quat_w)[ids])
+        self._legacy_terrain_episode_start[ids] = root_pos[:, :2]
+        self._legacy_terrain_episode_heading[ids] = torch.stack(
+            (yaw.cos(), yaw.sin()), dim=-1
+        )
+
+    def _reset_idx(self, env_ids):
+        # DirectRLEnv clears episode_length_buf before _custom_reset_random.
+        # Capture age and forward displacement first so the legacy curriculum
+        # cannot promote an environment merely because every reset age is zero.
+        if self._legacy_terrain_enabled() and hasattr(
+            self, '_legacy_terrain_episode_start'
+        ):
+            ids = (
+                self.robot._ALL_INDICES
+                if env_ids is None
+                else torch.as_tensor(env_ids, device=self.device, dtype=torch.long)
+            )
+            age_s = self.episode_length_buf[ids] * self.step_dt
+            displacement = (
+                T(self.robot.data.root_pos_w)[ids, :2]
+                - self._legacy_terrain_episode_start[ids]
+            )
+            forward_m = (
+                displacement * self._legacy_terrain_episode_heading[ids]
+            ).sum(dim=-1)
+            move_up, move_down = terrain_curriculum_decisions(
+                age_s,
+                forward_m,
+                self.reset_terminated[ids].clone(),
+            )
+            self._legacy_terrain_pending_move_up[ids] = move_up
+            self._legacy_terrain_pending_move_down[ids] = move_down
+        return super()._reset_idx(env_ids)
 
     def _init_training_audit(self):
         from pxr import Usd, UsdPhysics
@@ -223,16 +289,49 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
             self.cfg.experiment_profile_settings.get('terrain_mix')
             or self.cfg.experiment_profile_settings.get('mixed_slopes')
         ) and hasattr(self, '_slew_leg'):
-            distance = torch.linalg.vector_norm(self.robot.data.root_pos_w[env_ids, :2] - self.terrain.env_origins[env_ids, :2], dim=1)
-            move_up = distance > 2.0
-            move_down = (self.episode_length_buf[env_ids] * self.step_dt < 2.0) & ~move_up
+            ids = torch.as_tensor(
+                env_ids, device=self.device, dtype=torch.long
+            )
+            move_up = self._legacy_terrain_pending_move_up[ids]
+            move_down = self._legacy_terrain_pending_move_down[ids]
             self.terrain.update_env_origins(env_ids, move_up, move_down)
+            self._legacy_terrain_pending_move_up[ids] = False
+            self._legacy_terrain_pending_move_down[ids] = False
         super()._custom_reset_random(env_ids)
         if hasattr(self, '_slew_leg'):
             self._slew_leg[env_ids] = self.robot.data.joint_pos[env_ids][:, self._legs_act_idx]
             self._slew_wheel[env_ids] = self.robot.data.joint_vel[env_ids][:, self._wheel_idx]
+        if self._legacy_terrain_enabled():
+            self._capture_legacy_terrain_start(env_ids)
 
     def _postprocess_reward_terms(self, terms):
+        if self.cfg.rewards.get('random_terrain_slope_pitch', 0.0):
+            if not self.cfg.experiment_profile_settings.get('random_terrain_map'):
+                raise RuntimeError(
+                    'random_terrain_slope_pitch requires a random-terrain profile'
+                )
+            current_pitch, target_pitch, slope_norm = (
+                random_terrain_map.slope_pitch_targets(self)
+            )
+            pitch_error = torch.atan2(
+                torch.sin(current_pitch - target_pitch),
+                torch.cos(current_pitch - target_pitch),
+            )
+            sigma = float(
+                getattr(self.cfg, 'random_terrain_slope_pitch_sigma_rad', 0.09)
+            )
+            if sigma <= 0.0:
+                raise ValueError(
+                    'random_terrain_slope_pitch_sigma_rad must be positive'
+                )
+            # Flat patches return zero. The 2% ramp width makes the term reach
+            # full strength immediately on every configured slope. A bounded
+            # squared error avoids a vanishing reward when the initial policy
+            # is far from the terrain-following angle.
+            slope_active = (slope_norm / 0.02).clamp(0.0, 1.0)
+            terms['random_terrain_slope_pitch'] = (
+                torch.tanh((pitch_error / sigma).square()) * slope_active
+            )
         if 'flight_penalty' in self.cfg.rewards:
             force = torch.linalg.vector_norm(self.contact_sensor.data.net_forces_w[:, self._desired_contact_link_idx], dim=-1)
             terms['flight_penalty'] = (force.max(1).values < 1.0).float()

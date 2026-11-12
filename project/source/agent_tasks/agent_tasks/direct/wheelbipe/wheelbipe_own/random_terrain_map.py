@@ -29,6 +29,12 @@ TERRAIN_TYPES = (
     "down14",
     "down18",
 )
+RANDOM_TERRAIN_PROFILES = (
+    "random_terrain_20261112",
+    "random_terrain_forward_20261112",
+    "random_terrain_straight_20261112",
+    "random_terrain_slope_pitch_20261112",
+)
 GRADES = {
     "flat": 0.00,
     "up06": 0.06,
@@ -64,6 +70,7 @@ RAMP_START_M = -7.0
 RAMP_TOP_START_M = -1.0
 RAMP_TOP_END_M = 1.0
 RAMP_END_M = 7.0
+PATCH_Y_EDGE_TAPER_M = 1.5
 SPAWN_X_MARGIN_M = 0.8
 SPAWN_Y_MARGIN_M = 0.8
 
@@ -95,12 +102,17 @@ def terrain_at_block(
     return selected[row][column]
 
 
-def patch_height(local_x_m: float, terrain: str) -> float:
+def patch_height(
+    local_x_m: float,
+    terrain: str,
+    local_y_m: float = 0.0,
+) -> float:
     """Return patch-relative height for terrain at ``local_x_m``.
 
     ``local_x_m`` is in one patch's local frame.  The map centre is zero.
     Uphill is a hill-shaped ridge; downhill is its inverse valley.  Both use
-    the requested signed grade while maintaining zero-height patch edges.
+    the requested signed grade. The profile tapers to zero over the final
+    1.5 m at each `y` edge, so neighboring rows meet without a step.
     """
     if terrain not in GRADES:
         raise ValueError(f"Unknown random-terrain patch: {terrain}")
@@ -114,7 +126,12 @@ def patch_height(local_x_m: float, terrain: str) -> float:
         magnitude = abs(grade) * (RAMP_TOP_START_M - RAMP_START_M)
     else:
         magnitude = abs(grade) * (RAMP_END_M - x)
-    return math.copysign(magnitude, grade)
+    y = float(local_y_m)
+    y_taper = max(
+        0.0,
+        min(1.0, (BLOCK_WIDTH_M / 2.0 - abs(y)) / PATCH_Y_EDGE_TAPER_M),
+    )
+    return math.copysign(magnitude * y_taper, grade)
 
 
 def world_to_block(
@@ -141,9 +158,9 @@ def height_at_local(
     layout: tuple[tuple[str, ...], ...] | None = None,
 ) -> float:
     """Return terrain height relative to each environment's origin."""
-    row, column, block_x, _ = world_to_block(local_x_m, local_y_m)
+    row, column, block_x, block_y = world_to_block(local_x_m, local_y_m)
     selected = layout or make_layout()
-    return patch_height(block_x, selected[row][column])
+    return patch_height(block_x, selected[row][column], block_y)
 
 
 def block_bounds_local(block_id: int) -> tuple[float, float, float, float]:
@@ -156,6 +173,164 @@ def block_bounds_local(block_id: int) -> tuple[float, float, float, float]:
         x_center + BLOCK_LENGTH_M / 2.0,
         y_center - BLOCK_WIDTH_M / 2.0,
         y_center + BLOCK_WIDTH_M / 2.0,
+    )
+
+
+def collision_box_corners(
+    local_min: tuple[float, float, float] | list[float] | np.ndarray,
+    local_max: tuple[float, float, float] | list[float] | np.ndarray,
+) -> np.ndarray:
+    """Return the eight corners of an axis-aligned collision bounding box.
+
+    The values are expressed in the rigid body's local frame. Keeping this
+    conversion separate makes the clearance calculation testable without
+    starting Isaac Sim.
+    """
+    minimum = np.asarray(local_min, dtype=np.float64)
+    maximum = np.asarray(local_max, dtype=np.float64)
+    if minimum.shape != (3,) or maximum.shape != (3,):
+        raise ValueError("collision bounds must each contain exactly three values")
+    if np.any(minimum > maximum):
+        raise ValueError("collision-bound minimum must not exceed maximum")
+    return np.asarray(
+        [
+            (x, y, z)
+            for x in (minimum[0], maximum[0])
+            for y in (minimum[1], maximum[1])
+            for z in (minimum[2], maximum[2])
+        ],
+        dtype=np.float64,
+    )
+
+
+def quat_rotate_wxyz_numpy(points: np.ndarray, quat: np.ndarray) -> np.ndarray:
+    """Rotate row-vector points by one Isaac-style ``(w, x, y, z)`` quaternion."""
+    vectors = np.asarray(points, dtype=np.float64)
+    q = np.asarray(quat, dtype=np.float64)
+    if vectors.ndim != 2 or vectors.shape[1] != 3:
+        raise ValueError("points must have shape (N, 3)")
+    if q.shape != (4,):
+        raise ValueError("quaternion must have shape (4,), ordered wxyz")
+    norm = np.linalg.norm(q)
+    if norm < 1e-12:
+        raise ValueError("quaternion norm is zero")
+    w, x, y, z = q / norm
+    rotation = np.asarray(
+        (
+            (1.0 - 2.0 * (y * y + z * z), 2.0 * (x * y - w * z), 2.0 * (x * z + w * y)),
+            (2.0 * (x * y + w * z), 1.0 - 2.0 * (x * x + z * z), 2.0 * (y * z - w * x)),
+            (2.0 * (x * z - w * y), 2.0 * (y * z + w * x), 1.0 - 2.0 * (x * x + y * y)),
+        ),
+        dtype=np.float64,
+    )
+    return vectors @ rotation.T
+
+
+def quats_rotate_wxyz_numpy(
+    points: np.ndarray,
+    quats: np.ndarray,
+) -> np.ndarray:
+    """Rotate one point set by each quaternion in a batch."""
+    vectors = np.asarray(points, dtype=np.float64)
+    q = np.asarray(quats, dtype=np.float64)
+    if vectors.ndim != 2 or vectors.shape[1] != 3:
+        raise ValueError("points must have shape (M, 3)")
+    if q.ndim != 2 or q.shape[1] != 4:
+        raise ValueError("quaternions must have shape (N, 4), ordered wxyz")
+    norms = np.linalg.norm(q, axis=1, keepdims=True)
+    if np.any(norms < 1e-12):
+        raise ValueError("a batch quaternion has zero norm")
+    w, x, y, z = (q / norms).T
+    rotation = np.empty((len(q), 3, 3), dtype=np.float64)
+    rotation[:, 0, 0] = 1.0 - 2.0 * (y * y + z * z)
+    rotation[:, 0, 1] = 2.0 * (x * y - w * z)
+    rotation[:, 0, 2] = 2.0 * (x * z + w * y)
+    rotation[:, 1, 0] = 2.0 * (x * y + w * z)
+    rotation[:, 1, 1] = 1.0 - 2.0 * (x * x + z * z)
+    rotation[:, 1, 2] = 2.0 * (y * z - w * x)
+    rotation[:, 2, 0] = 2.0 * (x * z - w * y)
+    rotation[:, 2, 1] = 2.0 * (y * z + w * x)
+    rotation[:, 2, 2] = 1.0 - 2.0 * (x * x + y * y)
+    return np.einsum("ij,njk->nik", vectors, rotation, optimize=True)
+
+
+def collision_points_minimum_clearance(
+    *,
+    body_pos_w: np.ndarray,
+    body_quat_w: np.ndarray,
+    local_points: np.ndarray,
+    height_at_local_xy,
+) -> np.ndarray:
+    """Return minimum clearance for supplied body-local mesh points."""
+    positions = np.asarray(body_pos_w, dtype=np.float64)
+    quats = np.asarray(body_quat_w, dtype=np.float64)
+    points = np.asarray(local_points, dtype=np.float64)
+    if positions.ndim != 2 or positions.shape[1] != 3:
+        raise ValueError("body_pos_w must have shape (N, 3)")
+    if quats.shape != (len(positions), 4):
+        raise ValueError("body_quat_w must have shape (N, 4), ordered wxyz")
+    if points.ndim != 2 or points.shape[1] != 3 or len(points) == 0:
+        raise ValueError("local_points must have shape (M, 3), with M > 0")
+    world_points = quats_rotate_wxyz_numpy(points, quats)
+    world_points += positions[:, None, :]
+    ground_z = np.asarray(
+        height_at_local_xy(
+            world_points[:, :, :2].reshape(-1, 2)
+        ),
+        dtype=np.float64,
+    )
+    if ground_z.shape != (len(positions) * len(points),):
+        raise ValueError(
+            "height callback must return one value per transformed mesh point"
+        )
+    return np.min(
+        world_points[:, :, 2] - ground_z.reshape(len(positions), len(points)),
+        axis=1,
+    )
+
+
+def collision_boxes_minimum_clearance(
+    *,
+    body_pos_w: np.ndarray,
+    body_quat_w: np.ndarray,
+    local_min: tuple[float, float, float] | list[float] | np.ndarray,
+    local_max: tuple[float, float, float] | list[float] | np.ndarray,
+    height_at_local_xy,
+) -> np.ndarray:
+    """Return one minimum corner clearance for every body in a batch."""
+    return collision_points_minimum_clearance(
+        body_pos_w=body_pos_w,
+        body_quat_w=body_quat_w,
+        local_points=collision_box_corners(local_min, local_max),
+        height_at_local_xy=height_at_local_xy,
+    )
+
+
+def collision_box_minimum_clearance(
+    *,
+    body_pos_w: tuple[float, float, float] | list[float] | np.ndarray,
+    body_quat_w: tuple[float, float, float, float] | list[float] | np.ndarray,
+    local_min: tuple[float, float, float] | list[float] | np.ndarray,
+    local_max: tuple[float, float, float] | list[float] | np.ndarray,
+    height_at_local_xy,
+) -> float:
+    """Measure world-Z clearance at every corner of a rotated body box.
+
+    ``height_at_local_xy`` receives an ``(8, 2)`` array in the terrain-local
+    frame and returns eight ground heights. Using the lowest corner prevents a
+    body-origin estimate from hiding an overhanging gimbal collision mesh.
+    """
+    position = np.asarray(body_pos_w, dtype=np.float64)
+    if position.shape != (3,):
+        raise ValueError("body_pos_w must contain exactly three values")
+    return float(
+        collision_boxes_minimum_clearance(
+            body_pos_w=position[None, :],
+            body_quat_w=np.asarray(body_quat_w, dtype=np.float64)[None, :],
+            local_min=local_min,
+            local_max=local_max,
+            height_at_local_xy=height_at_local_xy,
+        )[0]
     )
 
 
@@ -178,22 +353,29 @@ def _vertices_and_faces(
             terrain = layout[row][column]
             x_center = (column - (MAP_COLS - 1) / 2.0) * BLOCK_LENGTH_M
             y_center = (row - (MAP_ROWS - 1) / 2.0) * BLOCK_WIDTH_M
+            taper_start = BLOCK_WIDTH_M / 2.0 - PATCH_Y_EDGE_TAPER_M
             y_values = (
-                y_center - BLOCK_WIDTH_M / 2.0,
-                y_center + BLOCK_WIDTH_M / 2.0,
+                -BLOCK_WIDTH_M / 2.0,
+                -taper_start,
+                taper_start,
+                BLOCK_WIDTH_M / 2.0,
             )
             offset = len(vertices)
             for local_x in breakpoints:
-                z = patch_height(local_x, terrain)
-                vertices.extend(
-                    (x_center + local_x, y, z)
-                    for y in y_values
-                )
+                for local_y in y_values:
+                    vertices.append(
+                        (
+                            x_center + local_x,
+                            y_center + local_y,
+                            patch_height(local_x, terrain, local_y),
+                        )
+                    )
             for index in range(len(breakpoints) - 1):
-                left = offset + index * 2
-                right = left + 2
-                faces.append((left, right, left + 1))
-                faces.append((left + 1, right, right + 1))
+                for y_index in range(len(y_values) - 1):
+                    left = offset + index * len(y_values) + y_index
+                    right = left + len(y_values)
+                    faces.append((left, right, left + 1))
+                    faces.append((left + 1, right, right + 1))
     return vertices, faces
 
 
@@ -222,9 +404,9 @@ def configure(cfg) -> None:
     settings = cfg.experiment_profile_settings
     if not settings.get("random_terrain_map"):
         return
-    if cfg.experiment_profile_name != "random_terrain_20261112":
+    if cfg.experiment_profile_name not in RANDOM_TERRAIN_PROFILES:
         raise ValueError(
-            "random_terrain_map requires profile random_terrain_20261112, "
+            "random_terrain_map requires a declared random-terrain profile, "
             f"got {cfg.experiment_profile_name!r}"
         )
 
@@ -244,7 +426,11 @@ def configure(cfg) -> None:
     cfg.terrain.terrain_generator = TerrainGeneratorCfg(
         seed=layout_seed,
         size=MAP_SIZE_M,
-        border_width=2.0,
+        # Spawn, height queries and route waypoints use the full map frame.
+        # A non-zero generator border shrinks each sloped map inward and inserts
+        # a flat strip at zero height inside those coordinates. The zero-height
+        # map edges already join repeated copies, so no extra border is needed.
+        border_width=0.0,
         num_rows=TERRAIN_ROWS,
         num_cols=TERRAIN_COLS,
         curriculum=False,
@@ -308,6 +494,7 @@ def initialize(env) -> None:
     env._random_terrain_spawn_counts = torch.zeros(
         len(TERRAIN_TYPES), dtype=torch.long, device=env.device
     )
+    env._random_terrain_run_up_spawn_count = 0
     env._random_terrain_reset_count = 0
     env._random_terrain_peak_penetration_m = 0.0
     env._random_terrain_force_block = None
@@ -324,6 +511,22 @@ def initialize(env) -> None:
     env._random_terrain_evaluation_spawn = bool(
         settings.get("evaluation_block_ids") is not None
     )
+    yaw_span_deg = settings.get("random_terrain_training_yaw_span_deg", None)
+    env._random_terrain_training_yaw_span_rad = (
+        None
+        if yaw_span_deg is None
+        else math.radians(float(yaw_span_deg))
+    )
+    if env._random_terrain_training_yaw_span_rad is not None and not (
+        0.0 <= env._random_terrain_training_yaw_span_rad <= math.pi
+    ):
+        raise ValueError(
+            "random_terrain_training_yaw_span_deg must be in [0, 180]"
+        )
+    start_fraction = float(settings.get("random_terrain_start_fraction", 0.0))
+    if not 0.0 <= start_fraction <= 1.0:
+        raise ValueError("random_terrain_start_fraction must be in [0, 1]")
+    env._random_terrain_start_fraction = start_fraction
 
 
 def _heights(env, local_xy):
@@ -341,6 +544,9 @@ def _heights(env, local_xy):
     block_x = local_x - (
         columns.to(torch.float32) - (MAP_COLS - 1) / 2.0
     ) * BLOCK_LENGTH_M
+    block_y = local_y - (
+        rows.to(torch.float32) - (MAP_ROWS - 1) / 2.0
+    ) * BLOCK_WIDTH_M
     grade = env._random_terrain_block_grades[rows, columns]
     magnitude = torch.where(
         block_x < RAMP_TOP_START_M,
@@ -352,13 +558,47 @@ def _heights(env, local_xy):
         ),
     ).clamp_min(0.0)
     signed = torch.where(grade < 0.0, -magnitude, magnitude)
-    return torch.where(
+    signed = torch.where(
         (grade == 0.0)
         | (block_x <= RAMP_START_M)
         | (block_x >= RAMP_END_M),
         torch.zeros_like(signed),
         signed,
     )
+    y_taper = (
+        (BLOCK_WIDTH_M / 2.0 - block_y.abs()) / PATCH_Y_EDGE_TAPER_M
+    ).clamp(0.0, 1.0)
+    return signed * y_taper
+
+
+def slope_pitch_targets(env):
+    """Return current pitch, terrain-following pitch target, and slope norm.
+
+    The sign convention matches ``_sample_spawn``: a positive world-X grade
+    produces a negative body pitch in the reset quaternion.  The target is the
+    slope along the robot's current heading, so the same code works when the
+    policy changes yaw.
+    """
+    import torch
+    from isaaclab.utils.math import euler_xyz_from_quat
+    from agent_world.sim620_compat import torch_data as T
+
+    root_pos = T(env._native_robot.data.root_pos_w)
+    root_quat = T(env._native_robot.data.root_quat_w)
+    origin = T(env.terrain.env_origins)
+    local_xy = root_pos[:, :2] - origin[:, :2]
+    offsets = local_xy.new_tensor(
+        ((0.25, 0.0), (-0.25, 0.0), (0.0, 0.25), (0.0, -0.25))
+    )
+    ground = _heights(env, local_xy[:, None, :] + offsets)
+    gradient_x = (ground[:, 0] - ground[:, 1]) / 0.5
+    gradient_y = (ground[:, 2] - ground[:, 3]) / 0.5
+    _, current_pitch, yaw = euler_xyz_from_quat(root_quat)
+    target_pitch = -torch.atan(
+        gradient_x * yaw.cos() + gradient_y * yaw.sin()
+    )
+    slope_norm = torch.sqrt(gradient_x.square() + gradient_y.square())
+    return current_pitch, target_pitch, slope_norm
 
 
 def _sample_spawn(env, ids):
@@ -393,7 +633,41 @@ def _sample_spawn(env, ids):
             -BLOCK_WIDTH_M / 2.0 + SPAWN_Y_MARGIN_M,
             BLOCK_WIDTH_M / 2.0 - SPAWN_Y_MARGIN_M,
         )
-        yaw = torch.empty(n, device=env.device).uniform_(-math.pi, math.pi)
+        yaw_span = env._random_terrain_training_yaw_span_rad
+        if yaw_span is None:
+            # Preserve the original omnidirectional reset distribution for
+            # experiments that do not opt into a narrower heading.
+            yaw = torch.empty(n, device=env.device).uniform_(
+                -math.pi, math.pi
+            )
+        else:
+            # The slopes run along world X. Keep the position random while
+            # training enough longitudinal downhill samples for body clearance.
+            yaw = torch.empty(n, device=env.device).uniform_(
+                -yaw_span, yaw_span
+            )
+        start_fraction = env._random_terrain_start_fraction
+        if start_fraction > 0.0:
+            at_run_up = (
+                torch.rand(n, device=env.device) < start_fraction
+            )
+            if at_run_up.any():
+                # Reproduce the deterministic evaluation condition for a
+                # fraction of training resets: flat run-up, patch centreline,
+                # facing uphill/downhill along world +X.
+                local_x[at_run_up] = (
+                    x_centers[at_run_up] - BLOCK_LENGTH_M / 2.0 + 1.0
+                )
+                local_y[at_run_up] = y_centers[at_run_up]
+                local_yaw = torch.zeros_like(yaw[at_run_up])
+                if yaw_span is not None and yaw_span > 0.0:
+                    local_yaw = torch.empty_like(local_yaw).uniform_(
+                        -yaw_span, yaw_span
+                    )
+                yaw[at_run_up] = local_yaw
+                env._random_terrain_run_up_spawn_count += int(
+                    at_run_up.sum().item()
+                )
         if env._random_terrain_force_yaw:
             yaw.zero_()
     local_xy = torch.stack((local_x, local_y), dim=-1)
@@ -503,6 +777,7 @@ def health(env) -> dict:
         ),
         "layout": [list(row) for row in env._random_terrain_layout],
         "spawn_counts": env._random_terrain_spawn_counts.tolist(),
+        "run_up_spawns": env._random_terrain_run_up_spawn_count,
         "resets": env._random_terrain_reset_count,
         "forced_evaluation_blocks": forced,
         "peak_initial_tire_penetration_m": env._random_terrain_peak_penetration_m,

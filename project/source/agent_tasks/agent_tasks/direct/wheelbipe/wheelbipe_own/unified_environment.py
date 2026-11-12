@@ -29,14 +29,35 @@ def configure_unified(cfg, settings):
 class UnifiedLocomotionMixin:
     def _get_height_reward_reference_height(self, relative_obs_height, wheel_height_w):
         settings = self.cfg.experiment_profile_settings
-        if settings.get('terrain_relative_height_reward', False) and getattr(self, '_u_ready', False):
+        if settings.get('terrain_relative_height_reward', False):
             # The inherited Own configuration uses absolute root z. On a raised
             # slope this penalizes terrain elevation as if it were leg extension.
             # Correct only the reward reference: actor observations and action
             # semantics remain compatible with the transferred checkpoint.
             if not self._use_absolute_height() or self._use_leg_length_height():
                 raise ValueError('Terrain height correction requires the audited absolute-height mode')
-            ground_z = self._u_heights(T(self.robot.data.root_pos_w)[:, None, :2]).squeeze(1)
+            if getattr(self, '_u_ready', False):
+                ground_z = self._u_heights(
+                    T(self.robot.data.root_pos_w)[:, None, :2]
+                ).squeeze(1)
+            elif settings.get('random_terrain_map', False):
+                # The random-map profile does not enable the unified curriculum,
+                # so `_u_ready` stays false and its mesh ray query is unavailable.
+                # Use the same analytic patch heights that generated the map and
+                # placed the robot during reset.
+                from . import random_terrain_map
+
+                origin = T(self.terrain.env_origins)
+                local_xy = T(self.robot.data.root_pos_w)[:, :2] - origin[:, :2]
+                ground_z = (
+                    origin[:, 2]
+                    + random_terrain_map._heights(self, local_xy)
+                )
+            else:
+                raise ValueError(
+                    'terrain_relative_height_reward requires unified terrain '
+                    'or random_terrain_map initialization'
+                )
             relative_obs_height = relative_obs_height - ground_z
         return super()._get_height_reward_reference_height(relative_obs_height, wheel_height_w)
 

@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import importlib.metadata as md
 import json
+import math
 import time
 import traceback
 from pathlib import Path
@@ -37,6 +38,31 @@ parser.add_argument(
     action='store_true',
     help='Render one complete connected random-terrain map from an overhead camera.',
 )
+parser.add_argument(
+    '--random-terrain-route',
+    action='store_true',
+    help='Drive one robot continuously through the centres of all nine patches.',
+)
+parser.add_argument(
+    '--random-terrain-block',
+    type=int,
+    choices=range(9),
+    metavar='BLOCK',
+    help='Start one robot at the fixed evaluation point on block 0..8.',
+)
+parser.add_argument(
+    '--contact-report',
+    action='store_true',
+    help='Log PhysX collider pairs that contact gimbal_yaw_link.',
+)
+parser.add_argument(
+    '--no-physics-log',
+    action='store_true',
+    help=(
+        'Keep rollout.jsonl and policy.mp4, but skip the much larger '
+        'per-physics-substep physics.jsonl diagnostic file.'
+    ),
+)
 from isaaclab.app import AppLauncher
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
@@ -54,8 +80,39 @@ if args.mixed_eval_terrain and args.terrain_column is None:
     parser.error('--mixed-eval-terrain requires --terrain-column')
 if args.mixed_eval_terrain and args.profile != 'mixed_slopes_20261111':
     parser.error('--mixed-eval-terrain requires --profile mixed_slopes_20261111')
-if args.random_terrain_overview and args.profile != 'random_terrain_20261112':
-    parser.error('--random-terrain-overview requires --profile random_terrain_20261112')
+if args.random_terrain_overview and args.profile not in {
+    'random_terrain_20261112',
+    'random_terrain_forward_20261112',
+    'random_terrain_straight_20261112',
+    'random_terrain_slope_pitch_20261112',
+}:
+    parser.error(
+        '--random-terrain-overview requires a random-terrain profile'
+    )
+if args.random_terrain_route:
+    if args.profile not in {
+        'random_terrain_20261112',
+        'random_terrain_forward_20261112',
+        'random_terrain_straight_20261112',
+        'random_terrain_slope_pitch_20261112',
+    }:
+        parser.error(
+            '--random-terrain-route requires a random-terrain profile'
+        )
+    # The route uses the same whole-map camera and one-cell preview as the
+    # overview mode; only the robot's command source differs.
+    args.random_terrain_overview = True
+if args.random_terrain_block is not None and args.profile not in {
+    'random_terrain_20261112',
+    'random_terrain_forward_20261112',
+    'random_terrain_straight_20261112',
+    'random_terrain_slope_pitch_20261112',
+}:
+    parser.error(
+        '--random-terrain-block requires a random-terrain profile'
+    )
+if args.random_terrain_route and args.random_terrain_block is not None:
+    parser.error('Choose either route mode or one fixed random-terrain block')
 if args.record:
     args.enable_cameras = True
     args.video = True
@@ -69,13 +126,16 @@ started = time.perf_counter()
 app = None
 video = None
 physics_out = None
+contact_report_out = None
+contact_report_subscription = None
+contact_sensor_body_index = None
 try:
     app = AppLauncher(args, fast_shutdown=True).app
     import torch
     import yaml
     import warp as wp
-    from pxr import Usd, UsdPhysics
-    from isaaclab.utils.math import quat_apply
+    from pxr import Usd, UsdGeom, UsdPhysics
+    from isaaclab.utils.math import euler_xyz_from_quat, quat_apply
     from isaaclab.utils.io import dump_yaml
     from agent_tasks.direct.wheelbipe.wheelbipe_own.experiment import WheelbipeOwnExperimentPlayCfg as WheelbipeOwnFlatPlayEnvCfg
     from agent_tasks.direct.wheelbipe.wheelbipe_own.experiment import WheelbipeOwnExperimentEnv as WheelbipeOwnEnv
@@ -117,6 +177,11 @@ try:
         cfg.commands.rel_standing_envs = 0.
         cfg.commands.ranges.lin_vel_x = (vx, vx)
         cfg.commands.ranges.ang_vel_z = (yaw_rate, yaw_rate)
+    if args.random_terrain_route:
+        # The default 20 s episode timeout is correct for normal rollouts but
+        # would reset the robot halfway through the roughly 120 m route. This
+        # changes only how long the recorder permits one continuous episode.
+        cfg.episode_length_s = args.steps * cfg.decimation * cfg.sim.dt + 2.0
     if args.record:
         cfg.height_range = [args.height, args.height]
         cfg.default_height_cmd = args.height
@@ -156,8 +221,26 @@ try:
 
         # One map copy lets the whole connected 3x3 terrain fit in one frame.
         random_terrain_map.configure_preview(cfg)
+    if args.random_terrain_block is not None:
+        # This changes only the reset point and heading. The policy, physics,
+        # command and terrain map stay identical to the saved experiment.
+        cfg.experiment_profile_settings = dict(
+            cfg.experiment_profile_settings
+        )
+        cfg.experiment_profile_settings['evaluation_block_ids'] = [
+            args.random_terrain_block
+        ]
+        cfg.experiment_profile_settings['evaluation_force_yaw'] = True
     from scripts.rsl_rl.checkpoint_utils import prepare_checkpoint
     prepare_checkpoint(cfg, None, str(args.checkpoint))
+    if args.random_terrain_route:
+        # Start on the first patch, facing the map's +X direction. The route
+        # controller below changes commands online but never writes robot state.
+        cfg.experiment_profile_settings = dict(
+            cfg.experiment_profile_settings
+        )
+        cfg.experiment_profile_settings['evaluation_block_ids'] = [0]
+        cfg.experiment_profile_settings['evaluation_force_yaw'] = True
     summary['saved_observation_action_fields_match'] = True
     if args.light_slope_case:
         light_slope.configure(cfg, args.light_slope_case)
@@ -201,6 +284,142 @@ try:
     summary['checkpoint_iteration'] = saved['iter']
     env = WheelbipeOwnEnv(cfg)
     native = env._native_robot
+    if args.contact_report:
+        import omni.physx
+
+        gimbal_path = '/World/envs/env_0/Robot/gimbal_yaw_link'
+        gimbal_prim = env.sim.stage.GetPrimAtPath(gimbal_path)
+        if not gimbal_prim.IsValid():
+            raise RuntimeError(f'Contact-report body prim is missing: {gimbal_path}')
+        contact_sensor_body_index = env.contact_sensor.body_names.index(
+            'gimbal_yaw_link'
+        )
+        contact_report_out = (
+            args.output / 'gimbal_contact_report.jsonl'
+        ).open('w', buffering=1)
+        terrain_mesh_path = '/World/ground/terrain/mesh'
+        terrain_mesh_prim = env.sim.stage.GetPrimAtPath(
+            terrain_mesh_path
+        )
+        if not terrain_mesh_prim.IsValid():
+            raise RuntimeError(
+                f'Terrain mesh prim is missing: {terrain_mesh_path}'
+            )
+        terrain_mesh = UsdGeom.Mesh(terrain_mesh_prim)
+        terrain_points = list(
+            terrain_mesh.GetPointsAttr().Get() or []
+        )
+        terrain_faces = list(
+            terrain_mesh.GetFaceVertexIndicesAttr().Get() or []
+        )
+        terrain_transform = (
+            UsdGeom.Xformable(terrain_mesh_prim)
+            .ComputeLocalToWorldTransform(Usd.TimeCode.Default())
+        )
+        terrain_geometry = {
+            'prim_path': terrain_mesh_path,
+            'points': [list(point) for point in terrain_points],
+            'face_vertex_indices': terrain_faces,
+            'local_to_world': [
+                [float(terrain_transform[row][column]) for column in range(4)]
+                for row in range(4)
+            ],
+        }
+        (args.output / 'terrain_mesh_geometry.json').write_text(
+            json.dumps(terrain_geometry)
+        )
+
+        contact_step = {'count': 0}
+
+        def on_physics_step(dt):
+            # The unmodified ContactSensor already owns a PhysX contact view.
+            # Its raw-contact API includes the other actor ID for every point,
+            # unlike the aggregate sensor force or the late ContactReportAPI.
+            contact_step['count'] += 1
+            raw = env.contact_sensor.contact_view.get_raw_contact_data(
+                dt=float(dt)
+            )
+            (
+                forces,
+                points,
+                normals,
+                separations,
+                counts,
+                start_indices,
+                other_actor_ids,
+            ) = raw
+
+            def host(array):
+                return wp.to_torch(array).detach().cpu().numpy()
+
+            forces_host = host(forces)
+            points_host = host(points)
+            normals_host = host(normals)
+            separations_host = host(separations)
+            counts_host = host(counts)
+            start_indices_host = host(start_indices)
+            actor_ids_host = host(other_actor_ids)
+            start = int(start_indices_host[contact_sensor_body_index])
+            count = int(counts_host[contact_sensor_body_index])
+            if count <= 0:
+                return
+            stop = start + count
+            # The tensor API requires actor IDs in a CPU-side Warp array before
+            # converting them to stable USD paths.
+            ids_cpu = wp.array(
+                actor_ids_host[start:stop],
+                dtype=wp.uint64,
+                device='cpu',
+            )
+            actor_paths = (
+                env.contact_sensor.contact_view
+                .get_other_actor_paths_from_ids(ids_cpu)
+            )
+            records = []
+            for offset, actor_path in enumerate(actor_paths):
+                index = start + offset
+                records.append(
+                    {
+                        'other_actor_path': actor_path,
+                        'normal_force_n': float(forces_host[index, 0]),
+                        'position_m': points_host[index].tolist(),
+                        'normal': normals_host[index].tolist(),
+                        'separation_m': float(
+                            separations_host[index, 0]
+                        ),
+                    }
+                )
+            contact_report_out.write(
+                json.dumps(
+                    {
+                        'event_type': 'raw_contact_data',
+                        'physics_callback_step': contact_step['count'],
+                        'sensor_body_path': (
+                            env.contact_sensor
+                            .body_physx_view.prim_paths[
+                                contact_sensor_body_index
+                            ]
+                        ),
+                        'contacts': records,
+                    }
+                )
+                + '\n'
+            )
+
+        contact_report_subscription = (
+            omni.physx.get_physx_interface().subscribe_physics_step_events(
+                on_physics_step
+            )
+        )
+        summary['contact_report'] = {
+            'body_prim': gimbal_path,
+            'contact_sensor_body_index': contact_sensor_body_index,
+            'query_api': 'RigidContactView.get_raw_contact_data',
+            'query_timing': 'subscribe_physics_step_events callback',
+            'terrain_mesh_path': terrain_mesh_path,
+            'terrain_mesh_points': len(terrain_points),
+            'terrain_mesh_face_vertex_indices': len(terrain_faces),
+        }
     # Freeze only evaluation tile assignment; keep the training geometry,
     # constraints, disturbances, sensor noise and termination rules intact.
     env._u_eval = True
@@ -266,10 +485,15 @@ try:
     ids = torch.tensor([j[0] for j in loops], device=cfg.sim.device)
     anchors = torch.tensor([j[1] for j in loops], device=cfg.sim.device)
     # Fixed command changes are video inputs; the saved controller/physics are retained.
-    commanded = torch.tensor([[.8, 0., 0.]], device=cfg.sim.device)
+    if args.random_terrain_route:
+        commanded = torch.zeros((env.num_envs, 3), device=cfg.sim.device)
+    else:
+        commanded = torch.tensor([[.8, 0., 0.]], device=cfg.sim.device)
+    route = None
+    route_update = None
     cg = env.command_generator
     def fixed():
-        if args.sequence:
+        if args.sequence or args.random_terrain_route:
             cg.command.copy_(commanded)
             if hasattr(cg, 'is_standing_env'): cg.is_standing_env[:] = False
         env.height_cmd.fill_(args.height)
@@ -283,6 +507,40 @@ try:
     cg.compute, cg._resample_command = compute, resample
     obs, _ = env.reset()
     fixed()
+    profile_settings = cfg.experiment_profile_settings
+    if (
+        profile_settings.get('random_terrain_map')
+        and profile_settings.get('terrain_relative_height_reward', False)
+    ):
+        # Runtime guard for the reward-only height correction. This keeps the
+        # absolute-height observation used by the checkpoint while ensuring its
+        # reward reference is height above the local patch.
+        from agent_tasks.direct.wheelbipe.wheelbipe_own import random_terrain_map
+
+        origin = tensor(env.terrain.env_origins)
+        root_pos = tensor(env.robot.data.root_pos_w)
+        local_xy = root_pos[:, :2] - origin[:, :2]
+        ground_z = origin[:, 2] + random_terrain_map._heights(env, local_xy)
+        observed_height = env._get_observed_height()
+        expected_reference = observed_height - ground_z
+        wheel_height_w = tensor(
+            env.robot.data.body_pos_w
+        )[:, env._wheel_link_idx, 2]
+        actual_reference = env._get_height_reward_reference_height(
+            observed_height, wheel_height_w
+        )
+        max_error_m = float(
+            (actual_reference - expected_reference).abs().max()
+        )
+        assert max_error_m < 1e-6, max_error_m
+        summary['height_reward_contract'] = {
+            'mode': 'absolute observation minus local terrain height',
+            'max_reference_error_m': max_error_m,
+            'observed_height_m': observed_height.tolist(),
+            'ground_height_world_m': ground_z.tolist(),
+            'reward_reference_m': actual_reference.tolist(),
+            'profile_flag': 'terrain_relative_height_reward',
+        }
     if args.random_terrain_overview:
         # For a 1x1 preview generator, env_origins already contains the centre
         # of the complete map. Keep the runtime camera aligned with the
@@ -297,14 +555,94 @@ try:
             'camera_target_m': map_center.tolist(),
         }
         env.sim.set_camera_view(camera_eye, map_center)
+        if args.random_terrain_route:
+            from agent_tasks.direct.wheelbipe.wheelbipe_own import (
+                random_terrain_map,
+            )
+
+            # Serpentine through the row-major cells. This visits every
+            # connected patch exactly once while staying on cell centres.
+            route_blocks = [0, 1, 2, 5, 4, 3, 6, 7, 8]
+            waypoints = []
+            for block_id in route_blocks:
+                row, column = random_terrain_map.block_position(block_id)
+                waypoints.append((
+                    float(origin[0] + (column - 1) * random_terrain_map.BLOCK_LENGTH_M),
+                    float(origin[1] + (row - 1) * random_terrain_map.BLOCK_WIDTH_M),
+                ))
+            route = {
+                'blocks': route_blocks,
+                'waypoints': waypoints,
+                'next': 0,
+                'reached': [],
+                'command_speed_m_s': float(cfg.experiment_profile_settings['command_speed']),
+            }
+
+            def route_update(current_xy, current_yaw):
+                if route['next'] >= len(waypoints):
+                    commanded.zero_()
+                    return
+                target_x, target_y = waypoints[route['next']]
+                dx = target_x - float(current_xy[0])
+                dy = target_y - float(current_xy[1])
+                distance = (dx * dx + dy * dy) ** 0.5
+                # Switch to the next leg before the exact centre. This rounds
+                # each 90-degree corner instead of applying a large heading
+                # error only after the robot has already reached the centre.
+                while distance < 1.5 and route['next'] < len(waypoints):
+                    route['reached'].append(route['next'])
+                    route['next'] += 1
+                    if route['next'] >= len(waypoints):
+                        commanded.zero_()
+                        return
+                    target_x, target_y = waypoints[route['next']]
+                    dx = target_x - float(current_xy[0])
+                    dy = target_y - float(current_xy[1])
+                    distance = (dx * dx + dy * dy) ** 0.5
+
+                target_yaw = math.atan2(dy, dx)
+                error = (
+                    target_yaw
+                    - float(current_yaw)
+                    + math.pi
+                ) % (2.0 * math.pi) - math.pi
+                yaw_rate = max(-0.10, min(0.10, 0.6 * error))
+                # The frozen policy was trained with forward motion while it
+                # turns. In-place 0.45 rad/s turns can cause a roll at a patch
+                # corner, so keep a slow forward arc while correcting heading.
+                if abs(error) > 0.22:
+                    vx = 0.15
+                else:
+                    vx = min(
+                        route['command_speed_m_s'],
+                        max(0.20, 0.8 * distance),
+                    )
+                commanded[0, 0] = vx
+                commanded[0, 1] = 0.0
+                commanded[0, 2] = yaw_rate
     if args.light_slope_case:
         light_slope.validate_reset_state(env, summary['light_slope'])
     if args.sequence:
         env.command.copy_(commanded)
         obs = env._get_observations()
-    summary['command_sequence'] = ([{'start_s':0.,'end_s':5.,'vx':.8,'yaw':0.},
-        {'start_s':5.,'end_s':10.,'vx':.6,'yaw':.4},
-        {'start_s':10.,'end_s':15.,'vx':-.6,'yaw':0.}] if args.sequence else None)
+    if args.random_terrain_route:
+        summary['command_sequence'] = {
+            'kind': 'closed-loop serpentine route through all nine patches',
+            'blocks': route['blocks'],
+            'waypoints_m': route['waypoints'],
+            'policy_commands': (
+                'slow forward arc above 0.22 rad heading error; '
+                'otherwise forward motion with gentle heading tracking'
+            ),
+        }
+        summary['terrain_selection'] = {
+            'family': 'random_terrain_all_nine_route',
+            'level': None,
+        }
+    else:
+        summary['command_sequence'] = ([{'start_s':0.,'end_s':5.,'vx':.8,'yaw':0.},
+            {'start_s':5.,'end_s':10.,'vx':.6,'yaw':.4},
+            {'start_s':10.,'end_s':15.,'vx':-.6,'yaw':0.}] if args.sequence else None)
     summary['domain_randomization_enabled'] = bool(env._domain_randomization_health()['enabled'])
     summary['domain_randomization_initial'] = env._domain_randomization_health()
     summary['comparison_controls'] = {
@@ -316,6 +654,8 @@ try:
         'policy_mode': 'deterministic actor mean',
         'domain_randomization': 'enabled',
         'profile_override_allowed': args.allow_profile_override,
+        'physics_log_written': not args.no_physics_log,
+        'episode_length_s': cfg.episode_length_s,
         'pairing_note': (
             'Same seed, profile, checkpoint and command are used. DR remains enabled, '
             'so terrain-dependent random draws evolve with each trajectory; runs are '
@@ -326,7 +666,11 @@ try:
     assert obs['policy'].shape == (1, 35) and obs['critic'].shape == (1, 78)
     summary['observation_shapes'] = {k: list(v.shape) for k, v in obs.items()}
     (args.output / 'initial_obs.json').write_text(json.dumps({k: v.tolist() for k, v in obs.items()}))
-    physics_out = (args.output / 'physics.jsonl').open('w', buffering=1)
+    if not args.no_physics_log:
+        physics_out = (args.output / 'physics.jsonl').open(
+            'w',
+            buffering=1,
+        )
     (args.output / 'diagnostic_manifest.json').write_text(json.dumps({
         'native_joint_names': native.joint_names,
         'contact_body_names': env.contact_sensor.body_names,
@@ -366,23 +710,55 @@ try:
         summary['spring_effort_error_N'] = max(summary['spring_effort_error_N'], error)
         assert torch.isfinite(tensor(native.data.root_state_w)).all()
         summary['physics_steps'] += 1
-        physics_out.write(json.dumps({
-            'substep': summary['physics_steps'],
-            'q': tensor(native.data.joint_pos)[0].tolist(),
-            'dq': tensor(native.data.joint_vel)[0].tolist(),
-            'tau': tensor(native.data.applied_torque)[0].tolist(),
-            'computed_tau': tensor(native.data.computed_torque)[0].tolist(),
-            'q_target': tensor(native.data.joint_pos_target)[0].tolist(),
-            'dq_target': tensor(native.data.joint_vel_target)[0].tolist(),
-            'root_state': tensor(native.data.root_state_w)[0].tolist(),
-            'velocity_b': tensor(native.data.root_lin_vel_b)[0].tolist(),
-            'ang_vel_b': tensor(native.data.root_ang_vel_b)[0].tolist(),
-            'spring_command': env._spring_commanded_net[0].tolist(),
-            'contact_forces_w': tensor(env.contact_sensor.data.net_forces_w)[0].tolist(),
-            'closure_m': residual.tolist(),
-            'height_command': float(env._get_effective_height_cmd()[0]),
-            **({'raw_q': tensor(native.root_physx_view.get_dof_positions())[0].tolist(), 'raw_dq': tensor(native.root_physx_view.get_dof_velocities())[0].tolist()} if summary['physics_steps'] % 200 == 0 else {}),
-        }) + '\n')
+        if (
+            contact_report_out is not None
+            and contact_sensor_body_index is not None
+        ):
+            gimbal_force = tensor(
+                env.contact_sensor.data.net_forces_w
+            )[0, contact_sensor_body_index]
+            if torch.linalg.vector_norm(gimbal_force) > 1.0:
+                contact_report_out.write(
+                    json.dumps(
+                        {
+                            'event_type': 'sensor_net_force',
+                            'substep': summary['physics_steps'],
+                            'gimbal_net_force_w': gimbal_force.tolist(),
+                        }
+                    )
+                    + '\n'
+                )
+        if physics_out is not None:
+            physics_out.write(json.dumps({
+                'substep': summary['physics_steps'],
+                'q': tensor(native.data.joint_pos)[0].tolist(),
+                'dq': tensor(native.data.joint_vel)[0].tolist(),
+                'tau': tensor(native.data.applied_torque)[0].tolist(),
+                'computed_tau': tensor(native.data.computed_torque)[0].tolist(),
+                'q_target': tensor(native.data.joint_pos_target)[0].tolist(),
+                'dq_target': tensor(native.data.joint_vel_target)[0].tolist(),
+                'root_state': tensor(native.data.root_state_w)[0].tolist(),
+                'body_pos_w': tensor(native.data.body_pos_w)[0].tolist(),
+                'body_quat_w': tensor(native.data.body_quat_w)[0].tolist(),
+                'velocity_b': tensor(native.data.root_lin_vel_b)[0].tolist(),
+                'ang_vel_b': tensor(native.data.root_ang_vel_b)[0].tolist(),
+                'spring_command': env._spring_commanded_net[0].tolist(),
+                'contact_forces_w': tensor(env.contact_sensor.data.net_forces_w)[0].tolist(),
+                'closure_m': residual.tolist(),
+                'height_command': float(env._get_effective_height_cmd()[0]),
+                **(
+                    {
+                        'raw_q': tensor(
+                            native.root_physx_view.get_dof_positions()
+                        )[0].tolist(),
+                        'raw_dq': tensor(
+                            native.root_physx_view.get_dof_velocities()
+                        )[0].tolist(),
+                    }
+                    if summary['physics_steps'] % 200 == 0
+                    else {}
+                ),
+            }) + '\n')
 
 
     env.sim.step, env.scene.update = step_hook, update_hook
@@ -408,7 +784,16 @@ try:
     errors_vx, errors_yaw, abs_vx, heights = [], [], [], []
     with torch.inference_mode(), (args.output / 'rollout.jsonl').open('w', buffering=1) as out:
         for step in range(args.steps):
-            if args.sequence:
+            if args.random_terrain_route:
+                root_xy = tensor(env.robot.data.root_pos_w)[0, :2].cpu().numpy()
+                _, _, current_yaw = euler_xyz_from_quat(
+                    tensor(env.robot.data.root_quat_w)
+                )
+                route_update(root_xy, float(current_yaw[0]))
+                fixed()
+                env.command.copy_(commanded)
+                obs = env._get_observations()
+            elif args.sequence:
                 desired = [.8, 0., 0.] if step < 250 else ([.6, 0., .4] if step < 500 else [-.6, 0., 0.])
                 new_command = torch.tensor([desired], device=cfg.sim.device)
                 changed = not torch.equal(commanded, new_command)
@@ -481,6 +866,12 @@ try:
                    sim_seconds=summary['steps'] * env.step_dt)
     if args.light_slope_case:
         light_slope.add_metrics(env, args.output / 'rollout.jsonl', summary['light_slope'])
+    if args.random_terrain_route:
+        summary['route'] = {
+            'waypoints_total': len(route['waypoints']),
+            'waypoints_reached': len(route['reached']),
+            'completed': len(route['reached']) == len(route['waypoints']),
+        }
     mechanics_ok = (summary['longest_above_2mm_s'] <= .1
                     and summary['max_closure_m'] < .005
                     and summary['spring_effort_error_N'] <= .1
@@ -488,8 +879,14 @@ try:
     light_slope_ok = (not args.light_slope_case
                       or summary['light_slope']['status'] == 'PASS')
     summary['status'] = 'PASS' if mechanics_ok and light_slope_ok else 'FAIL'
-    physics_out.close()
+    if physics_out is not None:
+        physics_out.close()
     env.close()
+    # Keep the report file open until the environment has shut down because
+    # the callback remains registered for the lifetime of the physics step.
+    contact_report_subscription = None
+    if contact_report_out is not None:
+        contact_report_out.close()
 except BaseException:
     summary['status'] = 'ERROR'
     summary['error'] = traceback.format_exc()
@@ -497,6 +894,8 @@ except BaseException:
 finally:
     if video is not None: video.close()
     if physics_out is not None and not physics_out.closed: physics_out.close()
+    if contact_report_out is not None and not contact_report_out.closed:
+        contact_report_out.close()
     summary['wall_seconds'] = time.perf_counter() - started
     (args.output / 'summary.json').write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2), flush=True)
