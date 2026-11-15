@@ -650,6 +650,235 @@
     "terrain_color_scheme": "height",
     "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
   },
+  "random_terrain_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261113,
+    "terrain_version": "random_terrain_map_v1",
+    "terrain_generation": "fixed-seed 3x3 shuffle of flat and 6/10/14/18 percent uphill/downhill ridges; zero-height connected boundaries; random patch and physical reset",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261113,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_speed065_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.0,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_map_speed065_v1",
+    "terrain_generation": "fixed connected 3x3 map; fixed 0.65 m/s straight command; every reset on the flat run-up facing world +X",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys",
+    "command_lin_vel_x": [
+      0.65,
+      0.65
+    ],
+    "command_ang_vel_z": [
+      0.0,
+      0.0
+    ],
+    "command_standing_fraction": 0.0,
+    "random_terrain_start_fraction": 1.0,
+    "random_terrain_training_yaw_span_deg": 0.0
+  },
   "random_terrain_forward_20261112": {
     "external_forces_every_iteration": true,
     "leg_filter": false,
@@ -998,6 +1227,1767 @@
     "random_terrain_layout_seed": 20261112,
     "random_terrain_training_yaw_span_deg": 10.0,
     "random_terrain_start_fraction": 0.5,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_reward12_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 12.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_map_reward12_v1",
+    "terrain_generation": "fixed-seed 3x3 shuffle of flat and 6/10/14/18 percent uphill/downhill ridges; zero-height connected boundaries; random patch and physical reset; speed-tracking weight 12.0 (3x base)",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_sigma003_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.03,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_map_sigma003_v1",
+    "terrain_generation": "fixed-seed 3x3 shuffle of flat and 6/10/14/18 percent uphill/downhill ridges; zero-height connected boundaries; random patch and physical reset; speed-tracking sigma 0.03 (3x sharper than base 0.09)",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_matcheddiv_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_map_matcheddiv_v1",
+    "terrain_generation": "fixed connected 3x3 map; fixed 0.65 m/s straight command; random patch reset with full yaw range (matched-diversity control)",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys",
+    "command_lin_vel_x": [
+      0.65,
+      0.65
+    ],
+    "command_ang_vel_z": [
+      0.0,
+      0.0
+    ],
+    "command_standing_fraction": 0.0
+  },
+  "random_terrain_reward12sigma003_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 12.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.03,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_map_reward12sigma003_v1",
+    "terrain_generation": "fixed connected 3x3 map; 3x speed-tracking reward weight with sharper lin_vel_xy_sigma=0.03; random patch and physical reset",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_transition_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_map_transition_v1",
+    "terrain_generation": "fixed connected 3x3 map; 40 percent ramp-entry and inter-block transition spawn sampling; per-env closed-loop reset",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_transition_fraction": 0.4,
+    "per_env_closure_reset": true,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_relcritic_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 2.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.09,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_map_relcritic_v1",
+    "terrain_generation": "fixed connected 3x3 map; terrain-relative Critic obs_height (dim 31); 40 percent transition spawn sampling; per-env closed-loop reset",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_transition_fraction": 0.4,
+    "per_env_closure_reset": true,
+    "critic_relative_height_obs": true,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_yaw045_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 3.0,
+      "lin_vel_z": -2.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -3.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.045,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_map_yaw045_v1",
+    "terrain_generation": "fixed connected 3x3 map; terrain-relative Critic obs_height (dim 31); 40 percent transition spawn sampling with +-0.45 rad yaw; tightened yaw tracking; per-env closed-loop reset",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_transition_fraction": 0.4,
+    "random_terrain_transition_yaw_rad": 0.45,
+    "per_env_closure_reset": true,
+    "critic_relative_height_obs": true,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_stairs_20261113": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_yaw": 0.45,
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 3.0,
+      "lin_vel_z": -1.5,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -2.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.045,
+      "stand_still_deadzone_threshold": 0.03
+    },
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_map_stairs_v2",
+    "terrain_generation": "hybrid connected 3x3 map plus 2 stairs_down lanes (35/70 mm) and 2 climbable platform_up lanes (25/40 mm); terrain-relative Critic obs_height (dim 31); 20 percent start, 30 percent transition (+-0.35 rad), 30 percent obstacle spawns; per-env closed-loop reset",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_start_fraction": 0.2,
+    "random_terrain_transition_fraction": 0.3,
+    "random_terrain_transition_yaw_rad": 0.35,
+    "random_terrain_stairs_lanes": true,
+    "random_terrain_stairs_fraction": 0.3,
+    "per_env_closure_reset": true,
+    "critic_relative_height_obs": true,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_opt_posture_20261114": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 0.65,
+    "command_lin_vel_x": [
+      -0.65,
+      0.65
+    ],
+    "command_yaw": 0.45,
+    "command_ang_vel_z": [
+      -0.45,
+      0.45
+    ],
+    "command_resampling": [
+      2.0,
+      5.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 3.0,
+      "lin_vel_z": -1.5,
+      "ang_vel_xy": -0.08,
+      "flat_orientation_x": -2.0,
+      "roll_angle_l2": -15.0,
+      "upward_rebound_vel_z": -12.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -2.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.045,
+      "stand_still_deadzone_threshold": 0.03,
+      "rebound_vel_z_threshold": 0.08
+    },
+    "rebound_vel_z_threshold": 0.08,
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_opt_posture_v1",
+    "terrain_generation": "Direction 3 posture/rebound/platform_up optimization: zero roll bias (roll_angle_l2=-15, flat_orientation_x=-2), damped post-landing rebound (upward_rebound_vel_z=-12 above +0.08 m/s), 36% obstacle sampling weighted toward 25/40 mm platforms with +-0.28 rad yaw",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_start_fraction": 0.2,
+    "random_terrain_transition_fraction": 0.3,
+    "random_terrain_transition_yaw_rad": 0.35,
+    "random_terrain_stairs_lanes": true,
+    "random_terrain_stairs_fraction": 0.36,
+    "random_terrain_stairs_yaw_rad": 0.28,
+    "random_terrain_stairs_lane_probs": [
+      0.2,
+      0.2,
+      0.3,
+      0.3
+    ],
+    "per_env_closure_reset": true,
+    "critic_relative_height_obs": true,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_opt_speed_20261114": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 1.05,
+    "command_lin_vel_x": [
+      -0.8,
+      1.05
+    ],
+    "command_yaw": 0.8,
+    "command_ang_vel_z": [
+      -0.8,
+      0.8
+    ],
+    "command_resampling": [
+      1.5,
+      3.5
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 3.0,
+      "lin_vel_z": -1.5,
+      "ang_vel_xy": -0.08,
+      "flat_orientation_x": -2.0,
+      "roll_angle_l2": -15.0,
+      "upward_rebound_vel_z": -12.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -2.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.045,
+      "stand_still_deadzone_threshold": 0.03,
+      "rebound_vel_z_threshold": 0.08
+    },
+    "rebound_vel_z_threshold": 0.08,
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_opt_speed_v1",
+    "terrain_generation": "Direction 1+3 speed/yaw expansion [-0.80, 1.05] m/s, |wz| <= 0.80 rad/s, 1.5-3.5 s resampling + posture/rebound stabilization + 32% obstacle spawns",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_start_fraction": 0.2,
+    "random_terrain_transition_fraction": 0.3,
+    "random_terrain_transition_yaw_rad": 0.35,
+    "random_terrain_stairs_lanes": true,
+    "random_terrain_stairs_fraction": 0.32,
+    "random_terrain_stairs_yaw_rad": 0.25,
+    "random_terrain_stairs_lane_probs": [
+      0.2,
+      0.2,
+      0.3,
+      0.3
+    ],
+    "per_env_closure_reset": true,
+    "critic_relative_height_obs": true,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_opt_full_rm_20261114": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 1.05,
+    "command_lin_vel_x": [
+      -0.8,
+      1.05
+    ],
+    "command_yaw": 0.8,
+    "command_ang_vel_z": [
+      -0.8,
+      0.8
+    ],
+    "command_resampling": [
+      1.5,
+      3.5
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 4.0,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 3.0,
+      "lin_vel_z": -1.5,
+      "ang_vel_xy": -0.08,
+      "flat_orientation_x": -2.0,
+      "roll_angle_l2": -15.0,
+      "upward_rebound_vel_z": -12.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -2.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.09,
+      "ang_vel_z_sigma": 0.045,
+      "stand_still_deadzone_threshold": 0.03,
+      "rebound_vel_z_threshold": 0.08
+    },
+    "rebound_vel_z_threshold": 0.08,
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_opt_full_rm_v1",
+    "terrain_generation": "Direction 1+2+3 full RM optimization: steep slopes grade_scale=1.45 (up to +-26.1% / 14.6 deg) + speed/yaw [-0.80, 1.05] m/s, |wz| <= 0.80 rad/s + posture/rebound + 32% obstacle spawns",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_grade_scale": 1.45,
+    "random_terrain_start_fraction": 0.2,
+    "random_terrain_transition_fraction": 0.3,
+    "random_terrain_transition_yaw_rad": 0.35,
+    "random_terrain_stairs_lanes": true,
+    "random_terrain_stairs_fraction": 0.32,
+    "random_terrain_stairs_yaw_rad": 0.25,
+    "random_terrain_stairs_lane_probs": [
+      0.2,
+      0.2,
+      0.3,
+      0.3
+    ],
+    "per_env_closure_reset": true,
+    "critic_relative_height_obs": true,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_stage2_agile_20261114": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 1.35,
+    "command_lin_vel_x": [
+      -0.9,
+      1.35
+    ],
+    "command_yaw": 1.05,
+    "command_ang_vel_z": [
+      -1.05,
+      1.05
+    ],
+    "command_resampling": [
+      1.2,
+      3.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 7.5,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 3.6,
+      "lin_vel_z": -1.0,
+      "ang_vel_xy": -0.08,
+      "flat_orientation_x": -2.0,
+      "roll_angle_l2": -16.0,
+      "upward_rebound_vel_z": -15.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -2.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.14,
+      "ang_vel_z_sigma": 0.08,
+      "stand_still_deadzone_threshold": 0.03,
+      "rebound_vel_z_threshold": 0.08
+    },
+    "rebound_vel_z_threshold": 0.08,
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_stage2_agile_v1",
+    "terrain_generation": "Stage 2 (dirF1): speed [-0.90, 1.35] m/s, |wz| <= 1.05 rad/s, relaxed sigmas (0.14, 0.08), stronger roll/rebound penalties, 34% stair spawns",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_grade_scale": 1.0,
+    "random_terrain_start_fraction": 0.2,
+    "random_terrain_transition_fraction": 0.3,
+    "random_terrain_transition_yaw_rad": 0.35,
+    "random_terrain_stairs_lanes": true,
+    "random_terrain_stairs_fraction": 0.34,
+    "random_terrain_stairs_yaw_rad": 0.3,
+    "random_terrain_stairs_lane_probs": [
+      0.18,
+      0.22,
+      0.32,
+      0.28
+    ],
+    "per_env_closure_reset": true,
+    "critic_relative_height_obs": true,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_stage2_steep_agile_20261114": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 1.25,
+    "command_lin_vel_x": [
+      -0.85,
+      1.25
+    ],
+    "command_yaw": 1.0,
+    "command_ang_vel_z": [
+      -1.0,
+      1.0
+    ],
+    "command_resampling": [
+      1.2,
+      3.0
+    ],
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "reward_weights": {
+      "track_lin_vel_xy": 7.5,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 3.6,
+      "lin_vel_z": -1.0,
+      "ang_vel_xy": -0.08,
+      "flat_orientation_x": -1.8,
+      "random_terrain_slope_pitch": -1.5,
+      "roll_angle_l2": -18.0,
+      "upward_rebound_vel_z": -16.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -2.0
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.14,
+      "ang_vel_z_sigma": 0.08,
+      "stand_still_deadzone_threshold": 0.03,
+      "rebound_vel_z_threshold": 0.08,
+      "random_terrain_slope_pitch_sigma_rad": 0.09
+    },
+    "rebound_vel_z_threshold": 0.08,
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_stage2_steep_agile_v1",
+    "terrain_generation": "Stage 2 (dirF2): moderate grade_scale=1.22 (+-22%), slope_pitch=-1.5, [-0.85, 1.25] m/s, |wz| <= 1.00 rad/s, relaxed sigmas (0.14, 0.08), 34% stair spawns",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_grade_scale": 1.22,
+    "random_terrain_start_fraction": 0.2,
+    "random_terrain_transition_fraction": 0.3,
+    "random_terrain_transition_yaw_rad": 0.35,
+    "random_terrain_stairs_lanes": true,
+    "random_terrain_stairs_fraction": 0.34,
+    "random_terrain_stairs_yaw_rad": 0.3,
+    "random_terrain_stairs_lane_probs": [
+      0.18,
+      0.22,
+      0.32,
+      0.28
+    ],
+    "per_env_closure_reset": true,
+    "critic_relative_height_obs": true,
+    "terrain_relative_height_reward": true,
+    "terrain_color_scheme": "height",
+    "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"
+  },
+  "random_terrain_stage3_curriculum_20261115": {
+    "external_forces_every_iteration": true,
+    "leg_filter": false,
+    "cylinder_wheels": true,
+    "cylinder_geometry": "measured_flat_tread",
+    "tread_radius_m": 0.0625,
+    "tread_flat_width_m": 0.015,
+    "tread_centers_y_m": [
+      -0.0125,
+      0.0125
+    ],
+    "tread_contact_offsets_m": [
+      0.001320660230703652,
+      0.0012806602753698826
+    ],
+    "leg_target_rate": 0.0,
+    "wheel_target_acceleration": 0.0,
+    "reset_band": 0.1,
+    "leg_effort_limit": 40.0,
+    "wheel_effort_limit": 5.0,
+    "command_speed": 2.0,
+    "command_lin_vel_x": [
+      -0.9,
+      1.35
+    ],
+    "command_yaw": 1.5,
+    "command_ang_vel_z": [
+      -1.05,
+      1.05
+    ],
+    "command_resampling": [
+      1.0,
+      2.6
+    ],
+    "command_standing_fraction": 0.22,
+    "curriculum": {
+      "warmup_iters": 10,
+      "ramp_iters": 80,
+      "lin_vel_x_start": [
+        -0.9,
+        1.35
+      ],
+      "lin_vel_x_end": [
+        -1.2,
+        2.0
+      ],
+      "ang_vel_z_start": [
+        -1.05,
+        1.05
+      ],
+      "ang_vel_z_end": [
+        -1.5,
+        1.5
+      ],
+      "standing_fraction_start": 0.22,
+      "standing_fraction_end": 0.25,
+      "steep_block_prob_start": 0.22,
+      "steep_block_prob_end": 0.45
+    },
+    "terrain_mix": false,
+    "terrain_family": "random_terrain_map",
+    "terrain_relative_roll_penalty": true,
+    "reward_weights": {
+      "track_lin_vel_xy": 8.5,
+      "track_lin_vel_xy_square": -2.0,
+      "track_ang_vel_z": 4.0,
+      "lin_vel_z": -1.2,
+      "ang_vel_xy": -0.08,
+      "flat_orientation_x": -0.8,
+      "flat_orientation_x_exp": 0.15,
+      "flat_orientation_x_v": -0.3,
+      "flat_orientation_y_exp": 0.15,
+      "flat_orientation_y_v": -0.3,
+      "random_terrain_slope_pitch": -2.5,
+      "roll_angle_l2": -20.0,
+      "upward_rebound_vel_z": -20.0,
+      "action_smoothness_leg": -0.1,
+      "action_smoothness_wheel": -0.02,
+      "flight_penalty": -2.5
+    },
+    "reward_parameters": {
+      "lin_vel_xy_sigma": 0.22,
+      "ang_vel_z_sigma": 0.08,
+      "stand_still_deadzone_threshold": 0.03,
+      "rebound_vel_z_threshold": 0.06,
+      "random_terrain_slope_pitch_sigma_rad": 0.09
+    },
+    "rebound_vel_z_threshold": 0.06,
+    "domain_randomization": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "spring_damping_range": [
+      25.0,
+      100.0
+    ],
+    "mixed_slopes": false,
+    "terrain_seed": 20261112,
+    "terrain_version": "random_terrain_stage3_curriculum_v1",
+    "terrain_generation": "Stage 3 (dirH): curriculum grade_scale=1.67 (+-30%), steep_prob 0.22->0.45, lin_vel [-0.90,1.35]->[-1.20,2.00], yaw +-1.05->+-1.50, standing 0.22->0.25, terrain-relative roll, relaxed V14 flat_orientation_x/y exp/v, 36% stairs lanes (x=[1.4,2.75], platform40=0.35)",
+    "random_terrain_map": true,
+    "random_terrain_layout_seed": 20261112,
+    "random_terrain_grade_scale": 1.67,
+    "random_terrain_start_fraction": 0.2,
+    "random_terrain_transition_fraction": 0.3,
+    "random_terrain_transition_yaw_rad": 0.35,
+    "random_terrain_stairs_lanes": true,
+    "random_terrain_stairs_fraction": 0.36,
+    "random_terrain_stairs_x_range": [
+      1.4,
+      2.75
+    ],
+    "random_terrain_stairs_yaw_rad": 0.35,
+    "random_terrain_stairs_lane_probs": [
+      0.12,
+      0.28,
+      0.25,
+      0.35
+    ],
+    "per_env_closure_reset": true,
+    "critic_relative_height_obs": true,
     "terrain_relative_height_reward": true,
     "terrain_color_scheme": "height",
     "terrain_visual": "Isaac Lab inferno height map: bright crests, mid-tone crossings, dark valleys"

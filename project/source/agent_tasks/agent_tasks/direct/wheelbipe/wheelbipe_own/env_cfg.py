@@ -56,9 +56,13 @@ class WheelbipeOwnFlatEnvCfg(WheelbipeV14FlatEnvCfg):
     play_terrain_debug_vis = False
     own_spring_tolerance_m = 0.001
     own_strict_finite = True
+    rebound_vel_z_threshold = 0.08
 
     def __post_init__(self):
         super().__post_init__()
+        self.rewards = copy.deepcopy(self.rewards)
+        self.rewards["upward_rebound_vel_z"] = 0.0
+        self.rewards["roll_angle_l2"] = 0.0
         self.events = None
         self.curriculum = None
         self.scene.num_envs = 1

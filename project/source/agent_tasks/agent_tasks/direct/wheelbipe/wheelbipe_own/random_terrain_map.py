@@ -31,9 +31,25 @@ TERRAIN_TYPES = (
 )
 RANDOM_TERRAIN_PROFILES = (
     "random_terrain_20261112",
+    "random_terrain_20261113",
     "random_terrain_forward_20261112",
     "random_terrain_straight_20261112",
     "random_terrain_slope_pitch_20261112",
+    "random_terrain_speed065_20261113",
+    "random_terrain_reward12_20261113",
+    "random_terrain_sigma003_20261113",
+    "random_terrain_matcheddiv_20261113",
+    "random_terrain_reward12sigma003_20261113",
+    "random_terrain_transition_20261113",
+    "random_terrain_relcritic_20261113",
+    "random_terrain_yaw045_20261113",
+    "random_terrain_stairs_20261113",
+    "random_terrain_opt_posture_20261114",
+    "random_terrain_opt_speed_20261114",
+    "random_terrain_opt_full_rm_20261114",
+    "random_terrain_stage2_agile_20261114",
+    "random_terrain_stage2_steep_agile_20261114",
+    "random_terrain_stage3_curriculum_20261115",
 )
 GRADES = {
     "flat": 0.00,
@@ -55,6 +71,23 @@ MAP_ROWS = 3
 MAP_COLS = 3
 MAP_SIZE_M = (BLOCK_LENGTH_M * MAP_COLS, BLOCK_WIDTH_M * MAP_ROWS)
 
+# Hybrid stairs+platforms+slopes map extends Y from [-18, +18] to [-24, +24]
+# and appends four closed obstacle lanes along y_center = +21.0 m
+# (y in [19.5, 22.5]): two stairs_down lanes (35/70 mm per step) and two
+# wheel-climbable platform_up steps (25/40 mm).
+HYBRID_MAP_SIZE_M = (BLOCK_LENGTH_M * MAP_COLS, 48.0)
+STAIRS_LANE_KINDS = ("stairs_down", "stairs_down", "platform_up", "platform_up")
+STAIRS_LANE_STEP_HEIGHTS_M = (0.035, 0.070, 0.025, 0.040)
+STAIRS_LANE_X_STARTS_M = (-22.0, -10.0, 2.0, 14.0)
+STAIRS_LANE_Y_CENTER_M = 21.0
+STAIRS_LANE_WIDTH_M = 3.0
+STAIRS_LANE_APPROACH_M = 3.0
+STAIRS_LANE_LANDING_M = 3.6
+STAIRS_LANE_PLATFORM_LANDING_M = 5.0
+STAIRS_LANE_STEP_COUNT = 4
+STAIRS_LANE_TREAD_M = 0.35
+STAIRS_LANE_BAND_Y_MIN_M = 18.5
+
 # The complete map is repeated over the terrain generator grid.  A grid has
 # 60 cells for 4096 environments, matching the existing mixed-slope setup:
 # environments may share terrain geometry, but their robot collision groups do
@@ -73,6 +106,24 @@ RAMP_END_M = 7.0
 PATCH_Y_EDGE_TAPER_M = 1.5
 SPAWN_X_MARGIN_M = 0.8
 SPAWN_Y_MARGIN_M = 0.8
+
+# The mesh vertices and every height query use these exact breakpoints. Between
+# them, the collision surface is triangular; it is not the continuous product
+# of the longitudinal profile and the lateral taper.
+PATCH_X_BREAKPOINTS_M = (
+    -BLOCK_LENGTH_M / 2.0,
+    RAMP_START_M,
+    RAMP_TOP_START_M,
+    RAMP_TOP_END_M,
+    RAMP_END_M,
+    BLOCK_LENGTH_M / 2.0,
+)
+PATCH_Y_BREAKPOINTS_M = (
+    -BLOCK_WIDTH_M / 2.0,
+    -(BLOCK_WIDTH_M / 2.0 - PATCH_Y_EDGE_TAPER_M),
+    BLOCK_WIDTH_M / 2.0 - PATCH_Y_EDGE_TAPER_M,
+    BLOCK_WIDTH_M / 2.0,
+)
 
 
 def make_layout(seed: int = LAYOUT_SEED) -> tuple[tuple[str, ...], ...]:
@@ -107,18 +158,68 @@ def patch_height(
     terrain: str,
     local_y_m: float = 0.0,
 ) -> float:
-    """Return patch-relative height for terrain at ``local_x_m``.
+    """Return the actual triangular collision-surface height in one patch.
 
     ``local_x_m`` is in one patch's local frame.  The map centre is zero.
     Uphill is a hill-shaped ridge; downhill is its inverse valley.  Both use
     the requested signed grade. The profile tapers to zero over the final
-    1.5 m at each `y` edge, so neighboring rows meet without a step.
+    1.5 m at each `y` edge. Inside each mesh cell, linear interpolation across
+    one of the two actual triangles is authoritative; using the product of an
+    X profile and a Y taper would disagree with physics between vertices.
     """
     if terrain not in GRADES:
         raise ValueError(f"Unknown random-terrain patch: {terrain}")
-    x = float(local_x_m)
     grade = GRADES[terrain]
-    if terrain == "flat" or x <= RAMP_START_M or x >= RAMP_END_M:
+    if terrain == "flat":
+        return 0.0
+    x = float(local_x_m)
+    y = float(local_y_m)
+    x_index = min(
+        max(
+            int(np.searchsorted(PATCH_X_BREAKPOINTS_M, x, side="right")) - 1,
+            0,
+        ),
+        len(PATCH_X_BREAKPOINTS_M) - 2,
+    )
+    y_index = min(
+        max(
+            int(np.searchsorted(PATCH_Y_BREAKPOINTS_M, y, side="right")) - 1,
+            0,
+        ),
+        len(PATCH_Y_BREAKPOINTS_M) - 2,
+    )
+    x0, x1 = PATCH_X_BREAKPOINTS_M[x_index:x_index + 2]
+    y0, y1 = PATCH_Y_BREAKPOINTS_M[y_index:y_index + 2]
+    x_fraction = min(1.0, max(0.0, (x - x0) / (x1 - x0)))
+    y_fraction = min(1.0, max(0.0, (y - y0) / (y1 - y0)))
+
+    z00 = _profile_vertex_height(x0, grade, y0)
+    z10 = _profile_vertex_height(x1, grade, y0)
+    z01 = _profile_vertex_height(x0, grade, y1)
+    z11 = _profile_vertex_height(x1, grade, y1)
+    if x_fraction + y_fraction <= 1.0:
+        # Lower-left triangle: (x0, y0), (x1, y0), (x0, y1).
+        return (
+            z00 * (1.0 - x_fraction - y_fraction)
+            + z10 * x_fraction
+            + z01 * y_fraction
+        )
+    # Upper-right triangle: (x0, y1), (x1, y0), (x1, y1).
+    return (
+        z10 * (1.0 - y_fraction)
+        + z01 * (1.0 - x_fraction)
+        + z11 * (x_fraction + y_fraction - 1.0)
+    )
+
+
+def _profile_vertex_height(
+    local_x_m: float,
+    grade: float,
+    local_y_m: float = 0.0,
+) -> float:
+    """Return the height used at one exact mesh vertex."""
+    x = float(local_x_m)
+    if grade == 0.0 or x <= RAMP_START_M or x >= RAMP_END_M:
         return 0.0
     if x < RAMP_TOP_START_M:
         magnitude = abs(grade) * (x - RAMP_START_M)
@@ -126,10 +227,13 @@ def patch_height(
         magnitude = abs(grade) * (RAMP_TOP_START_M - RAMP_START_M)
     else:
         magnitude = abs(grade) * (RAMP_END_M - x)
-    y = float(local_y_m)
     y_taper = max(
         0.0,
-        min(1.0, (BLOCK_WIDTH_M / 2.0 - abs(y)) / PATCH_Y_EDGE_TAPER_M),
+        min(
+            1.0,
+            (BLOCK_WIDTH_M / 2.0 - abs(float(local_y_m)))
+            / PATCH_Y_EDGE_TAPER_M,
+        ),
     )
     return math.copysign(magnitude * y_taper, grade)
 
@@ -251,7 +355,7 @@ def quats_rotate_wxyz_numpy(
     rotation[:, 2, 0] = 2.0 * (x * z - w * y)
     rotation[:, 2, 1] = 2.0 * (y * z + w * x)
     rotation[:, 2, 2] = 1.0 - 2.0 * (x * x + y * y)
-    return np.einsum("ij,njk->nik", vectors, rotation, optimize=True)
+    return np.einsum("ij,nkj->nik", vectors, rotation, optimize=True)
 
 
 def collision_points_minimum_clearance(
@@ -334,58 +438,122 @@ def collision_box_minimum_clearance(
     )
 
 
+def _load_obstacle_terrain():
+    try:
+        from . import obstacle_terrain
+
+        return obstacle_terrain
+    except ImportError:
+        import importlib.util
+        import sys
+        from pathlib import Path
+
+        path = Path(__file__).with_name("obstacle_terrain.py")
+        name = "_wheelbipe_obstacle_terrain_standalone"
+        if name in sys.modules:
+            return sys.modules[name]
+        spec = importlib.util.spec_from_file_location(name, path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError(f"Could not load obstacle_terrain from {path}")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        spec.loader.exec_module(module)
+        return module
+
+
+def _stair_lane_specs():
+    obstacle = _load_obstacle_terrain()
+    y_start = STAIRS_LANE_Y_CENTER_M - STAIRS_LANE_WIDTH_M / 2.0
+    return tuple(
+        (
+            x_start,
+            y_start,
+            obstacle.ObstacleSpec(
+                kind=kind,
+                height_m=step_height_m,
+                width_m=STAIRS_LANE_WIDTH_M,
+                approach_m=STAIRS_LANE_APPROACH_M,
+                landing_m=(
+                    STAIRS_LANE_PLATFORM_LANDING_M
+                    if kind == "platform_up"
+                    else STAIRS_LANE_LANDING_M
+                ),
+                step_count=STAIRS_LANE_STEP_COUNT,
+                tread_m=STAIRS_LANE_TREAD_M,
+                base_z_m=-0.20,
+            ),
+        )
+        for kind, x_start, step_height_m in zip(
+            STAIRS_LANE_KINDS,
+            STAIRS_LANE_X_STARTS_M,
+            STAIRS_LANE_STEP_HEIGHTS_M,
+        )
+    )
+
+
 def _vertices_and_faces(
     layout: tuple[tuple[str, ...], ...],
+    include_stairs_lanes: bool = False,
+    grade_scale: float = 1.0,
 ) -> tuple[list[tuple[float, float, float]], list[tuple[int, int, int]]]:
     """Triangulate every patch while sharing zero height at map boundaries."""
     vertices: list[tuple[float, float, float]] = []
     faces: list[tuple[int, int, int]] = []
-    breakpoints = (
-        -BLOCK_LENGTH_M / 2.0,
-        RAMP_START_M,
-        RAMP_TOP_START_M,
-        RAMP_TOP_END_M,
-        RAMP_END_M,
-        BLOCK_LENGTH_M / 2.0,
-    )
+    scale = float(grade_scale)
     for row in range(MAP_ROWS):
         for column in range(MAP_COLS):
             terrain = layout[row][column]
             x_center = (column - (MAP_COLS - 1) / 2.0) * BLOCK_LENGTH_M
             y_center = (row - (MAP_ROWS - 1) / 2.0) * BLOCK_WIDTH_M
-            taper_start = BLOCK_WIDTH_M / 2.0 - PATCH_Y_EDGE_TAPER_M
-            y_values = (
-                -BLOCK_WIDTH_M / 2.0,
-                -taper_start,
-                taper_start,
-                BLOCK_WIDTH_M / 2.0,
-            )
             offset = len(vertices)
-            for local_x in breakpoints:
-                for local_y in y_values:
+            for local_x in PATCH_X_BREAKPOINTS_M:
+                for local_y in PATCH_Y_BREAKPOINTS_M:
                     vertices.append(
                         (
                             x_center + local_x,
                             y_center + local_y,
-                            patch_height(local_x, terrain, local_y),
+                            _profile_vertex_height(
+                                local_x,
+                                GRADES[terrain] * scale,
+                                local_y,
+                            ),
                         )
                     )
-            for index in range(len(breakpoints) - 1):
-                for y_index in range(len(y_values) - 1):
-                    left = offset + index * len(y_values) + y_index
-                    right = left + len(y_values)
+            for index in range(len(PATCH_X_BREAKPOINTS_M) - 1):
+                for y_index in range(len(PATCH_Y_BREAKPOINTS_M) - 1):
+                    left = (
+                        offset
+                        + index * len(PATCH_Y_BREAKPOINTS_M)
+                        + y_index
+                    )
+                    right = left + len(PATCH_Y_BREAKPOINTS_M)
                     faces.append((left, right, left + 1))
                     faces.append((left + 1, right, right + 1))
+    if include_stairs_lanes:
+        obstacle = _load_obstacle_terrain()
+        for x_start, y_start, spec in _stair_lane_specs():
+            lane_verts, lane_faces = obstacle.mesh_data(spec)
+            offset = len(vertices)
+            for vx, vy, vz in lane_verts:
+                vertices.append((x_start + vx, y_start + vy, vz))
+            for f0, f1, f2 in lane_faces:
+                faces.append((offset + f0, offset + f1, offset + f2))
     return vertices, faces
 
 
 def _terrain_function(
     layout: tuple[tuple[str, ...], ...],
+    include_stairs_lanes: bool = False,
+    grade_scale: float = 1.0,
 ):
     def generate(_difficulty, cfg):
         import trimesh
 
-        vertices, faces = _vertices_and_faces(layout)
+        vertices, faces = _vertices_and_faces(
+            layout,
+            include_stairs_lanes=include_stairs_lanes,
+            grade_scale=grade_scale,
+        )
         mesh = trimesh.Trimesh(
             vertices=np.asarray(vertices, dtype=np.float64),
             faces=np.asarray(faces, dtype=np.int64),
@@ -414,6 +582,10 @@ def configure(cfg) -> None:
 
     layout_seed = int(settings.get("random_terrain_layout_seed", LAYOUT_SEED))
     layout = make_layout(layout_seed)
+    include_stairs_lanes = bool(settings.get("random_terrain_stairs_lanes", False))
+    grade_scale = float(settings.get("random_terrain_grade_scale", 1.0))
+    if grade_scale <= 0.0:
+        raise ValueError(f"random_terrain_grade_scale must be positive, got {grade_scale}")
     color_scheme = str(settings.get("terrain_color_scheme", "height"))
     if color_scheme != "height":
         raise ValueError(
@@ -425,7 +597,7 @@ def configure(cfg) -> None:
     cfg.terrain.max_init_terrain_level = 0
     cfg.terrain.terrain_generator = TerrainGeneratorCfg(
         seed=layout_seed,
-        size=MAP_SIZE_M,
+        size=HYBRID_MAP_SIZE_M if include_stairs_lanes else MAP_SIZE_M,
         # Spawn, height queries and route waypoints use the full map frame.
         # A non-zero generator border shrinks each sloped map inward and inserts
         # a flat strip at zero height inside those coordinates. The zero-height
@@ -445,7 +617,11 @@ def configure(cfg) -> None:
         sub_terrains={
             "random_map": MeshPlaneTerrainCfg(
                 proportion=1.0,
-                function=_terrain_function(layout),
+                function=_terrain_function(
+                    layout,
+                    include_stairs_lanes=include_stairs_lanes,
+                    grade_scale=grade_scale,
+                ),
             )
         },
     )
@@ -475,8 +651,12 @@ def initialize(env) -> None:
     env._random_terrain_layout = make_layout(
         int(settings.get("random_terrain_layout_seed", LAYOUT_SEED))
     )
+    grade_scale = float(settings.get("random_terrain_grade_scale", 1.0))
+    if grade_scale <= 0.0:
+        raise ValueError(f"random_terrain_grade_scale must be positive, got {grade_scale}")
+    env._random_terrain_grade_scale = grade_scale
     env._random_terrain_block_grades = torch.tensor(
-        [[GRADES[name] for name in row] for row in env._random_terrain_layout],
+        [[GRADES[name] * grade_scale for name in row] for row in env._random_terrain_layout],
         dtype=torch.float32,
         device=env.device,
     )
@@ -495,6 +675,8 @@ def initialize(env) -> None:
         len(TERRAIN_TYPES), dtype=torch.long, device=env.device
     )
     env._random_terrain_run_up_spawn_count = 0
+    env._random_terrain_transition_spawn_count = 0
+    env._random_terrain_stairs_spawn_count = 0
     env._random_terrain_reset_count = 0
     env._random_terrain_peak_penetration_m = 0.0
     env._random_terrain_force_block = None
@@ -506,6 +688,16 @@ def initialize(env) -> None:
             )
         env._random_terrain_force_block = torch.tensor(
             forced, dtype=torch.long, device=env.device
+        )
+    env._random_terrain_evaluation_xy_yaw = None
+    forced_xy_yaw = settings.get("evaluation_spawn_xy_yaw")
+    if forced_xy_yaw is not None:
+        if len(forced_xy_yaw) != env.num_envs:
+            raise ValueError(
+                "evaluation_spawn_xy_yaw must contain one (x, y, yaw) tuple per environment"
+            )
+        env._random_terrain_evaluation_xy_yaw = torch.tensor(
+            forced_xy_yaw, dtype=torch.float32, device=env.device
         )
     env._random_terrain_force_yaw = bool(settings.get("evaluation_force_yaw", False))
     env._random_terrain_evaluation_spawn = bool(
@@ -527,10 +719,171 @@ def initialize(env) -> None:
     if not 0.0 <= start_fraction <= 1.0:
         raise ValueError("random_terrain_start_fraction must be in [0, 1]")
     env._random_terrain_start_fraction = start_fraction
+    transition_fraction = float(
+        settings.get("random_terrain_transition_fraction", 0.0)
+    )
+    if not 0.0 <= transition_fraction <= 1.0:
+        raise ValueError("random_terrain_transition_fraction must be in [0, 1]")
+    env._random_terrain_transition_fraction = transition_fraction
+    transition_yaw_rad = float(
+        settings.get("random_terrain_transition_yaw_rad", 0.30)
+    )
+    if not 0.0 <= transition_yaw_rad <= math.pi:
+        raise ValueError("random_terrain_transition_yaw_rad must be in [0, pi]")
+    env._random_terrain_transition_yaw_rad = transition_yaw_rad
+    stairs_lanes = bool(settings.get("random_terrain_stairs_lanes", False))
+    stairs_fraction = float(settings.get("random_terrain_stairs_fraction", 0.0))
+    if not 0.0 <= stairs_fraction <= 1.0:
+        raise ValueError("random_terrain_stairs_fraction must be in [0, 1]")
+    if stairs_fraction > 0.0 and not stairs_lanes:
+        raise ValueError(
+            "random_terrain_stairs_fraction requires random_terrain_stairs_lanes=True"
+        )
+    env._random_terrain_stairs_lanes = stairs_lanes
+    env._random_terrain_stairs_fraction = stairs_fraction
+    stairs_yaw_rad = float(settings.get("random_terrain_stairs_yaw_rad", 0.20))
+    if not 0.0 <= stairs_yaw_rad <= math.pi:
+        raise ValueError("random_terrain_stairs_yaw_rad must be in [0, pi]")
+    env._random_terrain_stairs_yaw_rad = stairs_yaw_rad
+    lane_probs = settings.get("random_terrain_stairs_lane_probs", None)
+    if lane_probs is not None:
+        if len(lane_probs) != len(STAIRS_LANE_KINDS):
+            raise ValueError(
+                "random_terrain_stairs_lane_probs must match STAIRS_LANE_KINDS length"
+            )
+        probs_t = torch.tensor(lane_probs, dtype=torch.float32, device=env.device)
+        if not torch.all(probs_t >= 0.0) or float(probs_t.sum()) <= 0.0:
+            raise ValueError(
+                "random_terrain_stairs_lane_probs must be non-negative with positive sum"
+            )
+        env._random_terrain_stairs_lane_probs = probs_t / probs_t.sum()
+    else:
+        env._random_terrain_stairs_lane_probs = None
+    x_range = settings.get("random_terrain_stairs_x_range", (1.0, 2.5))
+    if len(x_range) != 2 or float(x_range[0]) >= float(x_range[1]):
+        raise ValueError("random_terrain_stairs_x_range must be a valid (low, high) pair")
+    env._random_terrain_stairs_x_range = (float(x_range[0]), float(x_range[1]))
+    env._random_terrain_steep_block_mask = torch.tensor(
+        [abs(GRADES[name]) >= 0.14 for row in env._random_terrain_layout for name in row],
+        dtype=torch.bool,
+        device=env.device,
+    )
+    env._random_terrain_block_probs = None
+    env._random_terrain_steep_block_prob = None
+
+
+def curriculum_progress_fraction(iteration: int, warmup_iters: int, ramp_iters: int) -> float:
+    """Return normalized Stage 3 curriculum progress in ``[0.0, 1.0]``."""
+    if iteration <= warmup_iters:
+        return 0.0
+    if ramp_iters <= 0:
+        return 1.0
+    return min(max((float(iteration) - float(warmup_iters)) / float(ramp_iters), 0.0), 1.0)
+
+
+def interpolate_stage_curriculum(curriculum_cfg: dict, iteration: int) -> dict:
+    """Interpolate Stage 3 speed, yaw-rate, standing, and steep-slope bounds."""
+    progress = curriculum_progress_fraction(
+        iteration,
+        int(curriculum_cfg.get("warmup_iters", 0)),
+        int(curriculum_cfg.get("ramp_iters", 1)),
+    )
+
+    def lerp_pair(start_key: str, end_key: str) -> tuple[float, float]:
+        a0, b0 = curriculum_cfg[start_key]
+        a1, b1 = curriculum_cfg[end_key]
+        return (
+            float(a0) + (float(a1) - float(a0)) * progress,
+            float(b0) + (float(b1) - float(b0)) * progress,
+        )
+
+    stand0 = float(curriculum_cfg.get("standing_fraction_start", 0.20))
+    stand1 = float(curriculum_cfg.get("standing_fraction_end", stand0))
+    steep0 = float(curriculum_cfg.get("steep_block_prob_start", 0.25))
+    steep1 = float(curriculum_cfg.get("steep_block_prob_end", steep0))
+    return {
+        "iteration": int(iteration),
+        "progress": progress,
+        "lin_vel_x": lerp_pair("lin_vel_x_start", "lin_vel_x_end"),
+        "ang_vel_z": lerp_pair("ang_vel_z_start", "ang_vel_z_end"),
+        "standing_fraction": stand0 + (stand1 - stand0) * progress,
+        "steep_block_prob": steep0 + (steep1 - steep0) * progress,
+    }
+
+
+def compute_block_sampling_probs(steep_mask, steep_block_prob: float):
+    """Return per-block sampling probabilities split cleanly across steep/non-steep blocks."""
+    if not 0.0 <= float(steep_block_prob) <= 1.0:
+        raise ValueError(f"steep_block_prob must be in [0, 1], got {steep_block_prob}")
+    steep_count = sum(1 for flag in steep_mask if flag)
+    normal_count = len(steep_mask) - steep_count
+    if steep_count == 0 or normal_count == 0:
+        return [1.0 / len(steep_mask)] * len(steep_mask)
+    w_steep = float(steep_block_prob) / float(steep_count)
+    w_normal = (1.0 - float(steep_block_prob)) / float(normal_count)
+    return [w_steep if flag else w_normal for flag in steep_mask]
+
+
+def set_steep_block_probability(env, steep_block_prob: float) -> None:
+    """Update per-block sampling probabilities on ``env`` during curriculum training."""
+    import torch
+
+    mask = env._random_terrain_steep_block_mask.tolist()
+    probs = compute_block_sampling_probs(mask, steep_block_prob)
+    env._random_terrain_block_probs = torch.tensor(probs, dtype=torch.float32, device=env.device)
+    env._random_terrain_steep_block_prob = float(steep_block_prob)
+
+
+def _stairs_lane_heights(env, local_x, slope_height):
+    import torch
+
+    device = local_x.device
+    dtype = slope_height.dtype
+    step_edges = getattr(env, "_random_terrain_stairs_step_edges", None)
+    if step_edges is None or step_edges.device != device:
+        step_edges = local_x.new_tensor(
+            tuple(
+                STAIRS_LANE_APPROACH_M + i * STAIRS_LANE_TREAD_M
+                for i in range(STAIRS_LANE_STEP_COUNT)
+            )
+        )
+        lane_length_m = (
+            STAIRS_LANE_APPROACH_M
+            + STAIRS_LANE_STEP_COUNT * STAIRS_LANE_TREAD_M
+            + STAIRS_LANE_LANDING_M
+        )
+        lane_centers = local_x.new_tensor(
+            tuple(x + lane_length_m / 2.0 for x in STAIRS_LANE_X_STARTS_M)
+        )
+        lane_x_starts = local_x.new_tensor(STAIRS_LANE_X_STARTS_M)
+        lane_step_h = local_x.new_tensor(STAIRS_LANE_STEP_HEIGHTS_M)
+        lane_is_platform = torch.tensor(
+            tuple(kind == "platform_up" for kind in STAIRS_LANE_KINDS),
+            device=device,
+            dtype=torch.bool,
+        )
+        env._random_terrain_stairs_step_edges = step_edges
+        env._random_terrain_stairs_lane_centers = lane_centers
+        env._random_terrain_stairs_lane_x_starts = lane_x_starts
+        env._random_terrain_stairs_lane_step_h = lane_step_h
+        env._random_terrain_stairs_lane_is_platform = lane_is_platform
+    else:
+        lane_centers = env._random_terrain_stairs_lane_centers
+        lane_x_starts = env._random_terrain_stairs_lane_x_starts
+        lane_step_h = env._random_terrain_stairs_lane_step_h
+        lane_is_platform = env._random_terrain_stairs_lane_is_platform
+
+    lane_idx = torch.argmin((local_x.unsqueeze(-1) - lane_centers).abs(), dim=-1)
+    x_m = local_x - lane_x_starts[lane_idx]
+    h = lane_step_h[lane_idx]
+    remaining = (x_m.unsqueeze(-1) < step_edges).sum(dim=-1).to(dtype)
+    stairs_z = remaining * h
+    plat_z = torch.where(x_m < STAIRS_LANE_APPROACH_M, torch.zeros_like(h), h)
+    return torch.where(lane_is_platform[lane_idx], plat_z, stairs_z)
 
 
 def _heights(env, local_xy):
-    """Analytic heights for reset; geometry and query use the same function."""
+    """Return the triangle-interpolated mesh height for reset and rewards."""
     import torch
 
     local_x = local_xy[..., 0]
@@ -548,39 +901,92 @@ def _heights(env, local_xy):
         rows.to(torch.float32) - (MAP_ROWS - 1) / 2.0
     ) * BLOCK_WIDTH_M
     grade = env._random_terrain_block_grades[rows, columns]
-    magnitude = torch.where(
-        block_x < RAMP_TOP_START_M,
-        grade.abs() * (block_x - RAMP_START_M),
-        torch.where(
-            block_x <= RAMP_TOP_END_M,
-            grade.abs() * (RAMP_TOP_START_M - RAMP_START_M),
-            grade.abs() * (RAMP_END_M - block_x),
-        ),
-    ).clamp_min(0.0)
-    signed = torch.where(grade < 0.0, -magnitude, magnitude)
-    signed = torch.where(
-        (grade == 0.0)
-        | (block_x <= RAMP_START_M)
-        | (block_x >= RAMP_END_M),
-        torch.zeros_like(signed),
-        signed,
-    )
-    y_taper = (
-        (BLOCK_WIDTH_M / 2.0 - block_y.abs()) / PATCH_Y_EDGE_TAPER_M
+    x_breaks = getattr(env, "_random_terrain_x_breakpoints", None)
+    if x_breaks is None or x_breaks.device != block_x.device:
+        x_breaks = block_x.new_tensor(PATCH_X_BREAKPOINTS_M)
+        env._random_terrain_x_breakpoints = x_breaks
+    y_breaks = getattr(env, "_random_terrain_y_breakpoints", None)
+    if y_breaks is None or y_breaks.device != block_y.device:
+        y_breaks = block_y.new_tensor(PATCH_Y_BREAKPOINTS_M)
+        env._random_terrain_y_breakpoints = y_breaks
+    x_index = (
+        torch.searchsorted(x_breaks, block_x, right=True) - 1
+    ).clamp(0, len(PATCH_X_BREAKPOINTS_M) - 2)
+    y_index = (
+        torch.searchsorted(y_breaks, block_y, right=True) - 1
+    ).clamp(0, len(PATCH_Y_BREAKPOINTS_M) - 2)
+    x0 = x_breaks[x_index]
+    x1 = x_breaks[x_index + 1]
+    y0 = y_breaks[y_index]
+    y1 = y_breaks[y_index + 1]
+    x_fraction = (
+        (block_x - x0) / (x1 - x0)
     ).clamp(0.0, 1.0)
-    return signed * y_taper
+    y_fraction = (
+        (block_y - y0) / (y1 - y0)
+    ).clamp(0.0, 1.0)
+
+    def vertex_height(vertex_x, vertex_y):
+        magnitude = torch.where(
+            vertex_x < RAMP_TOP_START_M,
+            grade.abs() * (vertex_x - RAMP_START_M),
+            torch.where(
+                vertex_x <= RAMP_TOP_END_M,
+                grade.abs() * (RAMP_TOP_START_M - RAMP_START_M),
+                grade.abs() * (RAMP_END_M - vertex_x),
+            ),
+        ).clamp_min(0.0)
+        signed = torch.where(grade < 0.0, -magnitude, magnitude)
+        signed = torch.where(
+            (grade == 0.0)
+            | (vertex_x <= RAMP_START_M)
+            | (vertex_x >= RAMP_END_M),
+            torch.zeros_like(signed),
+            signed,
+        )
+        y_taper = (
+            (BLOCK_WIDTH_M / 2.0 - vertex_y.abs())
+            / PATCH_Y_EDGE_TAPER_M
+        ).clamp(0.0, 1.0)
+        return signed * y_taper
+
+    z00 = vertex_height(x0, y0)
+    z10 = vertex_height(x1, y0)
+    z01 = vertex_height(x0, y1)
+    z11 = vertex_height(x1, y1)
+    lower_left = (
+        z00 * (1.0 - x_fraction - y_fraction)
+        + z10 * x_fraction
+        + z01 * y_fraction
+    )
+    upper_right = (
+        z10 * (1.0 - y_fraction)
+        + z01 * (1.0 - x_fraction)
+        + z11 * (x_fraction + y_fraction - 1.0)
+    )
+    slope_height = torch.where(
+        x_fraction + y_fraction <= 1.0,
+        lower_left,
+        upper_right,
+    )
+    if not getattr(env, "_random_terrain_stairs_lanes", False):
+        return slope_height
+    in_stairs = local_y > STAIRS_LANE_BAND_Y_MIN_M
+    if not in_stairs.any():
+        return slope_height
+    stairs_height = _stairs_lane_heights(env, local_x, slope_height)
+    return torch.where(in_stairs, stairs_height, slope_height)
 
 
-def slope_pitch_targets(env):
-    """Return current pitch, terrain-following pitch target, and slope norm.
+def slope_orientation_targets(env):
+    """Return current pitch/roll, terrain-aligned targets, and slope norm.
 
-    The sign convention matches ``_sample_spawn``: a positive world-X grade
-    produces a negative body pitch in the reset quaternion.  The target is the
-    slope along the robot's current heading, so the same code works when the
-    policy changes yaw.
+    Both ``target_pitch`` and ``target_roll`` match ``reset``'s ground-normal
+    convention so on flat ground ``target_roll == 0`` while across sloped terrain
+    the robot aligns perpendicular to the local surface at any heading.
     """
     import torch
-    from isaaclab.utils.math import euler_xyz_from_quat
+    from isaaclab.utils.math import euler_xyz_from_quat, wrap_to_pi
     from agent_world.sim620_compat import torch_data as T
 
     root_pos = T(env._native_robot.data.root_pos_w)
@@ -593,11 +999,22 @@ def slope_pitch_targets(env):
     ground = _heights(env, local_xy[:, None, :] + offsets)
     gradient_x = (ground[:, 0] - ground[:, 1]) / 0.5
     gradient_y = (ground[:, 2] - ground[:, 3]) / 0.5
-    _, current_pitch, yaw = euler_xyz_from_quat(root_quat)
+    current_roll, current_pitch, yaw = euler_xyz_from_quat(root_quat)
+    current_roll = wrap_to_pi(current_roll)
+    current_pitch = wrap_to_pi(current_pitch)
     target_pitch = -torch.atan(
         gradient_x * yaw.cos() + gradient_y * yaw.sin()
     )
+    target_roll = torch.atan(
+        gradient_y * yaw.cos() - gradient_x * yaw.sin()
+    )
     slope_norm = torch.sqrt(gradient_x.square() + gradient_y.square())
+    return current_pitch, target_pitch, current_roll, target_roll, slope_norm
+
+
+def slope_pitch_targets(env):
+    """Return current pitch, terrain-following pitch target, and slope norm."""
+    current_pitch, target_pitch, _, _, slope_norm = slope_orientation_targets(env)
     return current_pitch, target_pitch, slope_norm
 
 
@@ -606,8 +1023,24 @@ def _sample_spawn(env, ids):
     import torch
 
     n = len(ids)
+    if getattr(env, "_random_terrain_evaluation_xy_yaw", None) is not None:
+        pose = env._random_terrain_evaluation_xy_yaw[ids]
+        local_x = pose[:, 0]
+        local_y = pose[:, 1]
+        yaw = pose[:, 2]
+        columns = torch.floor(
+            (local_x + MAP_SIZE_M[0] / 2.0) / BLOCK_LENGTH_M
+        ).long().clamp(0, MAP_COLS - 1)
+        rows = torch.floor(
+            (local_y + MAP_SIZE_M[1] / 2.0) / BLOCK_WIDTH_M
+        ).long().clamp(0, MAP_ROWS - 1)
+        blocks = rows * MAP_COLS + columns
+        return blocks, torch.stack((local_x, local_y), dim=-1), yaw
+
     if env._random_terrain_force_block is not None:
         blocks = env._random_terrain_force_block[ids]
+    elif getattr(env, "_random_terrain_block_probs", None) is not None:
+        blocks = torch.multinomial(env._random_terrain_block_probs, n, replacement=True)
     else:
         blocks = torch.randint(
             len(TERRAIN_TYPES), (n,), device=env.device
@@ -668,6 +1101,80 @@ def _sample_spawn(env, ids):
                 env._random_terrain_run_up_spawn_count += int(
                     at_run_up.sum().item()
                 )
+        transition_fraction = getattr(
+            env, "_random_terrain_transition_fraction", 0.0
+        )
+        if transition_fraction > 0.0:
+            at_transition = (
+                torch.rand(n, device=env.device) < transition_fraction
+            )
+            if at_transition.any():
+                t_count = int(at_transition.sum().item())
+                t_cols = columns[at_transition]
+                t_xc = x_centers[at_transition]
+                t_yc = y_centers[at_transition]
+                # Half spawn in the ramp-entry / crest approach zone facing +X;
+                # half spawn on the exit ramp facing across the inter-block
+                # seam into the adjacent block (or -X for rightmost column 2).
+                mode_exit = torch.rand(t_count, device=env.device) < 0.5
+                go_neg_x = mode_exit & (t_cols == MAP_COLS - 1)
+                go_pos_x_exit = mode_exit & ~go_neg_x
+                bx = torch.empty(t_count, device=env.device).uniform_(-7.4, -5.2)
+                if go_pos_x_exit.any():
+                    bx[go_pos_x_exit] = torch.empty(
+                        int(go_pos_x_exit.sum().item()), device=env.device
+                    ).uniform_(3.8, 6.4)
+                if go_neg_x.any():
+                    bx[go_neg_x] = torch.empty(
+                        int(go_neg_x.sum().item()), device=env.device
+                    ).uniform_(-6.4, -3.8)
+                by = torch.empty(t_count, device=env.device).uniform_(-3.5, 3.5)
+                t_yaw_rad = getattr(env, "_random_terrain_transition_yaw_rad", 0.30)
+                tyaw = torch.empty(t_count, device=env.device).uniform_(
+                    -t_yaw_rad, t_yaw_rad
+                )
+                tyaw = torch.where(go_neg_x, tyaw + math.pi, tyaw)
+                tyaw = torch.atan2(torch.sin(tyaw), torch.cos(tyaw))
+                local_x[at_transition] = t_xc + bx
+                local_y[at_transition] = t_yc + by
+                yaw[at_transition] = tyaw
+                env._random_terrain_transition_spawn_count += t_count
+        stairs_fraction = getattr(env, "_random_terrain_stairs_fraction", 0.0)
+        if stairs_fraction > 0.0 and getattr(env, "_random_terrain_stairs_lanes", False):
+            at_stairs = torch.rand(n, device=env.device) < stairs_fraction
+            if at_stairs.any():
+                s_count = int(at_stairs.sum().item())
+                lane_x_starts = local_x.new_tensor(STAIRS_LANE_X_STARTS_M)
+                lane_probs = getattr(env, "_random_terrain_stairs_lane_probs", None)
+                if lane_probs is not None:
+                    lane_idx = torch.multinomial(
+                        lane_probs, s_count, replacement=True
+                    )
+                else:
+                    lane_idx = torch.randint(
+                        len(STAIRS_LANE_X_STARTS_M),
+                        (s_count,),
+                        device=env.device,
+                    )
+                x_low, x_high = getattr(
+                    env, "_random_terrain_stairs_x_range", (1.0, 2.5)
+                )
+                x_in_lane = torch.empty(s_count, device=env.device).uniform_(
+                    x_low, x_high
+                )
+                local_x[at_stairs] = lane_x_starts[lane_idx] + x_in_lane
+                local_y[at_stairs] = torch.empty(s_count, device=env.device).uniform_(
+                    STAIRS_LANE_Y_CENTER_M - 0.6,
+                    STAIRS_LANE_Y_CENTER_M + 0.6,
+                )
+                stairs_yaw_rad = float(
+                    getattr(env, "_random_terrain_stairs_yaw_rad", 0.20)
+                )
+                yaw[at_stairs] = torch.empty(s_count, device=env.device).uniform_(
+                    -stairs_yaw_rad, stairs_yaw_rad
+                )
+                blocks[at_stairs] = 0
+                env._random_terrain_stairs_spawn_count += s_count
         if env._random_terrain_force_yaw:
             yaw.zero_()
     local_xy = torch.stack((local_x, local_y), dim=-1)
@@ -778,6 +1285,12 @@ def health(env) -> dict:
         "layout": [list(row) for row in env._random_terrain_layout],
         "spawn_counts": env._random_terrain_spawn_counts.tolist(),
         "run_up_spawns": env._random_terrain_run_up_spawn_count,
+        "transition_spawns": getattr(
+            env, "_random_terrain_transition_spawn_count", 0
+        ),
+        "stairs_spawns": getattr(
+            env, "_random_terrain_stairs_spawn_count", 0
+        ),
         "resets": env._random_terrain_reset_count,
         "forced_evaluation_blocks": forced,
         "peak_initial_tire_penetration_m": env._random_terrain_peak_penetration_m,

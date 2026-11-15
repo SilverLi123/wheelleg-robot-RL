@@ -53,13 +53,59 @@ parser.add_argument(
     help='Drive one robot continuously through the centres of all nine patches.',
 )
 parser.add_argument(
+    '--route-mode',
+    choices=('center', 'corridor'),
+    default='center',
+    help=(
+        'Waypoint layout for --random-terrain-route: center connects patch '
+        'centres; corridor traverses full longitudinal ramps and crosses rows '
+        'in the flat zero-height corridor (|block_x| = 7.2 m).'
+    ),
+)
+parser.add_argument(
     '--camera-mode',
     choices=('auto', 'overview', 'chase'),
     default='auto',
     help=(
-        'Random-terrain route camera: chase follows the robot at a low angle; '
-        'overview keeps the whole map visible. auto uses chase for routes.'
+        'Random-terrain route/overview camera: chase follows the robot at a '
+        'low angle; overview keeps the whole map visible. auto uses chase for routes.'
     ),
+)
+parser.add_argument(
+    '--chase-eye',
+    type=float,
+    nargs=3,
+    default=None,
+    metavar=('X', 'Y', 'Z'),
+    help='Optional chase camera eye offset in robot-relative coordinates (m).',
+)
+parser.add_argument(
+    '--chase-lookat',
+    type=float,
+    nargs=3,
+    default=None,
+    metavar=('X', 'Y', 'Z'),
+    help='Optional chase camera lookat offset in robot-relative coordinates (m).',
+)
+parser.add_argument(
+    '--focal-length',
+    type=float,
+    default=32.0,
+    help='Camera focal length in mm when recording video.',
+)
+parser.add_argument(
+    '--route-start-waypoint',
+    type=int,
+    default=0,
+    help='Initial waypoint index in --random-terrain-route mode.',
+)
+parser.add_argument(
+    '--spawn-xy-yaw',
+    type=float,
+    nargs=3,
+    default=None,
+    metavar=('X', 'Y', 'YAW'),
+    help='Optional explicit local (x_m, y_m, yaw_rad) spawn override on the random terrain map.',
 )
 parser.add_argument(
     '--random-terrain-block',
@@ -98,22 +144,12 @@ if args.mixed_eval_terrain and args.terrain_column is None:
     parser.error('--mixed-eval-terrain requires --terrain-column')
 if args.mixed_eval_terrain and args.profile != 'mixed_slopes_20261111':
     parser.error('--mixed-eval-terrain requires --profile mixed_slopes_20261111')
-if args.random_terrain_overview and args.profile not in {
-    'random_terrain_20261112',
-    'random_terrain_forward_20261112',
-    'random_terrain_straight_20261112',
-    'random_terrain_slope_pitch_20261112',
-}:
+if args.random_terrain_overview and not args.profile.startswith('random_terrain_'):
     parser.error(
         '--random-terrain-overview requires a random-terrain profile'
     )
 if args.random_terrain_route:
-    if args.profile not in {
-        'random_terrain_20261112',
-        'random_terrain_forward_20261112',
-        'random_terrain_straight_20261112',
-        'random_terrain_slope_pitch_20261112',
-    }:
+    if not args.profile.startswith('random_terrain_'):
         parser.error(
             '--random-terrain-route requires a random-terrain profile'
         )
@@ -122,10 +158,12 @@ if args.random_terrain_route:
     args.random_terrain_overview = True
     if args.camera_mode == 'auto':
         args.camera_mode = 'chase'
-elif args.camera_mode != 'auto':
-    parser.error('--camera-mode is only available for --random-terrain-route')
+elif args.camera_mode != 'auto' and not args.random_terrain_overview:
+    parser.error('--camera-mode requires --random-terrain-route or --random-terrain-overview')
 if args.random_terrain_overview and args.camera_mode == 'auto':
     args.camera_mode = 'overview'
+if args.focal_length <= 0.0:
+    parser.error('--focal-length must be positive')
 if args.random_terrain_block is not None and args.profile not in {
     'random_terrain_20261112',
     'random_terrain_forward_20261112',
@@ -201,26 +239,30 @@ try:
         cfg.commands.rel_standing_envs = 0.
         cfg.commands.ranges.lin_vel_x = (vx, vx)
         cfg.commands.ranges.ang_vel_z = (yaw_rate, yaw_rate)
-    if args.random_terrain_route:
+    if args.random_terrain_route or args.random_terrain_overview or args.spawn_xy_yaw is not None:
         # The default 20 s episode timeout is correct for normal rollouts but
-        # would reset the robot halfway through the roughly 120 m route. This
-        # changes only how long the recorder permits one continuous episode.
-        cfg.episode_length_s = args.steps * cfg.decimation * cfg.sim.dt + 2.0
+        # would reset the robot halfway through longer continuous routes/demos.
+        cfg.episode_length_s = max(
+            cfg.episode_length_s,
+            args.steps * cfg.decimation * cfg.sim.dt + 2.0,
+        )
+    chase_eye = tuple(args.chase_eye) if args.chase_eye is not None else CHASE_CAMERA['eye']
+    chase_lookat = tuple(args.chase_lookat) if args.chase_lookat is not None else CHASE_CAMERA['lookat']
     if args.record:
         cfg.height_range = [args.height, args.height]
         cfg.default_height_cmd = args.height
         cfg.scene.light.spawn.intensity = 800.0
         from isaaclab_visualizers.kit import KitVisualizerCfg
         if (
-            args.random_terrain_route
+            (args.random_terrain_route or args.random_terrain_overview)
             and args.camera_mode == 'chase'
         ):
             cfg.sim.visualizer_cfgs = [KitVisualizerCfg(
                 headless=True,
                 origin_type='asset',
                 origin_track_path='robot',
-                eye=CHASE_CAMERA['eye'],
-                lookat=CHASE_CAMERA['lookat'],
+                eye=chase_eye,
+                lookat=chase_lookat,
                 window_width=1280,
                 window_height=720,
                 enable_live_plots=False,
@@ -279,6 +321,13 @@ try:
         )
         cfg.experiment_profile_settings['evaluation_block_ids'] = [0]
         cfg.experiment_profile_settings['evaluation_force_yaw'] = True
+    if args.spawn_xy_yaw is not None:
+        cfg.experiment_profile_settings = dict(
+            cfg.experiment_profile_settings
+        )
+        cfg.experiment_profile_settings['evaluation_spawn_xy_yaw'] = [
+            list(args.spawn_xy_yaw)
+        ]
     summary['saved_observation_action_fields_match'] = True
     if args.light_slope_case:
         light_slope.configure(cfg, args.light_slope_case)
@@ -600,8 +649,9 @@ try:
                 {
                     'origin_type': 'asset',
                     'origin_track_path': 'robot',
-                    'eye_m': list(CHASE_CAMERA['eye']),
-                    'lookat_m': list(CHASE_CAMERA['lookat']),
+                    'eye_m': list(chase_eye),
+                    'lookat_m': list(chase_lookat),
+                    'focal_length_mm': float(args.focal_length),
                 }
                 if args.camera_mode == 'chase'
                 else None
@@ -609,26 +659,62 @@ try:
         }
         if args.camera_mode == 'overview':
             env.sim.set_camera_view(camera_eye, map_center)
+        if not args.random_terrain_route:
+            summary['terrain_selection'] = {
+                'family': 'random_terrain_hybrid_stairs' if cfg.experiment_profile_settings.get('random_terrain_stairs_lanes') else 'random_terrain_overview',
+                'level': None,
+            }
         if args.random_terrain_route:
             from agent_tasks.direct.wheelbipe.wheelbipe_own import (
                 random_terrain_map,
             )
 
             # Serpentine through the row-major cells. This visits every
-            # connected patch exactly once while staying on cell centres.
+            # connected patch exactly once.
             route_blocks = [0, 1, 2, 5, 4, 3, 6, 7, 8]
             waypoints = []
-            for block_id in route_blocks:
-                row, column = random_terrain_map.block_position(block_id)
-                waypoints.append((
-                    float(origin[0] + (column - 1) * random_terrain_map.BLOCK_LENGTH_M),
-                    float(origin[1] + (row - 1) * random_terrain_map.BLOCK_WIDTH_M),
-                ))
+            if args.route_mode == 'corridor':
+                # Traverse every block's full longitudinal ramp and cross rows
+                # inside the zero-height run-up/run-off corridor ([7.0, 8.0] m).
+                # Only |block_x| in [7.0, 8.0] has zero height across all Y;
+                # place explicit entry/exit corner waypoints at |block_x|=7.35 m
+                # and tighten turns (vx=0.08, |wz|<=0.45, R~0.21 m) inside the
+                # flat corner so row crossings stay in |block_x| in [7.0, 7.8].
+                corridor_x_right = float(origin[0] + random_terrain_map.BLOCK_LENGTH_M + 7.10)
+                corridor_x_left = float(origin[0] - random_terrain_map.BLOCK_LENGTH_M - 7.35)
+                end_x_right = float(origin[0] + random_terrain_map.BLOCK_LENGTH_M + 3.0)
+                y_row0 = float(origin[1] - random_terrain_map.BLOCK_WIDTH_M)
+                y_row1 = float(origin[1])
+                y_row2 = float(origin[1] + random_terrain_map.BLOCK_WIDTH_M)
+                waypoints = [
+                    (float(origin[0] - random_terrain_map.BLOCK_LENGTH_M), y_row0),
+                    (float(origin[0]), y_row0),
+                    (corridor_x_right, y_row0),
+                    (corridor_x_right, y_row1),
+                    (float(origin[0]), y_row1),
+                    (corridor_x_left, y_row1),
+                    (corridor_x_left, y_row2),
+                    (float(origin[0]), y_row2),
+                    (end_x_right, y_row2),
+                ]
+            else:
+                for block_id in route_blocks:
+                    row, column = random_terrain_map.block_position(block_id)
+                    waypoints.append((
+                        float(origin[0] + (column - 1) * random_terrain_map.BLOCK_LENGTH_M),
+                        float(origin[1] + (row - 1) * random_terrain_map.BLOCK_WIDTH_M),
+                    ))
+            if not 0 <= args.route_start_waypoint < len(waypoints):
+                raise ValueError(
+                    f'--route-start-waypoint must be in [0, {len(waypoints) - 1}], got {args.route_start_waypoint}'
+                )
             route = {
+                'mode': args.route_mode,
                 'blocks': route_blocks,
                 'waypoints': waypoints,
-                'next': 0,
+                'next': int(args.route_start_waypoint),
                 'reached': [],
+                'turning': False,
                 'command_speed_m_s': float(cfg.experiment_profile_settings['command_speed']),
             }
 
@@ -640,10 +726,9 @@ try:
                 dx = target_x - float(current_xy[0])
                 dy = target_y - float(current_xy[1])
                 distance = (dx * dx + dy * dy) ** 0.5
-                # Switch to the next leg before the exact centre. This rounds
-                # each 90-degree corner instead of applying a large heading
-                # error only after the robot has already reached the centre.
-                while distance < 1.5 and route['next'] < len(waypoints):
+                switch_dist = 0.45 if args.route_mode == 'corridor' else 1.5
+                # Switch to the next leg before the exact corner/centre.
+                while distance < switch_dist and route['next'] < len(waypoints):
                     route['reached'].append(route['next'])
                     route['next'] += 1
                     if route['next'] >= len(waypoints):
@@ -660,17 +745,32 @@ try:
                     - float(current_yaw)
                     + math.pi
                 ) % (2.0 * math.pi) - math.pi
-                yaw_rate = max(-0.10, min(0.10, 0.6 * error))
-                # The frozen policy was trained with forward motion while it
-                # turns. In-place 0.45 rad/s turns can cause a roll at a patch
-                # corner, so keep a slow forward arc while correcting heading.
-                if abs(error) > 0.22:
-                    vx = 0.15
+                if args.route_mode == 'corridor':
+                    if abs(error) > 0.35:
+                        route['turning'] = True
+                    elif abs(error) < 0.04:
+                        route['turning'] = False
+                    if route['turning']:
+                        yaw_rate = max(-0.45, min(0.45, 1.5 * error))
+                        vx = 0.08
+                    else:
+                        yaw_rate = max(-0.40, min(0.40, 2.5 * error))
+                        vx = min(
+                            route['command_speed_m_s'],
+                            max(0.22, 0.8 * distance),
+                        )
                 else:
-                    vx = min(
-                        route['command_speed_m_s'],
-                        max(0.20, 0.8 * distance),
-                    )
+                    yaw_rate = max(-0.10, min(0.10, 0.6 * error))
+                    # The frozen policy was trained with forward motion while it
+                    # turns. In-place 0.45 rad/s turns can cause a roll at a patch
+                    # corner, so keep a slow forward arc while correcting heading.
+                    if abs(error) > 0.22:
+                        vx = 0.15
+                    else:
+                        vx = min(
+                            route['command_speed_m_s'],
+                            max(0.20, 0.8 * distance),
+                        )
                 commanded[0, 0] = vx
                 commanded[0, 1] = 0.0
                 commanded[0, 2] = yaw_rate
@@ -822,7 +922,7 @@ try:
         viz = next(v for v in env.sim.visualizers if v.cfg.visualizer_type == 'kit')
         from pxr import UsdGeom
         camera = UsdGeom.Camera(env.sim.stage.GetPrimAtPath('/OmniverseKit_Persp'))
-        camera.GetFocalLengthAttr().Set(32.0)
+        camera.GetFocalLengthAttr().Set(float(args.focal_length))
         camera.GetClippingRangeAttr().Set((0.01, 1000.))
         for _ in range(12):
             env.sim.render()
@@ -903,7 +1003,7 @@ try:
                 draw.text((25,78), f'actual vx={float(velocity[0]):+.2f} m/s, yaw={yaw:+.2f} rad/s  |  resets={summary["resets"]}  |  simulation replay',
                     font=small_font, fill=(190,221,248,255))
                 video.append_data(np.asarray(annotated))
-                if step in (0, args.steps // 2, args.steps - 1):
+                if step % 250 == 0 or step in (0, args.steps // 2, args.steps - 1):
                     imageio.imwrite(args.output / f'frame_{step:04d}.png', frame)
             if (step + 1) % 100 == 0:
                 print(json.dumps({'steps': step + 1, 'closure_mm': summary['max_closure_m'] * 1000,

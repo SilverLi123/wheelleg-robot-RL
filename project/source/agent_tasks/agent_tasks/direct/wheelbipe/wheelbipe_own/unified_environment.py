@@ -27,6 +27,30 @@ def configure_unified(cfg, settings):
 
 
 class UnifiedLocomotionMixin:
+    def _terrain_ground_z(self):
+        settings = self.cfg.experiment_profile_settings
+        if getattr(self, '_u_ready', False):
+            return self._u_heights(
+                T(self.robot.data.root_pos_w)[:, None, :2]
+            ).squeeze(1)
+        if settings.get('random_terrain_map', False):
+            # The random-map profile does not enable the unified curriculum,
+            # so `_u_ready` stays false and its mesh ray query is unavailable.
+            # Use the same analytic patch heights that generated the map and
+            # placed the robot during reset.
+            from . import random_terrain_map
+
+            origin = T(self.terrain.env_origins)
+            local_xy = T(self.robot.data.root_pos_w)[:, :2] - origin[:, :2]
+            return (
+                origin[:, 2]
+                + random_terrain_map._heights(self, local_xy)
+            )
+        raise ValueError(
+            'terrain_relative_height_reward requires unified terrain '
+            'or random_terrain_map initialization'
+        )
+
     def _get_height_reward_reference_height(self, relative_obs_height, wheel_height_w):
         settings = self.cfg.experiment_profile_settings
         if settings.get('terrain_relative_height_reward', False):
@@ -36,28 +60,7 @@ class UnifiedLocomotionMixin:
             # semantics remain compatible with the transferred checkpoint.
             if not self._use_absolute_height() or self._use_leg_length_height():
                 raise ValueError('Terrain height correction requires the audited absolute-height mode')
-            if getattr(self, '_u_ready', False):
-                ground_z = self._u_heights(
-                    T(self.robot.data.root_pos_w)[:, None, :2]
-                ).squeeze(1)
-            elif settings.get('random_terrain_map', False):
-                # The random-map profile does not enable the unified curriculum,
-                # so `_u_ready` stays false and its mesh ray query is unavailable.
-                # Use the same analytic patch heights that generated the map and
-                # placed the robot during reset.
-                from . import random_terrain_map
-
-                origin = T(self.terrain.env_origins)
-                local_xy = T(self.robot.data.root_pos_w)[:, :2] - origin[:, :2]
-                ground_z = (
-                    origin[:, 2]
-                    + random_terrain_map._heights(self, local_xy)
-                )
-            else:
-                raise ValueError(
-                    'terrain_relative_height_reward requires unified terrain '
-                    'or random_terrain_map initialization'
-                )
+            ground_z = self._terrain_ground_z()
             relative_obs_height = relative_obs_height - ground_z
         return super()._get_height_reward_reference_height(relative_obs_height, wheel_height_w)
 
@@ -309,6 +312,55 @@ class UnifiedLocomotionMixin:
     def _get_dones(self):
         terminated, timeout = super()._get_dones()
         if not getattr(self, '_u_ready', False):
+            if self.cfg.experiment_profile_settings.get('per_env_closure_reset', False):
+                error = self._u_closure_errors()
+                finite = torch.isfinite(error).all(-1)
+                per_env = torch.nan_to_num(error, nan=float('inf'), posinf=float('inf')).amax(-1)
+                closure = (per_env > .008) | ~finite
+                self._termination_reason_masks['closed_loop'] = closure.clone()
+                terminated |= closure
+                timeout &= ~closure
+            if self.cfg.experiment_profile_settings.get('random_terrain_map', False):
+                root_pos = T(self.robot.data.root_pos_w)
+                origin = T(self.terrain.env_origins)
+                fell_off = (root_pos[:, 2] - self._terrain_ground_z()) < -0.7
+                terminated |= fell_off
+                timeout &= ~fell_off
+                if (
+                    not self.cfg.experiment_profile_settings.get('evaluation_force_yaw', False)
+                    and 'evaluation_block_ids' not in self.cfg.experiment_profile_settings
+                    and 'evaluation_spawn_xy_yaw' not in self.cfg.experiment_profile_settings
+                ):
+                    from . import random_terrain_map
+
+                    signed_xy = root_pos[:, :2] - origin[:, :2]
+                    lx, ly = signed_xy[:, 0], signed_xy[:, 1]
+                    half_x = random_terrain_map.MAP_SIZE_M[0] / 2.0 - 0.5
+                    half_y = random_terrain_map.MAP_SIZE_M[1] / 2.0 - 0.5
+                    if self.cfg.experiment_profile_settings.get('random_terrain_stairs_lanes', False):
+                        in_stairs_band = ly > random_terrain_map.STAIRS_LANE_BAND_Y_MIN_M
+                        slope_boundary = ~in_stairs_band & (
+                            (lx.abs() > half_x) | (ly < -half_y) | (ly > half_y)
+                        )
+                        lane_y_ok = (ly - random_terrain_map.STAIRS_LANE_Y_CENTER_M).abs() <= (
+                            random_terrain_map.STAIRS_LANE_WIDTH_M / 2.0 - 0.05
+                        )
+                        bounds = getattr(self, '_random_terrain_lane_x_bounds', None)
+                        if bounds is None or bounds.device != lx.device:
+                            bounds = lx.new_tensor([
+                                (xs + 0.4, xs + spec.length_m - 0.4)
+                                for xs, _, spec in random_terrain_map._stair_lane_specs()
+                            ])
+                            self._random_terrain_lane_x_bounds = bounds
+                        in_lane_x = (
+                            (lx.unsqueeze(-1) >= bounds[:, 0])
+                            & (lx.unsqueeze(-1) <= bounds[:, 1])
+                        ).any(dim=-1)
+                        lane_end_boundary = in_stairs_band & lane_y_ok & ~in_lane_x
+                        map_boundary = slope_boundary | lane_end_boundary
+                    else:
+                        map_boundary = (lx.abs() > half_x) | (ly.abs() > half_y)
+                    timeout |= map_boundary & ~terminated
             return terminated, timeout
         closure = self._u_check_closure()
         self._termination_reason_masks['closed_loop'] = closure.clone()
@@ -356,6 +408,27 @@ class UnifiedLocomotionMixin:
 
     def _get_observations(self):
         observations = super()._get_observations()
+        if (
+            self.cfg.experiment_profile_settings.get('critic_relative_height_obs', False)
+            and 'critic' in observations
+        ):
+            if not self._use_absolute_height() or self._use_leg_length_height():
+                raise ValueError('critic_relative_height_obs requires the audited absolute-height mode')
+            ground_z = self._terrain_ground_z()
+            rel_height = (T(self.robot.data.root_pos_w)[:, 2] - ground_z).clamp(-0.5, 1.0).unsqueeze(-1)
+            scaled_rel_height = self._scale_obs_component(
+                'obs_height',
+                self._clip_obs_component('obs_height', rel_height),
+                stream_name='critic',
+            ).squeeze(-1)
+            scaled_rel_height = torch.nan_to_num(
+                scaled_rel_height, nan=0.0, posinf=0.0, neginf=0.0
+            )
+            critic_obs_height_idx = self.priv.shape[-1] - self.priv_latent.shape[-1] + 3
+            self.priv[:, critic_obs_height_idx] = scaled_rel_height
+            self.priv_latent[:, 3] = scaled_rel_height
+            observations['critic'][:, critic_obs_height_idx] = scaled_rel_height
+            self.prev_priv[:, critic_obs_height_idx] = scaled_rel_height
         if getattr(self, '_u_ready', False):
             policy = observations['policy']
             if not torch.isfinite(policy).all():

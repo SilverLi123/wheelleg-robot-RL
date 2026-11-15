@@ -42,6 +42,8 @@ class WheelbipeOwnExperimentCfg(WheelbipeOwnFlatEnvCfg):
         self.rewards.update(p.get('reward_weights', {}))
         for key, value in p.get('reward_parameters', {}).items():
             setattr(self, key, value)
+        if 'rebound_vel_z_threshold' in p:
+            self.rebound_vel_z_threshold = float(p['rebound_vel_z_threshold'])
         # POLICY_REBUILD_20261107: explicit limits at actuator and solver levels.
         if 'leg_target_rate' in p:
             # Mixed-slope ablations may narrow the command distribution while
@@ -146,6 +148,9 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
         self._slew_wheel = self.robot.data.joint_vel[:, self._wheel_idx].clone()
         self._init_unified()
         random_terrain_map.initialize(self)
+        self._curriculum_last_iter = -1
+        self._curriculum_state = None
+        self._update_experiment_curriculum(force=True)
 
     def _legacy_terrain_enabled(self) -> bool:
         settings = self.cfg.experiment_profile_settings
@@ -169,10 +174,31 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
             (yaw.cos(), yaw.sin()), dim=-1
         )
 
+    def _update_experiment_curriculum(self, force: bool = False) -> None:
+        """Advance profile-driven command and steep-block curriculum smoothly with iteration."""
+        curriculum_cfg = self.cfg.experiment_profile_settings.get('curriculum')
+        if not isinstance(curriculum_cfg, dict):
+            return
+        if getattr(self.cfg, 'play', False) or getattr(self, '_u_eval', False):
+            return
+        if not hasattr(self, 'command_generator') or not hasattr(self, '_random_terrain_steep_block_mask'):
+            return
+        iteration = self._get_training_iteration()
+        if not force and iteration == getattr(self, '_curriculum_last_iter', -1):
+            return
+        state = random_terrain_map.interpolate_stage_curriculum(curriculum_cfg, iteration)
+        self.command_generator.cfg.ranges.lin_vel_x = state['lin_vel_x']
+        self.command_generator.cfg.ranges.ang_vel_z = state['ang_vel_z']
+        self.command_generator.cfg.rel_standing_envs = state['standing_fraction']
+        random_terrain_map.set_steep_block_probability(self, state['steep_block_prob'])
+        self._curriculum_last_iter = iteration
+        self._curriculum_state = state
+
     def _reset_idx(self, env_ids):
         # DirectRLEnv clears episode_length_buf before _custom_reset_random.
         # Capture age and forward displacement first so the legacy curriculum
         # cannot promote an environment merely because every reset age is zero.
+        self._update_experiment_curriculum()
         if self._legacy_terrain_enabled() and hasattr(
             self, '_legacy_terrain_episode_start'
         ):
@@ -203,17 +229,24 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
         from isaaclab.utils.math import quat_apply
         self._audit_quat_apply = quat_apply
         layouts = []
+        rel_joint_paths = []
+        prefix0 = '/World/envs/env_0/Robot'
+        for prim in Usd.PrimRange(self.sim.stage.GetPrimAtPath(prefix0)):
+            if prim.IsA(UsdPhysics.SphericalJoint):
+                rel_joint_paths.append(str(prim.GetPath())[len(prefix0):])
+        assert len(rel_joint_paths) == 6
         for eid in range(self.num_envs):
             prefix = f'/World/envs/env_{eid}/Robot'
             rows = []
-            for prim in Usd.PrimRange(self.sim.stage.GetPrimAtPath(prefix)):
-                if prim.IsA(UsdPhysics.SphericalJoint):
-                    j = UsdPhysics.Joint(prim)
-                    assert j.GetJointEnabledAttr().Get() and j.GetExcludeFromArticulationAttr().Get()
-                    targets = [j.GetBody0Rel().GetTargets()[0], j.GetBody1Rel().GetTargets()[0]]
-                    assert all(str(t).startswith(prefix + '/') for t in targets), 'Cross-environment loop target'
-                    rows.append(([self._native_robot.body_names.index(t.name) for t in targets],
-                                 [list(j.GetLocalPos0Attr().Get()), list(j.GetLocalPos1Attr().Get())]))
+            for rel_path in rel_joint_paths:
+                prim = self.sim.stage.GetPrimAtPath(prefix + rel_path)
+                assert prim.IsValid() and prim.IsA(UsdPhysics.SphericalJoint)
+                j = UsdPhysics.Joint(prim)
+                assert j.GetJointEnabledAttr().Get() and j.GetExcludeFromArticulationAttr().Get()
+                targets = [j.GetBody0Rel().GetTargets()[0], j.GetBody1Rel().GetTargets()[0]]
+                assert all(str(t).startswith(prefix + '/') for t in targets), 'Cross-environment loop target'
+                rows.append(([self._native_robot.body_names.index(t.name) for t in targets],
+                             [list(j.GetLocalPos0Attr().Get()), list(j.GetLocalPos1Attr().Get())]))
             assert len(rows) == 6
             layouts.append(rows)
         assert all(x == layouts[0] for x in layouts)
@@ -245,8 +278,16 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
         if peak > .005:
             from .physics_failure_diagnostics import record_loop_spike
             record_loop_spike(self, error)
-        if (peak > .02 or self._audit_bad_streak > 5) and not getattr(self, '_u_ready', False):
-            raise RuntimeError(f'Closed-loop error exceeds training guard: {peak}m')
+        if not getattr(self, '_u_ready', False):
+            if self.cfg.experiment_profile_settings.get('per_env_closure_reset', False):
+                per_env_err = error.amax(-1)
+                bad_envs = int((per_env_err > .02).sum())
+                if peak > .12 or bad_envs >= max(4, int(self.num_envs * .05)):
+                    raise RuntimeError(
+                        f'Closed-loop error exceeds per-env training guard: peak={peak}m, bad_envs={bad_envs}'
+                    )
+            elif peak > .02 or self._audit_bad_streak > 5:
+                raise RuntimeError(f'Closed-loop error exceeds training guard: {peak}m')
         self._audit_steps += 1
         if self._audit_steps % 100 == 0:
             import time
@@ -260,6 +301,8 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
             if getattr(self, '_u_ready', False): row['unified'] = self._unified_health()
             if hasattr(self, '_random_terrain_layout'):
                 row['random_terrain'] = random_terrain_map.health(self)
+            if getattr(self, '_curriculum_state', None) is not None:
+                row['curriculum'] = dict(self._curriculum_state)
             tmp = self._audit_path.with_suffix('.tmp')
             tmp.write_text(json.dumps(row,indent=2))
             tmp.replace(self._audit_path)
@@ -305,14 +348,18 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
             self._capture_legacy_terrain_start(env_ids)
 
     def _postprocess_reward_terms(self, terms):
-        if self.cfg.rewards.get('random_terrain_slope_pitch', 0.0):
-            if not self.cfg.experiment_profile_settings.get('random_terrain_map'):
+        settings = self.cfg.experiment_profile_settings
+        use_slope_pitch = bool(self.cfg.rewards.get('random_terrain_slope_pitch', 0.0))
+        use_rel_roll = bool(settings.get('terrain_relative_roll_penalty', False))
+        slope_targets = None
+        if use_slope_pitch or use_rel_roll:
+            if not settings.get('random_terrain_map'):
                 raise RuntimeError(
-                    'random_terrain_slope_pitch requires a random-terrain profile'
+                    'slope orientation rewards require a random-terrain profile'
                 )
-            current_pitch, target_pitch, slope_norm = (
-                random_terrain_map.slope_pitch_targets(self)
-            )
+            slope_targets = random_terrain_map.slope_orientation_targets(self)
+        if use_slope_pitch:
+            current_pitch, target_pitch, _, _, slope_norm = slope_targets
             pitch_error = torch.atan2(
                 torch.sin(current_pitch - target_pitch),
                 torch.cos(current_pitch - target_pitch),
@@ -335,6 +382,22 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
         if 'flight_penalty' in self.cfg.rewards:
             force = torch.linalg.vector_norm(self.contact_sensor.data.net_forces_w[:, self._desired_contact_link_idx], dim=-1)
             terms['flight_penalty'] = (force.max(1).values < 1.0).float()
+        if use_rel_roll:
+            _, _, current_roll, target_roll, _ = slope_targets
+            roll = torch.atan2(
+                torch.sin(current_roll - target_roll),
+                torch.cos(current_roll - target_roll),
+            )
+        else:
+            from isaaclab.utils.math import euler_xyz_from_quat, wrap_to_pi
+            roll_w, _, _ = euler_xyz_from_quat(T(self.robot.data.root_quat_w))
+            roll = wrap_to_pi(roll_w)
+        terms['roll_angle_l2'] = roll.square()
+        vz_b = T(self.robot.data.root_lin_vel_b)[:, 2]
+        rebound_thresh = float(getattr(self.cfg, 'rebound_vel_z_threshold', 0.08))
+        terms['upward_rebound_vel_z'] = torch.clamp(vz_b - rebound_thresh, min=0.0).square()
+        if 'track_height_square' in terms:
+            terms['track_height_square'] = torch.clamp(terms['track_height_square'], max=0.25)
         if getattr(self, '_u_ready', False):
             mask = self._u_closure_mask
             terms = {key: torch.where(mask.reshape(self.num_envs, *([1] * (value.ndim - 1))),
@@ -432,3 +495,30 @@ class WheelbipeOwnExperimentRunnerCfg(WheelbipeOwnPPORunnerCfg):
             if value <= 0.0:
                 raise ValueError('WHEELBIPE_LEARNING_RATE must be positive')
             self.algorithm.learning_rate = value
+
+        schedule = os.environ.get('WHEELBIPE_SCHEDULE')
+        if schedule is not None:
+            if schedule not in ('fixed', 'adaptive'):
+                raise ValueError(f'WHEELBIPE_SCHEDULE must be fixed or adaptive, got {schedule!r}')
+            self.algorithm.schedule = schedule
+
+        desired_kl = os.environ.get('WHEELBIPE_DESIRED_KL')
+        if desired_kl is not None:
+            value = float(desired_kl)
+            if value <= 0.0:
+                raise ValueError('WHEELBIPE_DESIRED_KL must be positive')
+            self.algorithm.desired_kl = value
+
+        clip_param = os.environ.get('WHEELBIPE_CLIP_PARAM')
+        if clip_param is not None:
+            value = float(clip_param)
+            if value <= 0.0:
+                raise ValueError('WHEELBIPE_CLIP_PARAM must be positive')
+            self.algorithm.clip_param = value
+
+        entropy_coef = os.environ.get('WHEELBIPE_ENTROPY_COEF')
+        if entropy_coef is not None:
+            value = float(entropy_coef)
+            if value < 0.0:
+                raise ValueError('WHEELBIPE_ENTROPY_COEF must be non-negative')
+            self.algorithm.entropy_coef = value
