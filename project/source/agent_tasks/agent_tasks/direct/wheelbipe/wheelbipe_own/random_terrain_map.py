@@ -50,6 +50,8 @@ RANDOM_TERRAIN_PROFILES = (
     "random_terrain_stage2_agile_20261114",
     "random_terrain_stage2_steep_agile_20261114",
     "random_terrain_stage3_curriculum_20261115",
+    "random_terrain_stage3_dirH2a_20261115",
+    "random_terrain_stage3_dirH2b_yaw_20261115",
 )
 GRADES = {
     "flat": 0.00,
@@ -832,6 +834,30 @@ def set_steep_block_probability(env, steep_block_prob: float) -> None:
     probs = compute_block_sampling_probs(mask, steep_block_prob)
     env._random_terrain_block_probs = torch.tensor(probs, dtype=torch.float32, device=env.device)
     env._random_terrain_steep_block_prob = float(steep_block_prob)
+
+
+def clamp_command_centripetal_accel(commands, max_lat_accel_m_s2: float, env_ids=None):
+    """Clamp yaw command ``commands[..., 2]`` so ``|vx * wz| <= max_lat_accel_m_s2``."""
+    limit = float(max_lat_accel_m_s2)
+    if limit <= 0.0:
+        return commands
+    if hasattr(commands, "clone"):
+        idx = slice(None) if env_ids is None else env_ids
+        vx = commands[idx, 0]
+        wz = commands[idx, 2]
+        wz_cap = limit / vx.abs().clamp_min(1e-3)
+        commands[idx, 2] = wz.clamp(-wz_cap, wz_cap)
+        return commands
+    indices = range(len(commands)) if env_ids is None else env_ids
+    for idx in indices:
+        vx = float(commands[idx][0])
+        wz = float(commands[idx][2])
+        wz_cap = limit / max(abs(vx), 1e-3)
+        if wz > wz_cap:
+            commands[idx][2] = wz_cap
+        elif wz < -wz_cap:
+            commands[idx][2] = -wz_cap
+    return commands
 
 
 def _stairs_lane_heights(env, local_x, slope_height):

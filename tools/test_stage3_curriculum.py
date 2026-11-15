@@ -117,11 +117,32 @@ def test_terrain_relative_orientation_alignment() -> None:
         assert dot > 0.9999, f"misaligned normal for gx={gx}, gy={gy}, yaw={yaw}: dot={dot}"
 
 
+def test_centripetal_accel_clamp(rtm) -> None:
+    profiles = json.loads(PROFILES_PATH.read_text())
+    for name in ("random_terrain_stage3_dirH2a_20261115", "random_terrain_stage3_dirH2b_yaw_20261115"):
+        assert name in profiles, f"missing profile {name}"
+        assert name in rtm.RANDOM_TERRAIN_PROFILES, f"unregistered profile {name}"
+        assert profiles[name]["command_centripetal_accel_limit"] == 1.5
+
+    cmds = [
+        [0.65, 0.0, 1.5],   # |0.65 * 1.5| = 0.975 <= 1.5 (unchanged)
+        [1.50, 0.0, 1.5],   # |1.50 * 1.5| = 2.25 > 1.5 -> 1.0
+        [-1.20, 0.0, -1.5], # |-1.20 * -1.5| = 1.80 > 1.5 -> -1.25
+        [2.00, 0.0, -1.5],  # |2.00 * -1.5| = 3.00 > 1.5 -> -0.75
+    ]
+    rtm.clamp_command_centripetal_accel(cmds, 1.5, env_ids=[0, 1, 2, 3])
+    assert math.isclose(cmds[0][2], 1.5, abs_tol=1e-9)
+    assert math.isclose(cmds[1][2], 1.0, abs_tol=1e-9)
+    assert math.isclose(cmds[2][2], -1.25, abs_tol=1e-9)
+    assert math.isclose(cmds[3][2], -0.75, abs_tol=1e-9)
+
+
 def main() -> int:
     rtm = _load_random_terrain_map()
     test_curriculum_progression_and_interpolation(rtm)
     test_block_sampling_probs(rtm)
     test_terrain_relative_orientation_alignment()
+    test_centripetal_accel_clamp(rtm)
     print("stage3 curriculum contract: PASS")
     return 0
 
