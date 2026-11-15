@@ -1,0 +1,804 @@
+{
+  "status": "PASS",
+  "profile": "random_terrain_relcritic_20261113",
+  "seed": 71903,
+  "seconds": 12.0,
+  "speed_m_s": 0.65,
+  "repeats": 3,
+  "checkpoint": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/logs/rsl_rl/own_low_speed_exploration/2026-11-13_17-36-05_dirD2_stairs_4096_15/model_10.pt",
+  "checkpoint_sha256": "5e89e6f99312d0e1a51fc204a96c5e74eab6e62e85baa285c8df9472b5a2cef0",
+  "checkpoint_iteration": 10,
+  "gimbal_collision_local_aabb_m": {
+    "minimum": [
+      -0.12514543533325195,
+      -0.0878033936023721,
+      0.010499999858438969
+    ],
+    "maximum": [
+      0.20463797450065613,
+      0.08098749816417605,
+      0.2769520878791809
+    ],
+    "mesh_prims": [
+      "/World/envs/env_0/Robot/gimbal_yaw_link/collisions/gimbal_yaw_link/mesh"
+    ],
+    "convex_hull_vertices": 396
+  },
+  "observation_shapes": {
+    "critic": [
+      27,
+      78
+    ],
+    "prev_critic": [
+      27,
+      78
+    ],
+    "policy_hist": [
+      27,
+      35
+    ],
+    "critic_hist": [
+      27,
+      78
+    ],
+    "policy": [
+      27,
+      35
+    ]
+  },
+  "random_terrain_layout": {
+    "layout_seed": 20261112,
+    "layout": [
+      [
+        "down10",
+        "up10",
+        "up14"
+      ],
+      [
+        "up06",
+        "down14",
+        "flat"
+      ],
+      [
+        "up18",
+        "down06",
+        "down18"
+      ]
+    ],
+    "spawn_counts": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "run_up_spawns": 0,
+    "transition_spawns": 0,
+    "stairs_spawns": 0,
+    "resets": 27,
+    "forced_evaluation_blocks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "peak_initial_tire_penetration_m": 0.0
+  },
+  "terrain_summary": {
+    "down10": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.006955069800217946,
+      "mean_abs_lateral_drift_m": 0.35696156819661456
+    },
+    "up10": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.016893830926467974,
+      "mean_abs_lateral_drift_m": 0.23147964477539062
+    },
+    "up14": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.015565824384490648,
+      "mean_abs_lateral_drift_m": 1.7692515055338542
+    },
+    "up06": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.013739619714518389,
+      "mean_abs_lateral_drift_m": 0.21236038208007812
+    },
+    "down14": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.007983476544419924,
+      "mean_abs_lateral_drift_m": 0.11899820963541667
+    },
+    "flat": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.011797181951502958,
+      "mean_abs_lateral_drift_m": 0.19187821572025618
+    },
+    "up18": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.0227398748199145,
+      "mean_abs_lateral_drift_m": 0.5154034296671549
+    },
+    "down06": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.007075329466412465,
+      "mean_abs_lateral_drift_m": 0.1149152119954427
+    },
+    "down18": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.01725809182971716,
+      "mean_abs_lateral_drift_m": 0.3279380798339844
+    }
+  },
+  "rows": [
+    {
+      "environment": 0,
+      "block_id": 0,
+      "terrain": "down10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.30373263359069824,
+      "steps_survived": 600,
+      "forward_m": 7.6712646484375,
+      "lateral_drift_m": -0.1776885986328125,
+      "vx_mae_m_s": 0.006001975852996111,
+      "mean_vx_m_s": 0.6484325528144836,
+      "abs_yaw_rate_mae_rad_s": 0.016894252970814705,
+      "initial_pitch_deg": 2.8624054957658758,
+      "pitch_range_deg": [
+        -2.8480832294065936,
+        3.765342843663221
+      ]
+    },
+    {
+      "environment": 1,
+      "block_id": 1,
+      "terrain": "up10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29767417907714844,
+      "steps_survived": 600,
+      "forward_m": 7.4245758056640625,
+      "lateral_drift_m": -0.0157318115234375,
+      "vx_mae_m_s": 0.022750429809093475,
+      "mean_vx_m_s": 0.6280239224433899,
+      "abs_yaw_rate_mae_rad_s": 0.017852673307061195,
+      "initial_pitch_deg": -2.8624054957658758,
+      "pitch_range_deg": [
+        -2.9294566090742444,
+        3.0811376081804793
+      ]
+    },
+    {
+      "environment": 2,
+      "block_id": 2,
+      "terrain": "up14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2998102903366089,
+      "steps_survived": 600,
+      "forward_m": 7.416114807128906,
+      "lateral_drift_m": -0.3523406982421875,
+      "vx_mae_m_s": 0.022575456649065018,
+      "mean_vx_m_s": 0.6288084387779236,
+      "abs_yaw_rate_mae_rad_s": 0.011185184121131897,
+      "initial_pitch_deg": -4.004173641484234,
+      "pitch_range_deg": [
+        -4.6996982079689795,
+        2.957145128752418
+      ]
+    },
+    {
+      "environment": 3,
+      "block_id": 3,
+      "terrain": "up06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.28104397654533386,
+      "steps_survived": 600,
+      "forward_m": 7.52069091796875,
+      "lateral_drift_m": -0.1456451416015625,
+      "vx_mae_m_s": 0.01622704602777958,
+      "mean_vx_m_s": 0.6340377926826477,
+      "abs_yaw_rate_mae_rad_s": 0.01706857420504093,
+      "initial_pitch_deg": -1.7183580945771428,
+      "pitch_range_deg": [
+        -3.7975403554106615,
+        8.05197597006557
+      ]
+    },
+    {
+      "environment": 4,
+      "block_id": 4,
+      "terrain": "down14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2899673283100128,
+      "steps_survived": 600,
+      "forward_m": 7.681297302246094,
+      "lateral_drift_m": 0.1544189453125,
+      "vx_mae_m_s": 0.008757148869335651,
+      "mean_vx_m_s": 0.6473408341407776,
+      "abs_yaw_rate_mae_rad_s": 0.020643658936023712,
+      "initial_pitch_deg": 4.004173641484234,
+      "pitch_range_deg": [
+        -2.7710474467487236,
+        5.184438014025254
+      ]
+    },
+    {
+      "environment": 5,
+      "block_id": 5,
+      "terrain": "flat",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.30119913816452026,
+      "steps_survived": 600,
+      "forward_m": 7.543907165527344,
+      "lateral_drift_m": -0.49334716796875,
+      "vx_mae_m_s": 0.010303208604454994,
+      "mean_vx_m_s": 0.6403659582138062,
+      "abs_yaw_rate_mae_rad_s": 0.012952757999300957,
+      "initial_pitch_deg": 0.0,
+      "pitch_range_deg": [
+        -1.2081531021392395,
+        7.1692858641890815
+      ]
+    },
+    {
+      "environment": 6,
+      "block_id": 6,
+      "terrain": "up18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2729010283946991,
+      "steps_survived": 600,
+      "forward_m": 7.9402313232421875,
+      "lateral_drift_m": 0.5818023681640625,
+      "vx_mae_m_s": 0.01802501454949379,
+      "mean_vx_m_s": 0.6596786975860596,
+      "abs_yaw_rate_mae_rad_s": 0.03139118105173111,
+      "initial_pitch_deg": -5.14276489546489,
+      "pitch_range_deg": [
+        -5.3029870461282265,
+        9.43085797480233
+      ]
+    },
+    {
+      "environment": 7,
+      "block_id": 7,
+      "terrain": "down06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.30299121141433716,
+      "steps_survived": 600,
+      "forward_m": 7.638641357421875,
+      "lateral_drift_m": 0.122528076171875,
+      "vx_mae_m_s": 0.006602112203836441,
+      "mean_vx_m_s": 0.6465238332748413,
+      "abs_yaw_rate_mae_rad_s": 0.01602771505713463,
+      "initial_pitch_deg": 1.7183580945771428,
+      "pitch_range_deg": [
+        -2.067702313664314,
+        4.1390946370277275
+      ]
+    },
+    {
+      "environment": 8,
+      "block_id": 8,
+      "terrain": "down18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2875707149505615,
+      "steps_survived": 600,
+      "forward_m": 7.821891784667969,
+      "lateral_drift_m": 0.6903457641601562,
+      "vx_mae_m_s": 0.017996985465288162,
+      "mean_vx_m_s": 0.6653624773025513,
+      "abs_yaw_rate_mae_rad_s": 0.02464410476386547,
+      "initial_pitch_deg": 5.14276489546489,
+      "pitch_range_deg": [
+        -4.424831758973802,
+        5.14276489546489
+      ]
+    },
+    {
+      "environment": 9,
+      "block_id": 0,
+      "terrain": "down10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29645851254463196,
+      "steps_survived": 600,
+      "forward_m": 7.7666473388671875,
+      "lateral_drift_m": 0.19010162353515625,
+      "vx_mae_m_s": 0.00781182711943984,
+      "mean_vx_m_s": 0.65497887134552,
+      "abs_yaw_rate_mae_rad_s": 0.02639150433242321,
+      "initial_pitch_deg": 2.8624054957658758,
+      "pitch_range_deg": [
+        -2.8752833905591113,
+        6.947402900132986
+      ]
+    },
+    {
+      "environment": 10,
+      "block_id": 1,
+      "terrain": "up10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29184436798095703,
+      "steps_survived": 600,
+      "forward_m": 7.7403717041015625,
+      "lateral_drift_m": -0.28948211669921875,
+      "vx_mae_m_s": 0.0065976944752037525,
+      "mean_vx_m_s": 0.6493997573852539,
+      "abs_yaw_rate_mae_rad_s": 0.01598593033850193,
+      "initial_pitch_deg": -2.8624054957658758,
+      "pitch_range_deg": [
+        -2.869070266291927,
+        6.9911199528024754
+      ]
+    },
+    {
+      "environment": 11,
+      "block_id": 2,
+      "terrain": "up14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29297545552253723,
+      "steps_survived": 600,
+      "forward_m": 7.155120849609375,
+      "lateral_drift_m": -2.4012832641601562,
+      "vx_mae_m_s": 0.011261661536991596,
+      "mean_vx_m_s": 0.643778383731842,
+      "abs_yaw_rate_mae_rad_s": 0.049862876534461975,
+      "initial_pitch_deg": -4.004173641484234,
+      "pitch_range_deg": [
+        -4.028410567754024,
+        5.958141352636788
+      ]
+    },
+    {
+      "environment": 12,
+      "block_id": 3,
+      "terrain": "up06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.25881701707839966,
+      "steps_survived": 600,
+      "forward_m": 7.660858154296875,
+      "lateral_drift_m": 0.044307708740234375,
+      "vx_mae_m_s": 0.011671262793242931,
+      "mean_vx_m_s": 0.6413233280181885,
+      "abs_yaw_rate_mae_rad_s": 0.02063433639705181,
+      "initial_pitch_deg": -1.7183580945771428,
+      "pitch_range_deg": [
+        -4.4962909056177685,
+        13.55010835097023
+      ]
+    },
+    {
+      "environment": 13,
+      "block_id": 4,
+      "terrain": "down14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.3035132884979248,
+      "steps_survived": 600,
+      "forward_m": 7.782196044921875,
+      "lateral_drift_m": -0.1036224365234375,
+      "vx_mae_m_s": 0.007092227227985859,
+      "mean_vx_m_s": 0.651970386505127,
+      "abs_yaw_rate_mae_rad_s": 0.015032279305160046,
+      "initial_pitch_deg": 4.004173641484234,
+      "pitch_range_deg": [
+        -3.910518514471842,
+        6.7961714128515025
+      ]
+    },
+    {
+      "environment": 14,
+      "block_id": 5,
+      "terrain": "flat",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2813815772533417,
+      "steps_survived": 600,
+      "forward_m": 7.5431976318359375,
+      "lateral_drift_m": -0.02526538446545601,
+      "vx_mae_m_s": 0.014589906670153141,
+      "mean_vx_m_s": 0.6358317732810974,
+      "abs_yaw_rate_mae_rad_s": 0.016748199239373207,
+      "initial_pitch_deg": 0.0,
+      "pitch_range_deg": [
+        -0.7239333509552381,
+        7.7206281255026195
+      ]
+    },
+    {
+      "environment": 15,
+      "block_id": 6,
+      "terrain": "up18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29500603675842285,
+      "steps_survived": 600,
+      "forward_m": 7.1953887939453125,
+      "lateral_drift_m": 0.8519811630249023,
+      "vx_mae_m_s": 0.041035134345293045,
+      "mean_vx_m_s": 0.6094425916671753,
+      "abs_yaw_rate_mae_rad_s": 0.03360821306705475,
+      "initial_pitch_deg": -5.14276489546489,
+      "pitch_range_deg": [
+        -5.14276489546489,
+        4.854422483237278
+      ]
+    },
+    {
+      "environment": 16,
+      "block_id": 7,
+      "terrain": "down06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2771214544773102,
+      "steps_survived": 600,
+      "forward_m": 7.706306457519531,
+      "lateral_drift_m": -0.13632583618164062,
+      "vx_mae_m_s": 0.00708170048892498,
+      "mean_vx_m_s": 0.6500816941261292,
+      "abs_yaw_rate_mae_rad_s": 0.014079404063522816,
+      "initial_pitch_deg": 1.7183580945771428,
+      "pitch_range_deg": [
+        -1.7594921618016042,
+        7.733345937737183
+      ]
+    },
+    {
+      "environment": 17,
+      "block_id": 8,
+      "terrain": "down18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29075103998184204,
+      "steps_survived": 600,
+      "forward_m": 7.884559631347656,
+      "lateral_drift_m": 0.003429412841796875,
+      "vx_mae_m_s": 0.022042255848646164,
+      "mean_vx_m_s": 0.6701094508171082,
+      "abs_yaw_rate_mae_rad_s": 0.018342221155762672,
+      "initial_pitch_deg": 5.14276489546489,
+      "pitch_range_deg": [
+        -4.165670903088246,
+        5.14276489546489
+      ]
+    },
+    {
+      "environment": 18,
+      "block_id": 0,
+      "terrain": "down10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2890704572200775,
+      "steps_survived": 600,
+      "forward_m": 7.63128662109375,
+      "lateral_drift_m": -0.703094482421875,
+      "vx_mae_m_s": 0.007051406428217888,
+      "mean_vx_m_s": 0.6476682424545288,
+      "abs_yaw_rate_mae_rad_s": 0.02170928195118904,
+      "initial_pitch_deg": 2.8624054957658758,
+      "pitch_range_deg": [
+        -3.2057234602926856,
+        4.692402712161759
+      ]
+    },
+    {
+      "environment": 19,
+      "block_id": 1,
+      "terrain": "up10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2896941900253296,
+      "steps_survived": 600,
+      "forward_m": 7.466773986816406,
+      "lateral_drift_m": 0.3892250061035156,
+      "vx_mae_m_s": 0.021333368495106697,
+      "mean_vx_m_s": 0.6294593811035156,
+      "abs_yaw_rate_mae_rad_s": 0.019075002521276474,
+      "initial_pitch_deg": -2.8624054957658758,
+      "pitch_range_deg": [
+        -3.680108913010632,
+        5.956028689749139
+      ]
+    },
+    {
+      "environment": 20,
+      "block_id": 2,
+      "terrain": "up14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.294403076171875,
+      "steps_survived": 600,
+      "forward_m": 7.060699462890625,
+      "lateral_drift_m": -2.5541305541992188,
+      "vx_mae_m_s": 0.012860354967415333,
+      "mean_vx_m_s": 0.6434689164161682,
+      "abs_yaw_rate_mae_rad_s": 0.05149603635072708,
+      "initial_pitch_deg": -4.004173641484234,
+      "pitch_range_deg": [
+        -4.706680795734848,
+        6.016458361544003
+      ]
+    },
+    {
+      "environment": 21,
+      "block_id": 3,
+      "terrain": "up06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29116058349609375,
+      "steps_survived": 600,
+      "forward_m": 7.584228515625,
+      "lateral_drift_m": 0.4471282958984375,
+      "vx_mae_m_s": 0.013320550322532654,
+      "mean_vx_m_s": 0.6407992839813232,
+      "abs_yaw_rate_mae_rad_s": 0.022720256820321083,
+      "initial_pitch_deg": -1.7183580945771428,
+      "pitch_range_deg": [
+        -2.2900236904877596,
+        6.492899914645535
+      ]
+    },
+    {
+      "environment": 22,
+      "block_id": 4,
+      "terrain": "down14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2868410050868988,
+      "steps_survived": 600,
+      "forward_m": 7.7076263427734375,
+      "lateral_drift_m": -0.0989532470703125,
+      "vx_mae_m_s": 0.008101053535938263,
+      "mean_vx_m_s": 0.6537637710571289,
+      "abs_yaw_rate_mae_rad_s": 0.014694835990667343,
+      "initial_pitch_deg": 4.004173641484234,
+      "pitch_range_deg": [
+        -2.9684192097511706,
+        4.004173641484234
+      ]
+    },
+    {
+      "environment": 23,
+      "block_id": 5,
+      "terrain": "flat",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2710130512714386,
+      "steps_survived": 600,
+      "forward_m": 7.570465087890625,
+      "lateral_drift_m": -0.0570220947265625,
+      "vx_mae_m_s": 0.010498430579900742,
+      "mean_vx_m_s": 0.6399214267730713,
+      "abs_yaw_rate_mae_rad_s": 0.013595081865787506,
+      "initial_pitch_deg": 0.0,
+      "pitch_range_deg": [
+        -2.1606392035967965,
+        9.562736974844228
+      ]
+    },
+    {
+      "environment": 24,
+      "block_id": 6,
+      "terrain": "up18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.27916252613067627,
+      "steps_survived": 600,
+      "forward_m": 7.8061370849609375,
+      "lateral_drift_m": 0.1124267578125,
+      "vx_mae_m_s": 0.009159475564956665,
+      "mean_vx_m_s": 0.649729311466217,
+      "abs_yaw_rate_mae_rad_s": 0.01947725936770439,
+      "initial_pitch_deg": -5.14276489546489,
+      "pitch_range_deg": [
+        -6.761772872644026,
+        6.964076672557456
+      ]
+    },
+    {
+      "environment": 25,
+      "block_id": 7,
+      "terrain": "down06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2795335054397583,
+      "steps_survived": 600,
+      "forward_m": 7.689048767089844,
+      "lateral_drift_m": -0.0858917236328125,
+      "vx_mae_m_s": 0.007542175706475973,
+      "mean_vx_m_s": 0.6471744179725647,
+      "abs_yaw_rate_mae_rad_s": 0.015407023020088673,
+      "initial_pitch_deg": 1.7183580945771428,
+      "pitch_range_deg": [
+        -1.4228853917428606,
+        10.084454144406482
+      ]
+    },
+    {
+      "environment": 26,
+      "block_id": 8,
+      "terrain": "down18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2982485890388489,
+      "steps_survived": 600,
+      "forward_m": 7.791633605957031,
+      "lateral_drift_m": 0.2900390625,
+      "vx_mae_m_s": 0.011735034175217152,
+      "mean_vx_m_s": 0.6545893549919128,
+      "abs_yaw_rate_mae_rad_s": 0.019096124917268753,
+      "initial_pitch_deg": 5.14276489546489,
+      "pitch_range_deg": [
+        -3.466634125266234,
+        6.240948323428928
+      ]
+    }
+  ],
+  "finite_outputs": true,
+  "wall_seconds": 291.292079799925
+}

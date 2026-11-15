@@ -1,0 +1,896 @@
+AppLauncher is deprecated; use isaaclab.app.launch_simulation.
+Loading user config located at: '/data/isaac620-migration-20261103/env620/lib/python3.12/site-packages/isaacsim/kit/data/Kit/IsaacLab/3.0/user.config.json'
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1794567619.814661  434328 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1794567619.814885  434328 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+2026-11-13T11:00:20Z [0ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-11-13T11:00:22Z [1,256ms] [Warning] [omni.platforminfo.plugin] failed to open the default display.  Can't verify X Server version.
+Warning: Possible version incompatibility. Attempting to load carb::ujitso::IFactory with version v0.3 against v0.2.
+Warp 1.17.0 initialized:
+   CUDA Toolkit 12.9, Driver 13.2
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 4090 D" (24 GiB, sm_89, mempool enabled)
+   Kernel cache:
+     /data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/eval_9patch_400hz_20261113/ft40_model_10_seed71903/cache/warp/1.17.0
+[ISAACLAB] KitLauncher initialization complete
+[INFO] Checkpoint observation/action configuration matches compared fields. USD content/training code provenance is not proven by YAML.
+[INFO]: Base environment:
+	Environment device    : cuda:0
+	Environment seed      : 71903
+	Physics step-size     : 0.0025
+	Rendering step-size   : 0.02
+	Environment step-size : 0.02
+[INFO] Generating terrains randomly took Last: 0.130339 s
+[INFO]: Registered backend 'physx' for factory Articulation.
+[INFO]: Registered backend 'physx' for factory ContactSensor.
+[INFO]: Physics scene prim path: /physicsScene
+[INFO]: Time taken for scene creation Last: 3.052329 s, Mean: 3.052329 s, Std: 0.000000 s, N: 1
+[INFO]: Scene manager:  <class InteractiveScene>
+	Number of environments: 27
+	Environment spacing   : 3.0
+	Source prim name      : /World/envs/env_0
+	Global prim paths     : ['/World/ground']
+	Replicate physics     : False
+[INFO]: Starting the simulation. This may take a few seconds. Please wait...
+2026-11-13T11:00:48Z [27,985ms] [Warning] [usdrt.population.plugin] Last global time was not created. Did you call setEnableUsdNoticeHandling?
+2026-11-13T11:00:48Z [28,053ms] [Warning] [omni.physx.plugin] Detected an articulation at /World/envs/env_0/Robot/base_link with more than 4 velocity iterations being added to a TGS scene.The related behavior changed recently, please consult the changelog. This warning will only print once.
+[INFO]: Simulation parameters for joints in /World/envs/env_.*/Robot:
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                         Simulation Joint Information (Prim path: /World/envs/env_.*/Robot)                                                         |
++-------+---------------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+| Index | Name                      | Stiffness | Damping | Armature | Static Friction | Dynamic Friction | Viscous Friction |   Position Limits   | Velocity Limits | Effort Limits |
++-------+---------------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+|   0   | gimbal_yaw_joint          |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   1   | left_buttom_guide1_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   2   | left_buttom_guide2_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   3   | left_front1_joint         |   0.000   |  0.000  |  0.016   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      17.000     |     40.000    |
+|   4   | left_front_guide1_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   5   | left_front_guide2_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   6   | left_front_guide3_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   7   | left_rear1_joint          |   0.000   |  0.000  |  0.016   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      17.000     |     40.000    |
+|   8   | left_rear_guide1_joint    |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   9   | right_buttom_guide1_joint |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   10  | right_buttom_guide2_joint |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   11  | right_front1_joint        |   0.000   |  0.000  |  0.016   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      17.000     |     40.000    |
+|   12  | right_front_guide1_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   13  | right_front_guide2_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   14  | right_front_guide3_joint  |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   15  | right_rear1_joint         |   0.000   |  0.000  |  0.016   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      17.000     |     40.000    |
+|   16  | right_rear_guide1_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   17  | left_front2_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       |   [-0.100, 1.000]   |      10.000     |    1.0e+09    |
+|   18  | left_rear2_joint          |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   19  | left_spring1_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   20  | right_front2_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       |   [-0.100, 1.000]   |      10.000     |    1.0e+09    |
+|   21  | right_rear2_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   22  | right_spring1_joint       |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   23  | left_front3_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   24  | left_rear2_guide_joint    |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   25  | left_wheel_joint          |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      60.000     |     5.000     |
+|   26  | left_spring2_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       |    [0.000, 0.300]   |      1.000      |    1.0e+09    |
+|   27  | right_front3_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   28  | right_rear2_guide_joint   |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   29  | right_wheel_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |      60.000     |     5.000     |
+|   30  | right_spring2_joint       |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       |    [0.000, 0.300]   |      1.000      |    1.0e+09    |
+|   31  | left_front4_joint         |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
+|   32  | right_front4_joint        |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    1.0e+09    |
++-------+---------------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+[INFO]: Time taken for simulation start Last: 20.666216 s, Mean: 20.666216 s, Std: 0.000000 s, N: 1
+[INFO]: Completed setting up the environment...
+[WheelCtrl] 轮速控制模式已启用: scale=10.0, max_vel=90.0 rad/s
+2026-11-13T11:01:05Z [44,388ms] [Warning] [isaaclab.envs.mdp.commands.velocity_command] The velocity command has the 'ranges.heading' attribute set to '(-3.141592653589793, 3.141592653589793)' but the heading command is not active. Consider setting the flag for the heading command to True.
+[Sim2Real] 观测延迟已启用 (物理步级) - 分组: ['root_ang_vel_b', 'projected_gravity_b', 'joint_pos', 'joint_vel']
+[Sim2Real]   - 延迟范围: {'root_ang_vel_b': [0, 3], 'projected_gravity_b': [0, 3], 'joint_pos': [0, 3], 'joint_vel': [0, 3]}
+[Sim2Real]   - 缓冲区长度: 7
+[Sim2Real]   - 初始化默认延迟: 0 步 (0.0ms)
+[Sim2Real]   - 物理步时间: 2.5ms (1步 ≈ 2.5ms)
+[Sim2Real] 执行延迟已启用 (物理步级) - 分组: ['leg_actions', 'wheel_actions']
+[Sim2Real]   - 延迟范围: {'leg_actions': [0, 3], 'wheel_actions': [0, 3]}
+[Sim2Real]   - 缓冲区长度: 5
+2026-11-13T11:01:18Z [57,509ms] [Warning] [omni.rtx] CUDA_VISIBLE_DEVICES environment variable is set.
+2026-11-13T11:01:18Z [57,509ms] [Warning] [omni.rtx] Note CUDA device enumeration and Omniverse device enumeration are different.
+2026-11-13T11:01:18Z [57,509ms] [Warning] [omni.rtx] Setting CUDA_VISIBLE_DEVICES can lead to undesired behavior or crashes.
+[INFO]: SimulationContext cleared
+{
+  "status": "PASS",
+  "profile": "random_terrain_20261112",
+  "seed": 71903,
+  "seconds": 12.0,
+  "speed_m_s": 0.65,
+  "repeats": 3,
+  "checkpoint": "/data/wheeled-legged/projects/v14_6_random_terrain_20261112/runs/train_8uUtJL/logs/rsl_rl/own_low_speed_exploration/2026-11-12_05-50-01_terrain_tri_fix_4096_40/model_10.pt",
+  "checkpoint_sha256": "94b2f59139dd1203529ddfac03eaa58139063f1d0dcdb4af44511c327cdb81f3",
+  "checkpoint_iteration": 10,
+  "gimbal_collision_local_aabb_m": {
+    "minimum": [
+      -0.12514543533325195,
+      -0.08780339360237122,
+      0.010499999858438969
+    ],
+    "maximum": [
+      0.20463797450065613,
+      0.08098749816417694,
+      0.2769520878791809
+    ],
+    "mesh_prims": [
+      "/World/envs/env_0/Robot/gimbal_yaw_link/collisions/gimbal_yaw_link/mesh"
+    ],
+    "convex_hull_vertices": 396
+  },
+  "observation_shapes": {
+    "critic": [
+      27,
+      78
+    ],
+    "prev_critic": [
+      27,
+      78
+    ],
+    "policy_hist": [
+      27,
+      35
+    ],
+    "critic_hist": [
+      27,
+      78
+    ],
+    "policy": [
+      27,
+      35
+    ]
+  },
+  "random_terrain_layout": {
+    "layout_seed": 20261112,
+    "layout": [
+      [
+        "down10",
+        "up10",
+        "up14"
+      ],
+      [
+        "up06",
+        "down14",
+        "flat"
+      ],
+      [
+        "up18",
+        "down06",
+        "down18"
+      ]
+    ],
+    "spawn_counts": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "run_up_spawns": 0,
+    "transition_spawns": 0,
+    "resets": 27,
+    "forced_evaluation_blocks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "peak_initial_tire_penetration_m": 0.0
+  },
+  "terrain_summary": {
+    "down10": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.007471829342345397,
+      "mean_abs_lateral_drift_m": 0.40107091267903644
+    },
+    "up10": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.016498527334382136,
+      "mean_abs_lateral_drift_m": 0.22952906290690103
+    },
+    "up14": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.015771965806682903,
+      "mean_abs_lateral_drift_m": 2.3627357482910156
+    },
+    "up06": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.013345437124371529,
+      "mean_abs_lateral_drift_m": 0.21661504109700522
+    },
+    "down14": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.007781489286571741,
+      "mean_abs_lateral_drift_m": 0.1459833780924479
+    },
+    "flat": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.011942974912623564,
+      "mean_abs_lateral_drift_m": 0.277048038939635
+    },
+    "up18": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.023131879046559334,
+      "mean_abs_lateral_drift_m": 0.4434744517008464
+    },
+    "down06": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.0069112641115983324,
+      "mean_abs_lateral_drift_m": 0.14127604166666666
+    },
+    "down18": {
+      "attempts": 3,
+      "successes": 3,
+      "success_rate": 1.0,
+      "vx_mae_m_s": 0.015625236555933952,
+      "mean_abs_lateral_drift_m": 0.26844533284505206
+    }
+  },
+  "rows": [
+    {
+      "environment": 0,
+      "block_id": 0,
+      "terrain": "down10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.3040907680988312,
+      "steps_survived": 600,
+      "forward_m": 7.657440185546875,
+      "lateral_drift_m": -0.3277435302734375,
+      "vx_mae_m_s": 0.007215832360088825,
+      "mean_vx_m_s": 0.6475553512573242,
+      "abs_yaw_rate_mae_rad_s": 0.017877504229545593,
+      "initial_pitch_deg": 2.8624054957658758,
+      "pitch_range_deg": [
+        -3.2295396895982855,
+        3.4683021855275977
+      ]
+    },
+    {
+      "environment": 1,
+      "block_id": 1,
+      "terrain": "up10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29811516404151917,
+      "steps_survived": 600,
+      "forward_m": 7.433372497558594,
+      "lateral_drift_m": -0.097747802734375,
+      "vx_mae_m_s": 0.021652476862072945,
+      "mean_vx_m_s": 0.6292404532432556,
+      "abs_yaw_rate_mae_rad_s": 0.01786968670785427,
+      "initial_pitch_deg": -2.8624054957658758,
+      "pitch_range_deg": [
+        -2.9285178849501907,
+        3.24877606362198
+      ]
+    },
+    {
+      "environment": 2,
+      "block_id": 2,
+      "terrain": "up14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2993957996368408,
+      "steps_survived": 600,
+      "forward_m": 7.430641174316406,
+      "lateral_drift_m": -0.5905609130859375,
+      "vx_mae_m_s": 0.020523041486740112,
+      "mean_vx_m_s": 0.6313329935073853,
+      "abs_yaw_rate_mae_rad_s": 0.013170030899345875,
+      "initial_pitch_deg": -4.004173641484234,
+      "pitch_range_deg": [
+        -4.702303071363693,
+        2.990581252617158
+      ]
+    },
+    {
+      "environment": 3,
+      "block_id": 3,
+      "terrain": "up06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2817586064338684,
+      "steps_survived": 600,
+      "forward_m": 7.502471923828125,
+      "lateral_drift_m": -0.3169097900390625,
+      "vx_mae_m_s": 0.016329627484083176,
+      "mean_vx_m_s": 0.6339060068130493,
+      "abs_yaw_rate_mae_rad_s": 0.017361609265208244,
+      "initial_pitch_deg": -1.7183580945771428,
+      "pitch_range_deg": [
+        -3.807115853740196,
+        7.336488895070993
+      ]
+    },
+    {
+      "environment": 4,
+      "block_id": 4,
+      "terrain": "down14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29003071784973145,
+      "steps_survived": 600,
+      "forward_m": 7.676185607910156,
+      "lateral_drift_m": 0.126434326171875,
+      "vx_mae_m_s": 0.008572611957788467,
+      "mean_vx_m_s": 0.6464632153511047,
+      "abs_yaw_rate_mae_rad_s": 0.020230380818247795,
+      "initial_pitch_deg": 4.004173641484234,
+      "pitch_range_deg": [
+        -2.9828336836642477,
+        5.236942958835611
+      ]
+    },
+    {
+      "environment": 5,
+      "block_id": 5,
+      "terrain": "flat",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.30086493492126465,
+      "steps_survived": 600,
+      "forward_m": 7.514350891113281,
+      "lateral_drift_m": -0.6620330810546875,
+      "vx_mae_m_s": 0.010466227307915688,
+      "mean_vx_m_s": 0.6402304172515869,
+      "abs_yaw_rate_mae_rad_s": 0.013995366171002388,
+      "initial_pitch_deg": 0.0,
+      "pitch_range_deg": [
+        -1.156414312454687,
+        6.789000141109812
+      ]
+    },
+    {
+      "environment": 6,
+      "block_id": 6,
+      "terrain": "up18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2721474766731262,
+      "steps_survived": 600,
+      "forward_m": 7.9806365966796875,
+      "lateral_drift_m": 0.4996185302734375,
+      "vx_mae_m_s": 0.018051747232675552,
+      "mean_vx_m_s": 0.6630174517631531,
+      "abs_yaw_rate_mae_rad_s": 0.027986885979771614,
+      "initial_pitch_deg": -5.14276489546489,
+      "pitch_range_deg": [
+        -5.317503759435442,
+        9.274346751292427
+      ]
+    },
+    {
+      "environment": 7,
+      "block_id": 7,
+      "terrain": "down06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.30292877554893494,
+      "steps_survived": 600,
+      "forward_m": 7.638671875,
+      "lateral_drift_m": 0.0090789794921875,
+      "vx_mae_m_s": 0.0060548302717506886,
+      "mean_vx_m_s": 0.6476672887802124,
+      "abs_yaw_rate_mae_rad_s": 0.01605653576552868,
+      "initial_pitch_deg": 1.7183580945771428,
+      "pitch_range_deg": [
+        -2.2956139868800034,
+        3.343097560965271
+      ]
+    },
+    {
+      "environment": 8,
+      "block_id": 8,
+      "terrain": "down18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2876432538032532,
+      "steps_survived": 600,
+      "forward_m": 7.8064727783203125,
+      "lateral_drift_m": 0.5340118408203125,
+      "vx_mae_m_s": 0.015445111319422722,
+      "mean_vx_m_s": 0.6622517704963684,
+      "abs_yaw_rate_mae_rad_s": 0.02469370886683464,
+      "initial_pitch_deg": 5.14276489546489,
+      "pitch_range_deg": [
+        -4.615029475470209,
+        5.14276489546489
+      ]
+    },
+    {
+      "environment": 9,
+      "block_id": 0,
+      "terrain": "down10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2971594035625458,
+      "steps_survived": 600,
+      "forward_m": 7.756317138671875,
+      "lateral_drift_m": 0.1232147216796875,
+      "vx_mae_m_s": 0.007847442291676998,
+      "mean_vx_m_s": 0.6539920568466187,
+      "abs_yaw_rate_mae_rad_s": 0.027262872084975243,
+      "initial_pitch_deg": 2.8624054957658758,
+      "pitch_range_deg": [
+        -3.194994513767065,
+        6.495054839328674
+      ]
+    },
+    {
+      "environment": 10,
+      "block_id": 1,
+      "terrain": "up10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29507890343666077,
+      "steps_survived": 600,
+      "forward_m": 7.698509216308594,
+      "lateral_drift_m": -0.30629730224609375,
+      "vx_mae_m_s": 0.006342761684209108,
+      "mean_vx_m_s": 0.6475126147270203,
+      "abs_yaw_rate_mae_rad_s": 0.016072245314717293,
+      "initial_pitch_deg": -2.8624054957658758,
+      "pitch_range_deg": [
+        -2.8624054957658758,
+        5.826492444592554
+      ]
+    },
+    {
+      "environment": 11,
+      "block_id": 2,
+      "terrain": "up14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.26544898748397827,
+      "steps_survived": 600,
+      "forward_m": 6.7713623046875,
+      "lateral_drift_m": -3.5156631469726562,
+      "vx_mae_m_s": 0.013742053881287575,
+      "mean_vx_m_s": 0.6547948122024536,
+      "abs_yaw_rate_mae_rad_s": 0.06643546372652054,
+      "initial_pitch_deg": -4.004173641484234,
+      "pitch_range_deg": [
+        -4.029316421592697,
+        6.1624079781629515
+      ]
+    },
+    {
+      "environment": 12,
+      "block_id": 3,
+      "terrain": "up06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.25838953256607056,
+      "steps_survived": 600,
+      "forward_m": 7.6771697998046875,
+      "lateral_drift_m": -0.08252334594726562,
+      "vx_mae_m_s": 0.011829243041574955,
+      "mean_vx_m_s": 0.6412378549575806,
+      "abs_yaw_rate_mae_rad_s": 0.02090960554778576,
+      "initial_pitch_deg": -1.7183580945771428,
+      "pitch_range_deg": [
+        -4.442081401722669,
+        13.259356589512898
+      ]
+    },
+    {
+      "environment": 13,
+      "block_id": 4,
+      "terrain": "down14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.303254097700119,
+      "steps_survived": 600,
+      "forward_m": 7.782135009765625,
+      "lateral_drift_m": -0.16129302978515625,
+      "vx_mae_m_s": 0.007088452111929655,
+      "mean_vx_m_s": 0.651760458946228,
+      "abs_yaw_rate_mae_rad_s": 0.014477442018687725,
+      "initial_pitch_deg": 4.004173641484234,
+      "pitch_range_deg": [
+        -4.060280657308127,
+        6.9674768261036535
+      ]
+    },
+    {
+      "environment": 14,
+      "block_id": 5,
+      "terrain": "flat",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2808859944343567,
+      "steps_survived": 600,
+      "forward_m": 7.539665222167969,
+      "lateral_drift_m": -0.07206513732671738,
+      "vx_mae_m_s": 0.014065724797546864,
+      "mean_vx_m_s": 0.6361509561538696,
+      "abs_yaw_rate_mae_rad_s": 0.016651103273034096,
+      "initial_pitch_deg": 0.0,
+      "pitch_range_deg": [
+        -0.7120629090645791,
+        7.712216747539749
+      ]
+    },
+    {
+      "environment": 15,
+      "block_id": 6,
+      "terrain": "up18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29485443234443665,
+      "steps_survived": 600,
+      "forward_m": 7.279022216796875,
+      "lateral_drift_m": 0.5156650543212891,
+      "vx_mae_m_s": 0.038013629615306854,
+      "mean_vx_m_s": 0.6125278472900391,
+      "abs_yaw_rate_mae_rad_s": 0.02815891243517399,
+      "initial_pitch_deg": -5.14276489546489,
+      "pitch_range_deg": [
+        -5.14276489546489,
+        4.984692546842815
+      ]
+    },
+    {
+      "environment": 16,
+      "block_id": 7,
+      "terrain": "down06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.27740558981895447,
+      "steps_survived": 600,
+      "forward_m": 7.7021636962890625,
+      "lateral_drift_m": -0.232421875,
+      "vx_mae_m_s": 0.007208355236798525,
+      "mean_vx_m_s": 0.6506868600845337,
+      "abs_yaw_rate_mae_rad_s": 0.014835693873465061,
+      "initial_pitch_deg": 1.7183580945771428,
+      "pitch_range_deg": [
+        -2.208689797851248,
+        7.505937350642547
+      ]
+    },
+    {
+      "environment": 17,
+      "block_id": 8,
+      "terrain": "down18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2901868522167206,
+      "steps_survived": 600,
+      "forward_m": 7.851921081542969,
+      "lateral_drift_m": -0.06401824951171875,
+      "vx_mae_m_s": 0.01974545605480671,
+      "mean_vx_m_s": 0.6677108407020569,
+      "abs_yaw_rate_mae_rad_s": 0.01834670454263687,
+      "initial_pitch_deg": 5.14276489546489,
+      "pitch_range_deg": [
+        -4.67866250598581,
+        5.14276489546489
+      ]
+    },
+    {
+      "environment": 18,
+      "block_id": 0,
+      "terrain": "down10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.28902778029441833,
+      "steps_survived": 600,
+      "forward_m": 7.61126708984375,
+      "lateral_drift_m": -0.7522544860839844,
+      "vx_mae_m_s": 0.007352213375270367,
+      "mean_vx_m_s": 0.6465733051300049,
+      "abs_yaw_rate_mae_rad_s": 0.022715091705322266,
+      "initial_pitch_deg": 2.8624054957658758,
+      "pitch_range_deg": [
+        -3.3981819694043662,
+        4.4426837390301
+      ]
+    },
+    {
+      "environment": 19,
+      "block_id": 1,
+      "terrain": "up10",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2886277735233307,
+      "steps_survived": 600,
+      "forward_m": 7.4621734619140625,
+      "lateral_drift_m": 0.2845420837402344,
+      "vx_mae_m_s": 0.021500343456864357,
+      "mean_vx_m_s": 0.6288737058639526,
+      "abs_yaw_rate_mae_rad_s": 0.01733335107564926,
+      "initial_pitch_deg": -2.8624054957658758,
+      "pitch_range_deg": [
+        -3.6590642464041765,
+        6.2584182397785275
+      ]
+    },
+    {
+      "environment": 20,
+      "block_id": 2,
+      "terrain": "up14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.27201107144355774,
+      "steps_survived": 600,
+      "forward_m": 6.890907287597656,
+      "lateral_drift_m": -2.981983184814453,
+      "vx_mae_m_s": 0.013050802052021027,
+      "mean_vx_m_s": 0.6462662220001221,
+      "abs_yaw_rate_mae_rad_s": 0.06075233593583107,
+      "initial_pitch_deg": -4.004173641484234,
+      "pitch_range_deg": [
+        -4.55381945456267,
+        6.024062496524343
+      ]
+    },
+    {
+      "environment": 21,
+      "block_id": 3,
+      "terrain": "up06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.29076308012008667,
+      "steps_survived": 600,
+      "forward_m": 7.59576416015625,
+      "lateral_drift_m": 0.2504119873046875,
+      "vx_mae_m_s": 0.011877440847456455,
+      "mean_vx_m_s": 0.6401156783103943,
+      "abs_yaw_rate_mae_rad_s": 0.023056507110595703,
+      "initial_pitch_deg": -1.7183580945771428,
+      "pitch_range_deg": [
+        -2.1261740690449122,
+        6.790075469017266
+      ]
+    },
+    {
+      "environment": 22,
+      "block_id": 4,
+      "terrain": "down14",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.28666889667510986,
+      "steps_survived": 600,
+      "forward_m": 7.700653076171875,
+      "lateral_drift_m": -0.1502227783203125,
+      "vx_mae_m_s": 0.007683403789997101,
+      "mean_vx_m_s": 0.6535351276397705,
+      "abs_yaw_rate_mae_rad_s": 0.015537792816758156,
+      "initial_pitch_deg": 4.004173641484234,
+      "pitch_range_deg": [
+        -3.241289109074588,
+        4.004173641484234
+      ]
+    },
+    {
+      "environment": 23,
+      "block_id": 5,
+      "terrain": "flat",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2703762948513031,
+      "steps_survived": 600,
+      "forward_m": 7.559715270996094,
+      "lateral_drift_m": -0.0970458984375,
+      "vx_mae_m_s": 0.011296972632408142,
+      "mean_vx_m_s": 0.6392033100128174,
+      "abs_yaw_rate_mae_rad_s": 0.013267218135297298,
+      "initial_pitch_deg": 0.0,
+      "pitch_range_deg": [
+        -2.1069445252103876,
+        9.871555440429892
+      ]
+    },
+    {
+      "environment": 24,
+      "block_id": 6,
+      "terrain": "up18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.28003770112991333,
+      "steps_survived": 600,
+      "forward_m": 7.9158172607421875,
+      "lateral_drift_m": -0.3151397705078125,
+      "vx_mae_m_s": 0.013330260291695595,
+      "mean_vx_m_s": 0.6605525612831116,
+      "abs_yaw_rate_mae_rad_s": 0.019676189869642258,
+      "initial_pitch_deg": -5.14276489546489,
+      "pitch_range_deg": [
+        -6.890023761576178,
+        6.8555223416443285
+      ]
+    },
+    {
+      "environment": 25,
+      "block_id": 7,
+      "terrain": "down06",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2800215184688568,
+      "steps_survived": 600,
+      "forward_m": 7.674072265625,
+      "lateral_drift_m": -0.1823272705078125,
+      "vx_mae_m_s": 0.007470606826245785,
+      "mean_vx_m_s": 0.6462976336479187,
+      "abs_yaw_rate_mae_rad_s": 0.01594359613955021,
+      "initial_pitch_deg": 1.7183580945771428,
+      "pitch_range_deg": [
+        -1.6679689075839026,
+        9.725165703496302
+      ]
+    },
+    {
+      "environment": 26,
+      "block_id": 8,
+      "terrain": "down18",
+      "success": true,
+      "failed": false,
+      "timed_out": false,
+      "failure_causes": [],
+      "failure_reset_contact_forces_n": {},
+      "failure_gimbal_mesh_clearance_m": null,
+      "minimum_gimbal_mesh_clearance_m": 0.2979814112186432,
+      "steps_survived": 600,
+      "forward_m": 7.797027587890625,
+      "lateral_drift_m": 0.207305908203125,
+      "vx_mae_m_s": 0.011685142293572426,
+      "mean_vx_m_s": 0.6541571617126465,
+      "abs_yaw_rate_mae_rad_s": 0.019596876576542854,
+      "initial_pitch_deg": 5.14276489546489,
+      "pitch_range_deg": [
+        -3.574523366508932,
+        6.060708168968754
+      ]
+    }
+  ],
+  "finite_outputs": true,
+  "wall_seconds": 327.8061303680297
+}

@@ -1,0 +1,189 @@
+{
+  "profile": "random_terrain_yaw045_20261113",
+  "policy_steps": 200,
+  "environments": 4096,
+  "nominal_mass_kg": 20.66189193725586,
+  "all_loop_targets_local": true,
+  "max_loop_error_m": 0.0011480909306555986,
+  "latest_loop_error_m": 8.233455446315929e-05,
+  "spring_force_range_N": [
+    400.0,
+    580.0
+  ],
+  "spring_damping_calibrated": false,
+  "spring_damping_actual_range_N_s_m": [
+    25.00227928161621,
+    99.98942565917969
+  ],
+  "updated_unix": 1794589872.8910024,
+  "domain_randomization": {
+    "enabled": true,
+    "sampling": "physical parameters once per environment at startup; delays on resets; noise on observations",
+    "physics_dt_s": 0.0025,
+    "policy_dt_s": 0.02,
+    "integration_refinement_factor": 2,
+    "nominal_total_mass_kg": 20.66189193725586,
+    "actual_total_mass_range_kg": [
+      18.97403335571289,
+      22.311803817749023
+    ],
+    "base_mass_range_kg": [
+      13.872465133666992,
+      16.954179763793945
+    ],
+    "actual_mass_scale_range": [
+      0.90004962682724,
+      1.0999921560287476
+    ],
+    "actual_static_friction_range": [
+      0.5019967555999756,
+      1.2270537614822388
+    ],
+    "actual_dynamic_friction_range": [
+      0.3965960144996643,
+      1.1885830163955688
+    ],
+    "actual_restitution_range": [
+      0.0005856961361132562,
+      0.049106910824775696
+    ],
+    "ground_reference_material": {
+      "static_friction": 1.0,
+      "dynamic_friction": 1.0,
+      "restitution": 1.0,
+      "combine": "multiply"
+    },
+    "rolling_resistance_range": [
+      0.00500203762203455,
+      0.03499675914645195
+    ],
+    "inertia_mass_scaling_verified": true,
+    "native_physx_mass_inertia_verified": true,
+    "material_readback_verified": true,
+    "actuator_actual_ranges": {
+      "legs_act": {
+        "stiffness": [
+          54.00074768066406,
+          65.99925994873047
+        ],
+        "damping": [
+          1.7000401020050049,
+          2.299988269805908
+        ],
+        "effort_limit": [
+          36.0001106262207,
+          39.99997329711914
+        ]
+      },
+      "wheel": {
+        "stiffness": [
+          0.0,
+          0.0
+        ],
+        "damping": [
+          0.17000092566013336,
+          0.2299996167421341
+        ],
+        "effort_limit": [
+          4.500036716461182,
+          4.9999799728393555
+        ]
+      }
+    },
+    "settings": {
+      "base_mass_scale": [
+        0.9,
+        1.1
+      ],
+      "other_body_mass_scale": [
+        0.95,
+        1.05
+      ],
+      "static_friction": [
+        0.5,
+        1.25
+      ],
+      "dynamic_static_ratio": [
+        0.75,
+        1.0
+      ],
+      "restitution": [
+        0.0,
+        0.05
+      ],
+      "rolling_resistance_coefficient": [
+        0.005,
+        0.035
+      ],
+      "stiffness_scale": [
+        0.9,
+        1.1
+      ],
+      "motor_damping_scale": [
+        0.85,
+        1.15
+      ],
+      "motor_effort_scale": [
+        0.9,
+        1.0
+      ],
+      "push_interval_s": [
+        6.0,
+        10.0
+      ],
+      "push_force_xy_N": [
+        -8.0,
+        8.0
+      ],
+      "sensor_noise_uniform_bounds": {
+        "root_ang_vel_b": 0.03,
+        "projected_gravity_b": 0.008,
+        "joint_pos": 0.003,
+        "leg_joint_vel": 0.1,
+        "wheel_joint_vel": 0.2
+      }
+    },
+    "peak_rolling_torque_Nm": 0.9476622939109802,
+    "peak_positive_rolling_power_W": 0.0,
+    "wheel_contact_samples": 12856970,
+    "wheel_airborne_samples": 184694,
+    "push_environment_substeps": 0
+  },
+  "random_terrain": {
+    "layout_seed": 20261112,
+    "layout": [
+      [
+        "down10",
+        "up10",
+        "up14"
+      ],
+      [
+        "up06",
+        "down14",
+        "flat"
+      ],
+      [
+        "up18",
+        "down06",
+        "down18"
+      ]
+    ],
+    "spawn_counts": [
+      577,
+      544,
+      554,
+      545,
+      553,
+      576,
+      547,
+      585,
+      535
+    ],
+    "run_up_spawns": 0,
+    "transition_spawns": 2003,
+    "stairs_spawns": 0,
+    "resets": 5016,
+    "forced_evaluation_blocks": null,
+    "peak_initial_tire_penetration_m": 0.0
+  }
+}
