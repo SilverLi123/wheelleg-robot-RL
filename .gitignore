@@ -27,3 +27,7 @@ runs/
 *.ckpt
 *.safetensors
 .pytest_cache/
+reports/**/tmp/
+reports/**/kit/
+reports/**/config/
+reports/**/data/
