@@ -163,6 +163,14 @@ def test_high_speed_command_boost(rtm) -> None:
         assert rng_lo <= row[0] <= rng_hi
         assert abs(row[0] * row[2]) <= 1.5 + 1e-9
 
+    dir_i5 = profiles["random_terrain_stage4_dirI5_20261116"]
+    assert "random_terrain_stage4_dirI5_20261116" in rtm.RANDOM_TERRAIN_PROFILES
+    assert dir_i5["reward_parameters"]["lin_vel_xy_square_sigma"] == 1.0
+    assert dir_i5["reward_weights"]["track_lin_vel_xy_square"] == -3.2
+    assert dir_i5["random_terrain_stairs_fraction"] == 0.1
+    assert dir_i5["random_terrain_transition_fraction"] == 0.12
+    assert dir_i5["curriculum"]["steep_block_prob_end"] == 0.14
+
 
 def main() -> int:
     rtm = _load_random_terrain_map()

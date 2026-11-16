@@ -62,6 +62,7 @@ RANDOM_TERRAIN_PROFILES = (
     "random_terrain_stage4_dirI2_20261116",
     "random_terrain_stage4_dirI3_20261116",
     "random_terrain_stage4_dirI4_20261116",
+    "random_terrain_stage4_dirI5_20261116",
 )
 GRADES = {
     "flat": 0.00,
