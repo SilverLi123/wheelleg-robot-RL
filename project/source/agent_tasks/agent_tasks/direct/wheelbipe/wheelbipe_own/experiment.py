@@ -151,23 +151,48 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
         self._curriculum_last_iter = -1
         self._curriculum_state = None
         self._update_experiment_curriculum(force=True)
+        settings = self.cfg.experiment_profile_settings
         lat_accel_limit = float(
-            self.cfg.experiment_profile_settings.get('command_centripetal_accel_limit', 0.0)
+            settings.get('command_centripetal_accel_limit', 0.0)
         )
-        if lat_accel_limit > 0.0 and hasattr(self, 'command_generator'):
+        high_speed_frac = float(
+            settings.get('command_high_speed_fraction', 0.0)
+        )
+        high_speed_range = tuple(
+            settings.get('command_high_speed_range', (1.5, 2.0))
+        )
+        if (lat_accel_limit > 0.0 or high_speed_frac > 0.0) and hasattr(self, 'command_generator'):
             cmd_gen = self.command_generator
             orig_resample = cmd_gen._resample_command
 
             def _capped_resample(env_ids):
                 orig_resample(env_ids)
-                random_terrain_map.clamp_command_centripetal_accel(
-                    cmd_gen.command, lat_accel_limit, env_ids
-                )
+                if high_speed_frac > 0.0:
+                    random_terrain_map.boost_command_high_speed(
+                        cmd_gen.command,
+                        high_speed_frac,
+                        high_speed_range,
+                        env_ids,
+                        getattr(cmd_gen, 'is_standing_env', None),
+                    )
+                if lat_accel_limit > 0.0:
+                    random_terrain_map.clamp_command_centripetal_accel(
+                        cmd_gen.command, lat_accel_limit, env_ids
+                    )
 
             cmd_gen._resample_command = _capped_resample
-            random_terrain_map.clamp_command_centripetal_accel(
-                cmd_gen.command, lat_accel_limit
-            )
+            if high_speed_frac > 0.0:
+                random_terrain_map.boost_command_high_speed(
+                    cmd_gen.command,
+                    high_speed_frac,
+                    high_speed_range,
+                    None,
+                    getattr(cmd_gen, 'is_standing_env', None),
+                )
+            if lat_accel_limit > 0.0:
+                random_terrain_map.clamp_command_centripetal_accel(
+                    cmd_gen.command, lat_accel_limit
+                )
 
     def _legacy_terrain_enabled(self) -> bool:
         settings = self.cfg.experiment_profile_settings

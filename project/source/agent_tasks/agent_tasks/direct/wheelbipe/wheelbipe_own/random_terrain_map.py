@@ -61,6 +61,7 @@ RANDOM_TERRAIN_PROFILES = (
     "random_terrain_stage4_dirI1_20261116",
     "random_terrain_stage4_dirI2_20261116",
     "random_terrain_stage4_dirI3_20261116",
+    "random_terrain_stage4_dirI4_20261116",
 )
 GRADES = {
     "flat": 0.00,
@@ -866,6 +867,46 @@ def clamp_command_centripetal_accel(commands, max_lat_accel_m_s2: float, env_ids
             commands[idx][2] = wz_cap
         elif wz < -wz_cap:
             commands[idx][2] = -wz_cap
+    return commands
+
+
+def boost_command_high_speed(
+    commands,
+    fraction: float,
+    speed_range: tuple[float, float],
+    env_ids=None,
+    is_standing=None,
+    rng=None,
+):
+    """Resample ``fraction`` of non-standing commands into ``speed_range`` for high-speed training."""
+    frac = float(fraction)
+    if frac <= 0.0:
+        return commands
+    lo, hi = float(speed_range[0]), float(speed_range[1])
+    if hi < lo:
+        raise ValueError(f"command_high_speed_range must be ordered, got {(lo, hi)}")
+    if hasattr(commands, "clone"):
+        import torch
+
+        idx = torch.arange(commands.shape[0], device=commands.device) if env_ids is None else torch.as_tensor(env_ids, device=commands.device, dtype=torch.long)
+        if idx.numel() == 0:
+            return commands
+        draw = torch.rand(idx.shape[0], device=commands.device) < frac
+        if is_standing is not None:
+            draw &= ~torch.as_tensor(is_standing, device=commands.device, dtype=torch.bool)[idx]
+        chosen = idx[draw]
+        if chosen.numel() > 0:
+            commands[chosen, 0] = torch.empty(chosen.numel(), device=commands.device).uniform_(lo, hi)
+        return commands
+    import random
+
+    gen = random if rng is None else rng
+    indices = range(len(commands)) if env_ids is None else env_ids
+    for idx in indices:
+        if is_standing is not None and is_standing[idx]:
+            continue
+        if gen.random() < frac:
+            commands[idx][0] = gen.uniform(lo, hi)
     return commands
 
 

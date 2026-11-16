@@ -137,12 +137,40 @@ def test_centripetal_accel_clamp(rtm) -> None:
     assert math.isclose(cmds[3][2], -0.75, abs_tol=1e-9)
 
 
+def test_high_speed_command_boost(rtm) -> None:
+    import random
+
+    profiles = json.loads(PROFILES_PATH.read_text())
+    dir_i4 = profiles["random_terrain_stage4_dirI4_20261116"]
+    assert "random_terrain_stage4_dirI4_20261116" in rtm.RANDOM_TERRAIN_PROFILES
+    frac = dir_i4["command_high_speed_fraction"]
+    rng_lo, rng_hi = dir_i4["command_high_speed_range"]
+    assert frac == 0.35 and rng_lo == 1.55 and rng_hi == 2.05
+
+    cmds = [[0.0, 0.0, 0.0], [0.4, 0.0, 1.5], [0.6, 0.0, -1.5], [0.5, 0.0, 1.2]]
+    standing = [True, False, False, False]
+    rtm.boost_command_high_speed(
+        cmds,
+        1.0,
+        (rng_lo, rng_hi),
+        env_ids=[0, 1, 2, 3],
+        is_standing=standing,
+        rng=random.Random(42),
+    )
+    rtm.clamp_command_centripetal_accel(cmds, dir_i4["command_centripetal_accel_limit"], env_ids=[0, 1, 2, 3])
+    assert cmds[0] == [0.0, 0.0, 0.0], "standing command must never be overwritten"
+    for row in cmds[1:]:
+        assert rng_lo <= row[0] <= rng_hi
+        assert abs(row[0] * row[2]) <= 1.5 + 1e-9
+
+
 def main() -> int:
     rtm = _load_random_terrain_map()
     test_curriculum_progression_and_interpolation(rtm)
     test_block_sampling_probs(rtm)
     test_terrain_relative_orientation_alignment()
     test_centripetal_accel_clamp(rtm)
+    test_high_speed_command_boost(rtm)
     print("stage3 curriculum contract: PASS")
     return 0
 
