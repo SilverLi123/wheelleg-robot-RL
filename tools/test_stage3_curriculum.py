@@ -171,6 +171,23 @@ def test_high_speed_command_boost(rtm) -> None:
     assert dir_i5["random_terrain_transition_fraction"] == 0.12
     assert dir_i5["curriculum"]["steep_block_prob_end"] == 0.14
 
+    dir_i6 = profiles["random_terrain_stage4_dirI6_20261116"]
+    assert "random_terrain_stage4_dirI6_20261116" in rtm.RANDOM_TERRAIN_PROFILES
+    assert dir_i6["command_high_speed_smooth_only"] is True
+    eligible_cmds = [[0.0, 0.0, 0.0], [0.5, 0.0, 0.2], [0.5, 0.0, 0.2], [0.5, 0.0, 0.2]]
+    rtm.boost_command_high_speed(
+        eligible_cmds,
+        1.0,
+        (1.6, 2.04),
+        env_ids=[0, 1, 2, 3],
+        is_standing=[True, False, False, False],
+        eligible=[True, False, True, False],
+        rng=random.Random(7),
+    )
+    assert eligible_cmds[0][0] == 0.0
+    assert eligible_cmds[1][0] == 0.5 and eligible_cmds[3][0] == 0.5, "hazard envs must never receive high-speed boost"
+    assert 1.6 <= eligible_cmds[2][0] <= 2.04
+
 
 def main() -> int:
     rtm = _load_random_terrain_map()

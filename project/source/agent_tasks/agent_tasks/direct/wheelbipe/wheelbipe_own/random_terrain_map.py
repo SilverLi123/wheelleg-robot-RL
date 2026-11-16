@@ -63,6 +63,7 @@ RANDOM_TERRAIN_PROFILES = (
     "random_terrain_stage4_dirI3_20261116",
     "random_terrain_stage4_dirI4_20261116",
     "random_terrain_stage4_dirI5_20261116",
+    "random_terrain_stage4_dirI6_20261116",
 )
 GRADES = {
     "flat": 0.00,
@@ -690,6 +691,9 @@ def initialize(env) -> None:
     env._random_terrain_run_up_spawn_count = 0
     env._random_terrain_transition_spawn_count = 0
     env._random_terrain_stairs_spawn_count = 0
+    env._random_terrain_hazard_mask = torch.zeros(
+        env.num_envs, dtype=torch.bool, device=env.device
+    )
     env._random_terrain_reset_count = 0
     env._random_terrain_peak_penetration_m = 0.0
     env._random_terrain_force_block = None
@@ -878,8 +882,9 @@ def boost_command_high_speed(
     env_ids=None,
     is_standing=None,
     rng=None,
+    eligible=None,
 ):
-    """Resample ``fraction`` of non-standing commands into ``speed_range`` for high-speed training."""
+    """Resample ``fraction`` of eligible non-standing commands into ``speed_range``."""
     frac = float(fraction)
     if frac <= 0.0:
         return commands
@@ -895,6 +900,8 @@ def boost_command_high_speed(
         draw = torch.rand(idx.shape[0], device=commands.device) < frac
         if is_standing is not None:
             draw &= ~torch.as_tensor(is_standing, device=commands.device, dtype=torch.bool)[idx]
+        if eligible is not None:
+            draw &= torch.as_tensor(eligible, device=commands.device, dtype=torch.bool)[idx]
         chosen = idx[draw]
         if chosen.numel() > 0:
             commands[chosen, 0] = torch.empty(chosen.numel(), device=commands.device).uniform_(lo, hi)
@@ -905,6 +912,8 @@ def boost_command_high_speed(
     indices = range(len(commands)) if env_ids is None else env_ids
     for idx in indices:
         if is_standing is not None and is_standing[idx]:
+            continue
+        if eligible is not None and not eligible[idx]:
             continue
         if gen.random() < frac:
             commands[idx][0] = gen.uniform(lo, hi)
@@ -1254,6 +1263,19 @@ def _sample_spawn(env, ids):
                 env._random_terrain_stairs_spawn_count += s_count
         if env._random_terrain_force_yaw:
             yaw.zero_()
+    if hasattr(env, "_random_terrain_hazard_mask"):
+        hazard = torch.zeros(n, dtype=torch.bool, device=env.device)
+        steep_mask = getattr(env, "_random_terrain_steep_block_mask", None)
+        if steep_mask is not None:
+            hazard |= steep_mask[blocks]
+        if not env._random_terrain_evaluation_spawn:
+            if getattr(env, "_random_terrain_transition_fraction", 0.0) > 0.0:
+                hazard |= at_transition
+            if getattr(env, "_random_terrain_stairs_fraction", 0.0) > 0.0 and getattr(
+                env, "_random_terrain_stairs_lanes", False
+            ):
+                hazard |= at_stairs
+        env._random_terrain_hazard_mask[ids] = hazard
     local_xy = torch.stack((local_x, local_y), dim=-1)
     return blocks, local_xy, yaw
 

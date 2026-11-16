@@ -152,47 +152,55 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
         self._curriculum_state = None
         self._update_experiment_curriculum(force=True)
         settings = self.cfg.experiment_profile_settings
-        lat_accel_limit = float(
+        self._cmd_lat_accel_limit = float(
             settings.get('command_centripetal_accel_limit', 0.0)
         )
-        high_speed_frac = float(
+        self._cmd_high_speed_frac = float(
             settings.get('command_high_speed_fraction', 0.0)
         )
-        high_speed_range = tuple(
+        self._cmd_high_speed_range = tuple(
             settings.get('command_high_speed_range', (1.5, 2.0))
         )
-        if (lat_accel_limit > 0.0 or high_speed_frac > 0.0) and hasattr(self, 'command_generator'):
+        self._cmd_high_speed_smooth_only = bool(
+            settings.get('command_high_speed_smooth_only', False)
+        )
+        self._orig_resample_command = None
+        if (
+            self._cmd_lat_accel_limit > 0.0 or self._cmd_high_speed_frac > 0.0
+        ) and hasattr(self, 'command_generator'):
             cmd_gen = self.command_generator
             orig_resample = cmd_gen._resample_command
+            self._orig_resample_command = orig_resample
 
             def _capped_resample(env_ids):
                 orig_resample(env_ids)
-                if high_speed_frac > 0.0:
-                    random_terrain_map.boost_command_high_speed(
-                        cmd_gen.command,
-                        high_speed_frac,
-                        high_speed_range,
-                        env_ids,
-                        getattr(cmd_gen, 'is_standing_env', None),
-                    )
-                if lat_accel_limit > 0.0:
-                    random_terrain_map.clamp_command_centripetal_accel(
-                        cmd_gen.command, lat_accel_limit, env_ids
-                    )
+                self._apply_command_postprocess(env_ids)
 
             cmd_gen._resample_command = _capped_resample
-            if high_speed_frac > 0.0:
-                random_terrain_map.boost_command_high_speed(
-                    cmd_gen.command,
-                    high_speed_frac,
-                    high_speed_range,
-                    None,
-                    getattr(cmd_gen, 'is_standing_env', None),
-                )
-            if lat_accel_limit > 0.0:
-                random_terrain_map.clamp_command_centripetal_accel(
-                    cmd_gen.command, lat_accel_limit
-                )
+            self._apply_command_postprocess()
+
+    def _apply_command_postprocess(self, env_ids=None, allow_boost: bool = True) -> None:
+        if not hasattr(self, 'command_generator'):
+            return
+        cmd_gen = self.command_generator
+        if allow_boost and getattr(self, '_cmd_high_speed_frac', 0.0) > 0.0:
+            eligible = None
+            if getattr(self, '_cmd_high_speed_smooth_only', False) and hasattr(
+                self, '_random_terrain_hazard_mask'
+            ):
+                eligible = ~self._random_terrain_hazard_mask
+            random_terrain_map.boost_command_high_speed(
+                cmd_gen.command,
+                self._cmd_high_speed_frac,
+                self._cmd_high_speed_range,
+                env_ids,
+                getattr(cmd_gen, 'is_standing_env', None),
+                eligible=eligible,
+            )
+        if getattr(self, '_cmd_lat_accel_limit', 0.0) > 0.0:
+            random_terrain_map.clamp_command_centripetal_accel(
+                cmd_gen.command, self._cmd_lat_accel_limit, env_ids
+            )
 
     def _legacy_terrain_enabled(self) -> bool:
         settings = self.cfg.experiment_profile_settings
@@ -264,7 +272,23 @@ class WheelbipeOwnExperimentEnv(UnifiedLocomotionMixin, DomainRandomizationMixin
             )
             self._legacy_terrain_pending_move_up[ids] = move_up
             self._legacy_terrain_pending_move_down[ids] = move_down
-        return super()._reset_idx(env_ids)
+        result = super()._reset_idx(env_ids)
+        if (
+            getattr(self, '_cmd_high_speed_smooth_only', False)
+            and getattr(self, '_orig_resample_command', None) is not None
+            and hasattr(self, '_random_terrain_hazard_mask')
+        ):
+            ids = (
+                self.robot._ALL_INDICES
+                if env_ids is None
+                else torch.as_tensor(env_ids, device=self.device, dtype=torch.long)
+            )
+            if ids.numel() > 0:
+                hazard_ids = ids[self._random_terrain_hazard_mask[ids]]
+                if hazard_ids.numel() > 0:
+                    self._orig_resample_command(hazard_ids)
+                    self._apply_command_postprocess(hazard_ids, allow_boost=False)
+        return result
 
     def _init_training_audit(self):
         from pxr import Usd, UsdPhysics
