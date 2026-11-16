@@ -37,6 +37,29 @@ SPEED_SWEEP_SCENARIOS = (
     {"name": "flat_estop_150", "terrain": "flat", "speed_m_s": 1.50, "yaw_rate_rad_s": 0.0, "mode": "estop", "brake_time_s": 2.5, "target_forward_m": 0.0},
 )
 
+HIGHSPEED_MANEUVER_SCENARIOS = (
+    {"name": "flat_v100", "terrain": "flat", "speed_m_s": 1.00, "yaw_rate_rad_s": 0.0, "mode": "const", "target_forward_m": 10.5},
+    {"name": "flat_v150", "terrain": "flat", "speed_m_s": 1.50, "yaw_rate_rad_s": 0.0, "mode": "const", "target_forward_m": 10.5},
+    {"name": "flat_v200", "terrain": "flat", "speed_m_s": 2.00, "yaw_rate_rad_s": 0.0, "mode": "const", "target_forward_m": 10.5},
+    {"name": "up10_v150", "terrain": "up10", "speed_m_s": 1.50, "yaw_rate_rad_s": 0.0, "mode": "const", "target_forward_m": 10.5},
+    {"name": "down10_v150", "terrain": "down10", "speed_m_s": 1.50, "yaw_rate_rad_s": 0.0, "mode": "const", "target_forward_m": 10.5},
+    {"name": "up18_v150", "terrain": "up18", "speed_m_s": 1.50, "yaw_rate_rad_s": 0.0, "mode": "const", "target_forward_m": 10.5},
+    {"name": "down18_v150", "terrain": "down18", "speed_m_s": 1.50, "yaw_rate_rad_s": 0.0, "mode": "const", "target_forward_m": 10.5},
+    {"name": "flat_v150_yaw100", "terrain": "flat", "speed_m_s": 1.50, "yaw_rate_rad_s": 1.00, "mode": "const", "target_forward_m": 0.0},
+    {"name": "flat_v200_yaw075", "terrain": "flat", "speed_m_s": 2.00, "yaw_rate_rad_s": 0.75, "mode": "const", "target_forward_m": 0.0},
+    {"name": "flat_v150_sturn", "terrain": "flat", "speed_m_s": 1.50, "yaw_rate_rad_s": 1.00, "mode": "sturn", "alternating_yaw_period_s": 2.0, "target_forward_m": 0.0},
+    {"name": "down10_v120_yaw080", "terrain": "down10", "speed_m_s": 1.20, "yaw_rate_rad_s": 0.80, "mode": "const", "target_forward_m": 0.0},
+    {"name": "flat_estop_150", "terrain": "flat", "speed_m_s": 1.50, "yaw_rate_rad_s": 0.0, "mode": "estop", "brake_time_s": 2.5, "target_forward_m": 0.0},
+    {"name": "flat_estop_200", "terrain": "flat", "speed_m_s": 2.00, "yaw_rate_rad_s": 0.0, "mode": "estop", "brake_time_s": 2.5, "target_forward_m": 0.0},
+    {"name": "down10_estop_150", "terrain": "down10", "speed_m_s": 1.50, "yaw_rate_rad_s": 0.0, "mode": "estop", "brake_time_s": 2.5, "target_forward_m": 0.0},
+    {"name": "flat_reversal_150_n080", "terrain": "flat", "speed_m_s": 1.50, "yaw_rate_rad_s": 0.0, "mode": "reversal", "brake_time_s": 2.5, "reversal_speed_m_s": -0.80, "target_forward_m": 0.0},
+)
+
+SUITES = {
+    "standard": SPEED_SWEEP_SCENARIOS,
+    "highspeed": HIGHSPEED_MANEUVER_SCENARIOS,
+}
+
 
 def command_for_scenario(scenario: dict, elapsed_s: float) -> tuple[float, float]:
     """Return commanded ``(vx_m_s, wz_rad_s)`` at ``elapsed_s``."""
@@ -48,11 +71,27 @@ def command_for_scenario(scenario: dict, elapsed_s: float) -> tuple[float, float
         if elapsed_s < brake_time_s:
             return float(scenario["speed_m_s"]), 0.0
         return 0.0, 0.0
+    if mode == "sturn":
+        period_s = float(scenario["alternating_yaw_period_s"])
+        if period_s <= 0.0:
+            raise ValueError(f"alternating_yaw_period_s must be positive, got {period_s}")
+        half = 0.5 * period_s
+        sign = 1.0 if (elapsed_s % period_s) < half else -1.0
+        return float(scenario["speed_m_s"]), sign * float(scenario["yaw_rate_rad_s"])
+    if mode == "reversal":
+        brake_time_s = float(scenario["brake_time_s"])
+        if elapsed_s < brake_time_s:
+            return float(scenario["speed_m_s"]), 0.0
+        return float(scenario["reversal_speed_m_s"]), 0.0
     raise ValueError(f"Unsupported speed sweep mode: {mode!r}")
 
 
-def resolve_scenario_blocks(layout: tuple[tuple[str, ...], ...], repeats: int) -> tuple[list[dict], list[int]]:
-    """Expand ``SPEED_SWEEP_SCENARIOS`` into per-env scenario specs and block ids."""
+def resolve_scenario_blocks(
+    layout: tuple[tuple[str, ...], ...],
+    repeats: int,
+    scenarios: tuple[dict, ...] = SPEED_SWEEP_SCENARIOS,
+) -> tuple[list[dict], list[int]]:
+    """Expand ``scenarios`` into per-env scenario specs and block ids."""
     if repeats < 1:
         raise ValueError("repeats must be positive")
     terrain_to_block = {}
@@ -62,7 +101,7 @@ def resolve_scenario_blocks(layout: tuple[tuple[str, ...], ...], repeats: int) -
             terrain_to_block[name] = row_idx * num_cols + col_idx
     envs = []
     block_ids = []
-    for scenario in SPEED_SWEEP_SCENARIOS:
+    for scenario in scenarios:
         terrain = scenario["terrain"]
         if terrain not in terrain_to_block:
             raise KeyError(f"Terrain {terrain!r} missing from layout")
@@ -111,6 +150,12 @@ def _build_parser():
     parser.add_argument("--seed", type=int, default=71903)
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument(
+        "--suite",
+        choices=tuple(SUITES.keys()),
+        default="standard",
+        help="Scenario suite: standard (default 14x3 matrix) or highspeed (1.5-2.0 m/s, turns, S-turns, e-stops, reversal).",
+    )
+    parser.add_argument(
         "--steep-grades",
         action="store_true",
         help="Override GRADES with RM steep grades (+/-10%, +/-18%, +/-24%, +/-30%).",
@@ -144,6 +189,7 @@ def main() -> None:
         "seed": args.seed,
         "seconds": args.seconds,
         "repeats": args.repeats,
+        "suite": args.suite,
         "steep_grades": bool(args.steep_grades),
         "checkpoint": str(args.checkpoint),
         "checkpoint_sha256": hashlib.sha256(args.checkpoint.read_bytes()).hexdigest(),
@@ -182,7 +228,8 @@ def main() -> None:
         layout = random_terrain_map.make_layout(
             int(cfg.experiment_profile_settings.get("random_terrain_layout_seed", random_terrain_map.LAYOUT_SEED))
         )
-        env_specs, block_ids = resolve_scenario_blocks(layout, args.repeats)
+        scenarios = SUITES[args.suite]
+        env_specs, block_ids = resolve_scenario_blocks(layout, args.repeats, scenarios=scenarios)
         cfg.scene.num_envs = len(env_specs)
         prepare_checkpoint(cfg, None, str(args.checkpoint))
         cfg.experiment_profile_settings = dict(cfg.experiment_profile_settings)

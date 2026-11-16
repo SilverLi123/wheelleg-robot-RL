@@ -41,6 +41,17 @@ def main() -> None:
     assert sweep.command_for_scenario(estop_spec, 2.49) == (1.5, 0.0)
     assert sweep.command_for_scenario(estop_spec, 2.50) == (0.0, 0.0)
 
+    # S-turn and rapid reversal modes + highspeed suite
+    sturn_spec = {"mode": "sturn", "speed_m_s": 1.5, "yaw_rate_rad_s": 1.0, "alternating_yaw_period_s": 2.0}
+    assert sweep.command_for_scenario(sturn_spec, 0.50) == (1.5, 1.0)
+    assert sweep.command_for_scenario(sturn_spec, 1.50) == (1.5, -1.0)
+    rev_spec = {"mode": "reversal", "speed_m_s": 1.5, "brake_time_s": 2.5, "reversal_speed_m_s": -0.8}
+    assert sweep.command_for_scenario(rev_spec, 2.49) == (1.5, 0.0)
+    assert sweep.command_for_scenario(rev_spec, 2.50) == (-0.8, 0.0)
+    hs_specs, hs_blocks = sweep.resolve_scenario_blocks(layout, repeats=3, scenarios=sweep.SUITES["highspeed"])
+    assert len(hs_specs) == len(sweep.HIGHSPEED_MANEUVER_SCENARIOS) * 3
+    assert len(hs_blocks) == len(hs_specs)
+
     # Slope-relative roll expectation: climbing straight along +x has zero expected roll,
     # while turning +90 deg across a +20% x-slope tilts the axle roll by -atan(0.20).
     assert abs(float(sweep.expected_terrain_roll_rad(0.20, 0.0, 0.0))) < 1e-12
